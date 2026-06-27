@@ -593,3 +593,23 @@ material_pal = {
 | Publication chart | Nature / Science / Cell |
 | Corporate slides / UI | Material Design |
 | Heatmap / continuous | viridis / cividis / RdBu_r |
+
+
+---
+
+## 10. draw.io Official Lane Palette
+
+Pastel lane colors from draw.io official swimlane documentation.
+Use for cross-functional flowcharts, BPMN, and process flows.
+
+| Role | Fill | Stroke |
+|------|------|--------|
+| Customer / Client | `#FCE4EC` | `#B85450` |
+| Internal system / IT | `#E3F2FD` | `#6C8EBF` |
+| Finance / Payment | `#F3E5F5` | `#9673A6` |
+| Operations / Warehouse | `#E8F5E9` | `#82B366` |
+| External partner | `#FFF3E0` | `#D79B00` |
+| Generic / Other | `#F5F5F5` | `#999999` |
+
+Node shapes inside a lane use the lane stroke color as their border,
+with white fill for process steps and decision-diamond yellow for branches.

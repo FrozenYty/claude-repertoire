@@ -27,10 +27,10 @@ Venn diagram, or comparison layout.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (18 non-negotiable: geometry, IDs, grid alignment, no overlap)
+- Hard rules (22 non-negotiable: geometry, IDs, grid alignment, no overlap)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
-- Common Pitfalls (13 real failures and their fixes)
+- Common Pitfalls (14 real failures and their fixes)
 - Self-check checklist (20 items)
 
 **If the request matches a known layout pattern, read
@@ -68,7 +68,7 @@ line weights, spacing, and user-customizable DPI/size options.
 
 ### Phase 3 — Self-check
 
-Run the 20-item checklist from `drawio-guide.md` Self-Check section. Report
+Run the 23-item checklist from `drawio-guide.md` Self-Check section. Report
 pass/fail for each item. Fix failures before delivering.
 
 ---
@@ -98,6 +98,14 @@ These are NOT optional — every violation causes a real visual bug.
 10. **No overlap.** Vertex bboxes don't intersect (containers excepted).
 11. **Coords multiples of 10.** All x, y, w, h multiples of 10.
 12. **Every edge has `<mxGeometry relative="1" as="geometry"/>`.**
+13. **Use native shape types.** Process=`rounded=1`, decision=`rhombus`,
+    start/end=`ellipse`, DB=`shape=cylinder3`. Never use plain rectangles for
+    semantically different concepts. A decision drawn as a rounded rect is a bug.
+14. **Parent-child for containers.** Nodes inside a lane/group use
+    `parent="container_id"` with coordinates relative to the container origin.
+    This eliminates overlap by construction.
+15. **Single abstraction level.** Overview (7 nodes max) OR detail, not both.
+    If the diagram has >7 process nodes, split it into sub-pages.
 
 ---
 
@@ -106,7 +114,7 @@ These are NOT optional — every violation causes a real visual bug.
 - One `.drawio` file per diagram.
 - Labels inside containers at top-left (+10, +6 offset from container origin).
 - Use the IEEE semantic palette from `style-guide.md` for color assignments.
-  Aim for 2-3 main colors; max 6 for complex diagrams.
+  Limit to 2-3 main colors; use lighter/darker shades of the same hue.
 - Labels <=25 chars per line, <=3 lines per node.
 - Tier labels: add a small grey italic label to the left of each tier
   (e.g., "Entry", "Services", "Infra").

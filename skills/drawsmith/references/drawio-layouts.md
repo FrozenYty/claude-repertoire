@@ -720,78 +720,90 @@ instead of four quadrants.
 
 **When to use:** Cross-functional process flows, responsibility matrices,
 RACI charts — any process where tasks execute across multiple actors,
-departments, or systems. Each lane represents one actor; tasks are placed
-in the lane of the responsible party.
+departments, or systems. Each lane represents one actor.
 
-**Canvas:** 1100×600 landscape. Lanes run horizontally, flow runs
-left-to-right within each lane and top-to-bottom between lanes.
+**Canvas:** 1100×650 landscape. Lanes run horizontally; flow is
+left-to-right within lanes, top-to-bottom between lanes.
+
+### Critical: use native swimlane shapes, NOT rectangles
+
+draw.io has a built-in swimlane container shape. Use it. Do NOT draw
+swimlanes as colored rectangles with absolute-positioned child nodes.
+
+
+
+Key points:
+- Lane: , absolute x/y on the root canvas.
+- Child nodes: , coordinates RELATIVE to the lane
+  top-left corner (x=0,y=0 is inside the lane).
+- Connectors between lanes:  (root level), orthogonal routing.
+- Moving/deleting a lane moves/deletes all its children automatically.
 
 ### Shape vocabulary
 
-| Element | Style keywords | When |
+| Element | Style | When |
 |---|---|---|
-| Start | `ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2` | One per diagram, leftmost position |
-| End | `ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2` | One per terminal path |
-| Process | `rounded=1;arcSize=6;fillColor=#FFFFFF;strokeColor=...` | Normal action — white fill, stroke matches lane color |
-| Decision | `rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5` | Exactly 1 input, 2+ labeled outputs |
+| Lane |  | One per actor |
+| Start |  | Leftmost in first lane |
+| End |  | One per terminal |
+| Process |  | White fill, stroke=owning lane color |
+| Decision |  | 1 input, 2 outputs |
+
+### Lane color palette (official draw.io pastels)
+
+| Role | Lane fill | Lane stroke | Node stroke (inside) |
+|------|-----------|-------------|---------------------|
+| Customer/Client |  |  |  |
+| Internal system |  |  |  |
+| Payment/Finance |  |  |  |
+| Warehouse/Ops |  |  |  |
+| External partner |  |  |  |
+| Generic |  |  |  |
 
 ### Flow direction rules
 
-1. **Left-to-right within a lane.** Nodes in the same lane are ordered by
-   time — earliest on the left, latest on the right. Every forward edge
-   points RIGHT (`source.x < target.x`). A left-pointing edge within a
-   lane is always wrong.
-2. **Top-to-bottom between lanes.** When responsibility transfers to
-   another actor, the edge drops down to the target lane. Use orthogonal
-   routing — vertical between lanes, then horizontal to the node.
-3. **Decision = 1 in, 2+ out.** A diamond with multiple inputs is NOT a
-   decision — it is a merge, which is wrong. Decision tests one result.
-4. **Terminals have zero outgoing edges.** Start has no inputs. End/Cancel
-   has no outputs. Any edge FROM a terminal node is wrong.
+1. **Default: top-to-bottom between lanes.** Lane 1 at smallest y, Lane N at
+   largest y. Responsibility flows downward.
+2. **Within a lane: left-to-right.** Nodes ordered by time — earliest at
+   smallest x. Every forward edge: .
+3. **Decision: 1 input, 2 outputs.** "Yes" branch goes RIGHT and down to
+   the next lane. "No" branch goes RIGHT to a terminal in the same lane
+   or arcs down to a cancel node in the responsible system lane.
+4. **Terminals: no outgoing edges.** Start has 0 inputs. End/Cancel has
+   0 outputs.
+
+### Color continuity
+
+After a decision, every edge on the "Yes" branch stays green ()
+until terminal. Every edge on the "No" branch stays orange ()
+until cancel. Do not revert to black mid-branch.
 
 ### Lane responsibility
 
-- Nodes belong in the lane of the actor who PERFORMS the action.
-- "Order Cancelled" = Order System, not Customer.
-- Payment decision = Payment Gateway, not Order System.
+Nodes belong in the lane of the performer:
+- "Order Cancelled" = Order System lane, NOT Customer lane.
+- Payment decision "Success?" = Payment Gateway lane.
 
-### Color continuity through branches
+### Business logic validation (Phase 1)
 
-Success/failure colors persist along the ENTIRE branch after the decision.
-If the Yes branch exits green, every subsequent edge stays green until the
-terminal. If the No branch exits orange, every edge stays orange to cancel.
-
-### Business logic checklist (validate during Phase 1)
-
-Before writing coordinates:
-1. List all nodes in time order. Does the sequence match reality?
-2. Trace each decision branch end-to-end. Does it reach a terminal?
-3. After "Cancelled", there must be NO further steps.
-4. "Confirm" must happen AFTER payment succeeds, not before.
-5. Each node is in the correct actor’s lane.
+Before writing XML:
+1. List all nodes in time order. Correct sequence?
+2. Trace each branch to a terminal. Dead ends?
+3. After "Cancelled", are there more steps? (There should not be.)
+4. "Confirm" must follow payment success, not precede it.
+5. Each node in the right performer lane?
 
 ### Layout conventions
 
-- Lane backgrounds: light tint per lane (`opacity=30-40`), one color each.
-  No separate title column — lane labels as small colored boxes on the
-  left edge (x=20, w=90).
-- Lane height: 130–160px. Expand the lane with the most nodes or the
-  decision diamond — don’t give all lanes equal height.
-- X spacing: 80–120px between adjacent process nodes. +40px extra before
-  and after a decision diamond.
-- Cross-lane edges: route through 10px clearance from lane edges. Use
-  orthogonal routing.
+- Lane height: **equal for all lanes** (130-160px). The lane with the
+  decision diamond determines the height for all.
+- Within-lane x-spacing: 100-150px between process nodes.
+- Node y-position within lane: centered vertically. For a 160px lane,
+  process nodes (h=50) go at y=55-60.
+- Connectors: , .
 
-### Anti-patterns
-
-- **Decision as merge point.** Diamond with 3 inputs = backwards.
-- **Right-to-left edge within a lane.** Flow always goes right.
-- **Node in wrong lane.** Actions belong to the performer, not the beneficiary.
-- **Color broken at lane boundary.** Success branch stays green everywhere.
-- **Dual encoding.** Lane backgrounds OR title boxes, never both.
-
-**To adapt:** change lane labels, node text, decision logic. Keep flow
-direction, lane responsibility, and color continuity intact.
+**To adapt:** change lane labels, node text, decision logic. Keep the
+swimlane shape, parent-child nesting, and flow direction rules intact.
 ## §18 Wireframe / Mockup
 
 **When to use:** App screens, website layouts, dashboard designs, UI
