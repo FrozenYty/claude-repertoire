@@ -187,7 +187,7 @@ a node center.
 12. **I/O direction consistent** — every component uses fixed entry/exit sides. Pick one convention per diagram: top-in-bottom-out (default for layered architectures), left-in-right-out (pipelines). Never mix entry directions on the same component.
 13. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
 14. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
-15. **Grid off for export** — set `grid=0` on `<mxGraphModel>` or set `gridSize=1` with grid color `#f5f5f5`. The grid is an alignment tool, not a visual element. Exported diagrams must not show visible grid lines.
+15. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
 16. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
 17. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
 18. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
@@ -605,6 +605,13 @@ colored outlines appear around groups of nodes without any label or legend
 explanation. Symptom: a purple dashed frame overlaps with purple Kafka
 arrows, causing color confusion and adding zero semantic value. Fix: every
 container must have a label and a legend entry, or be removed.
+
+**14. HTML double-escaping in node values** — writing `&amp;amp;` when
+you only meant `&amp;`. Symptom: nodes display raw HTML like
+`&lt;b&gt;Place Order&lt;/b&gt;` or show `&amp;` as literal text. Fix: inside
+`value=\"...\"` with `html=1` in the style, write HTML entities once:
+`&lt;b&gt;Label&lt;/b&gt;`, `&amp;`. Never double-escape. Validating with an
+XML parser catches this but the fix is to write the entity correctly.
 
 ## Self-Check (output pass/fail for each)
 

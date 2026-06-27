@@ -93,7 +93,8 @@ These are NOT optional — every violation causes a real visual bug.
 7. **Bidirectional pairs on parallel tracks.** Offset produce/consume arrows
    (`exitY=0.35` vs `exitY=0.65`) so they don't overlap.
 8. **Jump-over on crossings.** Set `jumpStyle=arc` on `<mxGraphModel>`.
-9. **Grid off for export.** `grid=0` — the grid is a tool, not a visual element.
+9. **Grid is user preference.** Default `grid=1` for editing; set `grid=0` only
+   if the user asks. The grid helps with alignment review.
 10. **No overlap.** Vertex bboxes don't intersect (containers excepted).
 11. **Coords multiples of 10.** All x, y, w, h multiples of 10.
 12. **Every edge has `<mxGeometry relative="1" as="geometry"/>`.**

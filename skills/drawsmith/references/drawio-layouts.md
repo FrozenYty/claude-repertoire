@@ -723,38 +723,75 @@ RACI charts — any process where tasks execute across multiple actors,
 departments, or systems. Each lane represents one actor; tasks are placed
 in the lane of the responsible party.
 
-**Canvas:** 1000×650 landscape. Lanes run horizontally (LR flow) or
-vertically (TB flow). LR lanes are the default.
+**Canvas:** 1100×600 landscape. Lanes run horizontally, flow runs
+left-to-right within each lane and top-to-bottom between lanes.
 
-**Layout conventions:**
-- One lane per participant/department/system
-- Lane labels on the left edge (LR) or top edge (TB)
-- Process nodes placed inside their responsible lane
-- Flow arrows cross lanes as responsibilities transfer
-- Lanes separated by solid divider lines
+### Shape vocabulary
 
-**Shape vocabulary:**
+| Element | Style keywords | When |
+|---|---|---|
+| Start | `ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2` | One per diagram, leftmost position |
+| End | `ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2` | One per terminal path |
+| Process | `rounded=1;arcSize=6;fillColor=#FFFFFF;strokeColor=...` | Normal action — white fill, stroke matches lane color |
+| Decision | `rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5` | Exactly 1 input, 2+ labeled outputs |
 
-| Element | Style keywords |
-|---|---|
-| Lane (container) | `swimlane;startSize=30;fillColor=#F5F5F5;strokeColor=#999999;strokeWidth=1.5;fontStyle=1;fontSize=12` |
-| Process step | `rounded=1;arcSize=6;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5` |
-| Decision | `rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5` |
-| Start/End | `ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5` |
-| Data store | `shape=cylinder3;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1.5` |
-| Lane divider | `endArrow=none;strokeColor=#BDBDBD;strokeWidth=1;dashed=1` |
+### Flow direction rules
 
-**Layout conventions:**
-- Each lane: h=120-160px, spanning full page width
-- Lane label: 30px left column or top row
-- Process nodes: evenly spaced within the lane, y centered
-- Cross-lane edges: orthogonal routing, avoid overlapping
-- Max 5-7 lanes for readability
+1. **Left-to-right within a lane.** Nodes in the same lane are ordered by
+   time — earliest on the left, latest on the right. Every forward edge
+   points RIGHT (`source.x < target.x`). A left-pointing edge within a
+   lane is always wrong.
+2. **Top-to-bottom between lanes.** When responsibility transfers to
+   another actor, the edge drops down to the target lane. Use orthogonal
+   routing — vertical between lanes, then horizontal to the node.
+3. **Decision = 1 in, 2+ out.** A diamond with multiple inputs is NOT a
+   decision — it is a merge, which is wrong. Decision tests one result.
+4. **Terminals have zero outgoing edges.** Start has no inputs. End/Cancel
+   has no outputs. Any edge FROM a terminal node is wrong.
 
-**To adapt:** change lane labels, add/remove lanes, swap LR↔TB orientation.
+### Lane responsibility
 
----
+- Nodes belong in the lane of the actor who PERFORMS the action.
+- "Order Cancelled" = Order System, not Customer.
+- Payment decision = Payment Gateway, not Order System.
 
+### Color continuity through branches
+
+Success/failure colors persist along the ENTIRE branch after the decision.
+If the Yes branch exits green, every subsequent edge stays green until the
+terminal. If the No branch exits orange, every edge stays orange to cancel.
+
+### Business logic checklist (validate during Phase 1)
+
+Before writing coordinates:
+1. List all nodes in time order. Does the sequence match reality?
+2. Trace each decision branch end-to-end. Does it reach a terminal?
+3. After "Cancelled", there must be NO further steps.
+4. "Confirm" must happen AFTER payment succeeds, not before.
+5. Each node is in the correct actor’s lane.
+
+### Layout conventions
+
+- Lane backgrounds: light tint per lane (`opacity=30-40`), one color each.
+  No separate title column — lane labels as small colored boxes on the
+  left edge (x=20, w=90).
+- Lane height: 130–160px. Expand the lane with the most nodes or the
+  decision diamond — don’t give all lanes equal height.
+- X spacing: 80–120px between adjacent process nodes. +40px extra before
+  and after a decision diamond.
+- Cross-lane edges: route through 10px clearance from lane edges. Use
+  orthogonal routing.
+
+### Anti-patterns
+
+- **Decision as merge point.** Diamond with 3 inputs = backwards.
+- **Right-to-left edge within a lane.** Flow always goes right.
+- **Node in wrong lane.** Actions belong to the performer, not the beneficiary.
+- **Color broken at lane boundary.** Success branch stays green everywhere.
+- **Dual encoding.** Lane backgrounds OR title boxes, never both.
+
+**To adapt:** change lane labels, node text, decision logic. Keep flow
+direction, lane responsibility, and color continuity intact.
 ## §18 Wireframe / Mockup
 
 **When to use:** App screens, website layouts, dashboard designs, UI
