@@ -11,7 +11,7 @@ When the user asks for a chart, do this in order:
 
 1. **Pick the chart type** — if not already chosen, route through
    `prompts/chart-pick.md` first.
-2. **Read the relevant template** in `matplotlib-scripts.md`
+2. **Read the relevant template** in `matplotlib-templates.md`
    (19 templates, indexed by the same chart-type names as chart-pick).
 3. **Apply the professional style block** from this file (rcParams).
    For color palettes and typefaces, see `style-guide.md`.
@@ -384,12 +384,12 @@ with sns.axes_style("ticks"), sns.plotting_context("talk"):
 | Custom chart types not in seaborn | matplotlib directly, with seaborn style |
 | Batch scripts (minimal dependencies) | matplotlib rcParams only |
 
-The `matplotlib-scripts.md` templates work with either approach — seaborn
+The `matplotlib-templates.md` templates work with either approach — seaborn
 is optional but recommended for quicker setup.
 
 ---
 
 ## See also
 - `style-guide.md` — color palettes, typefaces, resolution standards shared with draw.io
-- `matplotlib-scripts.md` — 19 runnable chart templates
+- `matplotlib-templates.md` — 19 runnable chart templates
 - `cjk-fonts-guide.md` — CJK font configuration for Chinese text

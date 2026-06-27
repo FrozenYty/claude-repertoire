@@ -97,7 +97,7 @@ or "illustration", decide which engine to use BEFORE starting work.
    statistical conventions, scale treatments, common pitfalls.
 3. **Read `references/style-guide.md`** — color palettes (Nature/Science/
    Cell/IEEE), typeface system, resolution standards.
-4. **Read the matching template** in `references/matplotlib-scripts.md`
+4. **Read the matching template** in `references/matplotlib-templates.md`
    (19 chart types). Copy the template, adapt to the user's data; keep
    the style invariants.
 5. **Generate script** — one self-contained `.py` file. rcParams at top,
@@ -129,7 +129,7 @@ Users may override any default. Honor these requests:
 | `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 20-item self-check | Every draw.io diagram |
 | `references/drawio-layouts.md` | 18 reusable draw.io layout templates | Matching diagram patterns |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |
-| `references/matplotlib-scripts.md` | 19 runnable chart code skeletons | Adapting a known chart type |
+| `references/matplotlib-templates.md` | 19 runnable chart code skeletons | Adapting a known chart type |
 
 ---
 
@@ -154,7 +154,7 @@ These are non-negotiable unless marked "recommended."
 
 4. **IRON RULE — Template first.** Before designing any diagram or chart
    from scratch, check whether a canonical template already exists in
-   `drawio-layouts.md` or `matplotlib-scripts.md`. Adapt the template;
+   `drawio-layouts.md` or `matplotlib-templates.md`. Adapt the template;
    don't guess coordinates or parameters.
 
 5. **IRON RULE — Full-width Chinese punctuation.** Any Chinese text

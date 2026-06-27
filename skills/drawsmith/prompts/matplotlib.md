@@ -19,7 +19,7 @@ generates a professional-grade figure as `.png` (>=600 dpi) and optionally
    checklist.
 3. **Read `references/style-guide.md`** for color palettes, typeface settings,
    and resolution standards.
-4. **Read the matching template in `references/matplotlib-scripts.md`**
+4. **Read the matching template in `references/matplotlib-templates.md`**
    (19 templates). Copy the template, adapt variable names and values to the
    user's data; keep the style invariants (font, palette, sizes).
 5. **Generate the script** as one self-contained `.py` file. Don't split
@@ -107,7 +107,7 @@ Output nothing else.
 ## Input
 
 **Required:**
-- Chart type (one of the 19 from `matplotlib-scripts.md`, or named directly)
+- Chart type (one of the 19 from `matplotlib-templates.md`, or named directly)
 - Data values (or a description of the data shape)
 
 **Optional (user may specify any of these):**
@@ -127,7 +127,7 @@ Honor user overrides. When unspecified, use defaults from `style-guide.md`.
 ## Self-Audit (before delivering)
 1. Did I read `matplotlib-guide.md` and apply the rcParams block?
 2. Did I read `style-guide.md` for colors and typefaces?
-3. Did I read the relevant template from `matplotlib-scripts.md`?
+3. Did I read the relevant template from `matplotlib-templates.md`?
 4. Is `pdf.fonttype = 42` set (recommended)?
 5. Are the palette colors from `style-guide.md`, not matplotlib defaults?
 6. Did I disclose the meaning of error bars / bands (if present)?

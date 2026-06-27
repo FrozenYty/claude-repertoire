@@ -51,7 +51,7 @@ To add a new palette:
 
 ### Adding a New Matplotlib Chart Template
 
-Templates live in `references/matplotlib-scripts.md`. Each must:
+Templates live in `references/matplotlib-templates.md`. Each must:
 - Be a runnable self-contained Python script.
 - Apply the rcParams block from `matplotlib-guide.md`.
 - Use colors from `style-guide.md`.

@@ -73,9 +73,9 @@ Follow this exact structure:
 1. Did I pick the chart type based on the data structure and the conclusion the user wants to emphasize?
 2. Did I check for statistical elements (error bars, significance) and recommend them when applicable?
 3. Is my recommendation specific enough — chart type + axis strategy + color rationale, not just a name?
-4. Did I mention the relevant chart number (1-19) from `matplotlib-scripts.md`?
+4. Did I mention the relevant chart number (1-19) from `matplotlib-templates.md`?
 
 ## See also
 - `prompts/matplotlib.md` — After determining the chart type, generate complete
   Python plotting code. Feed the recommended chart type as input.
-- `matplotlib-scripts.md` — 19 chart templates with runnable Python skeletons.
+- `matplotlib-templates.md` — 19 chart templates with runnable Python skeletons.

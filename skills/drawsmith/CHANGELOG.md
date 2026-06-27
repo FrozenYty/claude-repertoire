@@ -36,7 +36,7 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 - **draw.io**: 18 reusable layout templates (§1-18 in `drawio-layouts.md`),
   15-item XML self-check, multi-connection node routing, bidirectional edge
   pair handling.
-- **matplotlib**: 19 chart type templates (`matplotlib-scripts.md`),
+- **matplotlib**: 19 chart type templates (`matplotlib-templates.md`),
   professional rcParams block, seaborn integration (5 styles + 4 contexts),
   statistical honesty enforcement.
 - **Shared design system** (`style-guide.md`): 24 color palettes sourced from
@@ -47,5 +47,5 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 - User-customizable DPI (150-1200), figure size, color palette, and font.
 - 3 prompts: `drawio.md`, `matplotlib.md`, `chart-pick.md`.
 - 5 reference files: `drawio-guide.md`, `drawio-layouts.md`,
-  `matplotlib-guide.md`, `matplotlib-scripts.md`, `style-guide.md`.
+  `matplotlib-guide.md`, `matplotlib-templates.md`, `style-guide.md`.
 - 7 iron rules (6 mandatory + 1 recommended).
