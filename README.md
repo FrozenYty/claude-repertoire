@@ -4,31 +4,31 @@ A curated repertoire of Claude Code skills and guides.
 
 ## What's Inside
 
-**[`skills/`](skills/)** — Independently installable Claude Code skills.
-Each has its own `README.md` with feature docs and install instructions.
-Browse the directory to see what's available.
+**[`skills/`](skills/)** — Each directory is a self-contained Claude Code
+skill with its own `README.md`, install instructions, and feature docs.
 
-**[`docs/`](docs/)** — Guides and reference material for Claude Code
-workflows and conventions.
+**[`docs/`](docs/)** — Guides and reference material.
 
-## Quick Install
+## Quick Start
 
 ```bash
-git clone https://github.com/FrozenYty/claude-repertoire.git ~/claude-repertoire
-ln -s ~/claude-repertoire/skills/* ~/.claude/skills/
+git clone https://github.com/FrozenYty/claude-repertoire.git
 ```
 
-The wildcard `skills/*` picks up every skill automatically —
-add a new skill to the repo, pull, re-link, and it's available.
+Then browse [`skills/`](skills/) and install what you need. Every skill
+documents its own setup in its `README.md`.
+
+To install everything at once:
+
+```bash
+for skill in claude-repertoire/skills/*/; do
+  ln -s "$(pwd)/$skill" ~/.claude/skills/
+done
+```
 
 ## Adding a Skill
 
-1. Create `skills/<name>/` with `SKILL.md`, `README.md`, `CONTRIBUTING.md`, `CHANGELOG.md`.
-2. Push. No root-level files need updating — each skill is self-documenting.
+Create `skills/<name>/` with `SKILL.md`, `README.md`, `CONTRIBUTING.md`,
+and `CHANGELOG.md`. Push. Done — no root-level files need updating.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for conventions.
-
-## Philosophy
-
-Every tool in this repo is designed to work standalone. Pick the ones
-you need, install them individually, or grab the whole set with one clone.
