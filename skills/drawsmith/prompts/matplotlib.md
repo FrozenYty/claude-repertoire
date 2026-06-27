@@ -101,6 +101,16 @@ Output nothing else.
 - Comments explain WHY a non-obvious choice was made (e.g., "log scale
   because params spans 7B-405B"), not WHAT the line does.
 
+### Subplot / multi-panel (when user requests subplots)
+
+- Always use `sharex='col', sharey='row'` when panels share data ranges.
+- Set spacing: `fig.get_layout_engine().set(hspace=0.3, wspace=0.3)`.
+- Panel labels INSIDE axes at top-left: `y=0.98`, not `y=1.1` (avoids overlap).
+- Verify label indexing — `enumerate(axes.flat)` matches `['a','b','c','d']`.
+- Shared colorbar: `fig.colorbar(im, ax=axes.ravel().tolist(), shrink=0.8)`.
+- Never `tight_layout()` with constrained layout — they conflict.
+- Y-axis labels on BOTH left and right sides for multi-column layouts.
+
 ### Asking before guessing
 - If the user gave a chart type but no data values, ASK rather than invent
   numbers — invented numbers in a script someone runs is worse than a
