@@ -139,6 +139,8 @@ name: kebab-case-slug          # matches filename without .md
 description: One-line summary   # used for recall relevance matching
 metadata:
   type: user | feedback | project | reference
+  node_type: memory             # optional — always "memory" for auto memory
+  originSessionId: "uuid"       # optional — session that created this memory
 ---
 ```
 
