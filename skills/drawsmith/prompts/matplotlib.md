@@ -72,9 +72,13 @@ Output nothing else.
 
 ### Style invariants (don't deviate)
 - Apply the professional rcParams block from `matplotlib-guide.md`.
-- Color palette from `style-guide.md`, not matplotlib defaults. When the user
-  names a target/focus item, give it the IEEE attention-purple `#9673A6`.
+- Color palette from `style-guide.md`, not matplotlib defaults. Default to
+  Nature (2025) journal palette for publication-grade aesthetics. Use
+  petroff10 only when accessibility is the stated priority.
 - Font: Times New Roman (serif) as defined in `style-guide.md`.
+- Title: **omit** `ax.set_title()` by default. For academic papers, the
+  caption belongs in LaTeX/Word, not embedded in the image. Only add a
+  title when the user explicitly requests it (slides, standalone images).
 - Default figure size: 5.5 x 4.1 inches (4:3 ratio). Override per data
   characteristics — see `style-guide.md` §5.3.
 - Don't use `jet` / `rainbow` colormaps. Use `RdBu_r`, `Blues`, or `coolwarm`.
@@ -115,7 +119,8 @@ Output nothing else.
 - Figure size: `(width, height)` in inches — e.g., `(8, 4.5)` for wide, `(5, 5)` for square
 - Color palette: name any palette from `style-guide.md` §1 (Nature, Science, Cell, etc.)
 - Font: Times New Roman (default), Arial/Helvetica, or any system font
-- Axis labels, units, title preference
+- Title: yes (embed in image) or no (default, caption in document)
+- Axis labels, units
 - Output format: `.png` only, `.pdf` only, or both (default)
 
 Honor user overrides. When unspecified, use defaults from `style-guide.md`.

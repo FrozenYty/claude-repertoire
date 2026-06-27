@@ -115,9 +115,10 @@ Users may override any default. Honor these requests:
 |-----------|---------|------------|---------|
 | DPI | n/a | 150/300/600/800/1000/1200 | 600 |
 | Figure size | `pageWidth` x `pageHeight` | `(w, h)` in inches | 5.5x4.1 (4:3) |
-| Color palette | Name from style-guide §1 | Name from style-guide §1 | IEEE / Nature |
+| Color palette | Name from style-guide §1 | Name from style-guide §1 | Nature (2025) |
 | Font | `fontFamily` in XML | Font family string | Times New Roman |
 | Output format | `.drawio` | `.png` + `.pdf` (or one) | Both |
+| Title | n/a | yes / no (embedded in image) | no (caption in document) |
 
 ---
 
