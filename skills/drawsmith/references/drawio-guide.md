@@ -37,11 +37,13 @@ Use draw.io built-in shape styles — do not approximate with rectangles.
 | Concept | Style | When |
 |---------|-------|------|
 | Process / action | `rounded=1;arcSize=8` | Normal step |
-| Decision / branch | `rhombus` | Yes/No split |
-| Start | `ellipse;fillColor=#D5E8D4` | One per diagram |
-| End / terminal | `ellipse;fillColor=#F8CECC` | One per path |
+| Decision / branch | `rhombus;perimeter=rhombusPerimeter` | Yes/No split — perimeter is REQUIRED |
+| Start | `ellipse;fillColor=#D5E8D4;perimeter=ellipsePerimeter` | One per diagram |
+| End / terminal | `ellipse;fillColor=#F8CECC;perimeter=ellipsePerimeter` | One per path |
 | Swimlane | `swimlane;startSize=30` | Cross-functional lanes |
 | Database | `shape=cylinder3` | Persistent storage |
+| Document | `shape=document` | Report, invoice |
+| I/O | `shape=parallelogram;perimeter=parallelogramPerimeter` | External data |
 
 ## Workflow (MANDATORY)
 
@@ -118,6 +120,16 @@ Add explicit `exitX`/`exitY`/`entryX`/`entryY` only when a node has 2+
 connections on the same side — distribute them across the shape
 perimeter. Add `dashed=1` for skip/residual connections. Add `curved=1`
 for feedback loops.
+
+### Edge style variants
+
+| Style | When |
+|-------|------|
+| `edgeStyle=orthogonalEdgeStyle` | Default — 90-degree bends, auto routing |
+| `edgeStyle=elbowEdgeStyle;elbow=horizontal` | Single horizontal jog |
+| `edgeStyle=entityRelationEdgeStyle` | ER diagrams, vertical exit from table |
+| `edgeStyle=segmentEdgeStyle` | Manual segment control |
+| `noEdgeStyle=1` (no edgeStyle key) | Straight line, no routing |
 
 ## Flow Direction (READ FIRST — most common failure mode)
 
@@ -212,24 +224,24 @@ a node center.
 11. **Use native shape types** — process: `rounded=1`, decision: `rhombus`,
     start/end: `ellipse`, DB: `shape=cylinder3`. Never approximate semantic
     shapes with plain rectangles.
-16. **Parent-child for containers** — when a shape belongs inside another
+18. **Parent-child for containers** — when a shape belongs inside another
     (swimlane lane, section group), set `parent="container_id"`. Child
     coordinates are RELATIVE to container top-left. Moving the container
     moves all children automatically.
-17. **Cross-container edges at root** — edges between nodes in different
+19. **Cross-container edges at root** — edges between nodes in different
     containers use `parent="1"` (root level). Otherwise connectors are
     clipped to the source container bounding box.
-18. **Single abstraction level** — a diagram is EITHER high-level overview
+20. **Single abstraction level** — a diagram is EITHER high-level overview
     (7 nodes max) OR detailed drill-down, never both mixed. Use sub-pages
     for detail layers.
-19. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
-16. **I/O direction consistent** — every component uses fixed entry/exit sides. Pick one convention per diagram: top-in-bottom-out (default for layered architectures), left-in-right-out (pipelines). Never mix entry directions on the same component.
-17. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
-18. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
-19. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
-20. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
-21. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
-22. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
+21. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
+18. **I/O direction consistent** — every component uses fixed entry/exit sides. Pick one convention per diagram: top-in-bottom-out (default for layered architectures), left-in-right-out (pipelines). Never mix entry directions on the same component.
+19. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
+20. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
+21. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
+22. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
+23. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
+24. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
 
 ## Section Container Layout
 

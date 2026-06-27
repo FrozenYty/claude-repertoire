@@ -27,7 +27,7 @@ Venn diagram, or comparison layout.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (22 non-negotiable: geometry, IDs, grid alignment, no overlap)
+- Hard rules (24 non-negotiable: geometry, IDs, grid alignment, no overlap)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
 - Common Pitfalls (14 real failures and their fixes)
@@ -68,7 +68,7 @@ line weights, spacing, and user-customizable DPI/size options.
 
 ### Phase 3 — Self-check
 
-Run the 23-item checklist from `drawio-guide.md` Self-Check section. Report
+Run the 21-item checklist from `drawio-guide.md` Self-Check section. Report
 pass/fail for each item. Fix failures before delivering.
 
 ---
@@ -104,7 +104,12 @@ These are NOT optional — every violation causes a real visual bug.
 14. **Parent-child for containers.** Nodes inside a lane/group use
     `parent="container_id"` with coordinates relative to the container origin.
     This eliminates overlap by construction.
-15. **Single abstraction level.** Overview (7 nodes max) OR detail, not both.
+15. **Perimeter on non-rect shapes.** Every `rhombus`, `ellipse`, `triangle`,
+    and `parallelogram` MUST include `perimeter=<type>Perimeter` in the style.
+    Without it, edges attach to the bounding box, not the shape.
+16. **Style string format.** `key=value` pairs, semicolon separated, no spaces
+    around `=` or `;`. Colors: `#RRGGBB`. Booleans: `0`/`1`.
+17. **Single abstraction level.** Overview (7 nodes max) OR detail, not both.
     If the diagram has >7 process nodes, split it into sub-pages.
 
 ---
