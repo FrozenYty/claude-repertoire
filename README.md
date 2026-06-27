@@ -21,5 +21,5 @@ ln -s "$PWD"/claude-repertoire/skills/* ~/.claude/skills/
 
 ## Contribute
 
-Skills follow a shared structure: `SKILL.md`, `README.md`, `CONTRIBUTING.md`,
-`CHANGELOG.md`. See [CONTRIBUTING.md](CONTRIBUTING.md) for the full spec.
+New skills go in `skills/<name>/` and need only a `SKILL.md` to work.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full conventions.
