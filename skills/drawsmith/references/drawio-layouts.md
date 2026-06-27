@@ -33,8 +33,7 @@ see `style-guide.md`.
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
 
-⚠️ = moderate quality degradation risk for hand-written XML
-⚠️ = high risk (consider using draw.io Mermaid import instead)
+⚠️ = quality may degrade for hand-written XML; consider draw.io Mermaid import for complex cases
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction
