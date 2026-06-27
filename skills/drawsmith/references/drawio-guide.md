@@ -131,6 +131,25 @@ for feedback loops.
 | `edgeStyle=segmentEdgeStyle` | Manual segment control |
 | `noEdgeStyle=1` (no edgeStyle key) | Straight line, no routing |
 
+## Grid Coordinate System
+
+Use this rigid grid to eliminate position guessing. Every node at standard
+coordinates prevents overlap structurally.
+
+| Node type | Width | Height | Notes |
+|-----------|-------|--------|-------|
+| Standard process | 140 | 60 | Rounded rect |
+| Wide process | 200 | 60 | For longer labels |
+| Decision (rhombus) | 140 | 80 | Add perimeter=rhombusPerimeter |
+| Start/End ellipse | 60 | 60 | Circle, perimeter=ellipsePerimeter |
+| Database cylinder | 120 | 80 | shape=cylinder3 |
+
+Column formula: x = col_index * 180 + 40 (col 0=40, 1=220, 2=400...)
+Row formula: y = row_index * 120 + 60 (row 0=60, 1=180, 2=300...)
+
+For layered diagrams, each tier = one row. For pipelines, each stage = one column.
+For swimlanes, nodes within a lane share y and increment x.
+
 ## Flow Direction (READ FIRST — most common failure mode)
 
 **ML architecture diagrams flow BOTTOM-TO-TOP by convention.** This is the
@@ -436,9 +455,9 @@ map before they inspect individual components.
 
 ## Arrow Routing (critical — most common source of errors)
 
-**Golden rule: design the layout so arrows are short and direct.** If you find
-yourself adding 3+ waypoints to route around obstacles, the layout is wrong.
-Redesign it.
+**Golden rule: never hand-route.** Declare only `source` and `target` on edges; let the orthogonal routing engine handle the path. Do NOT add waypoints or set `exitX`/`exitY`/`entryX`/`entryY` unless a node has 3+ connections on the same side (then distribute exitY values to avoid overlap). The engine routes better than hand-coded waypoints.
+
+If you find yourself adding 3+ waypoints to route around obstacles, the layout is wrong. Redesign it.
 
 **Tight vertical stacks (preferred):** Place all nodes for one stack
 (Encoder/Decoder) in a single vertical column with 24-30px gaps. Integrate

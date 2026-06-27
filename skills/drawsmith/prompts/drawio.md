@@ -23,6 +23,23 @@ Venn diagram, or comparison layout.
 5. **Node table** — id | label | x | y | w | h
 6. **Edge table** — id | source | target | style
 
+**Pre-generation gate — verify BEFORE writing XML:**
+
+Scan the node and edge tables for these fatal patterns. Any hit means
+the plan is broken — redesign before proceeding to Phase 2.
+
+- [ ] Any edge crossing through a non-source/non-target shape? Redesign.
+- [ ] Any node with 3+ edges on the same side sharing the same exitY?
+  Distribute exitY values evenly across [0,1].
+- [ ] Any two nodes positioned at the exact same coordinates?
+- [ ] Are there >10 edges crossing a single inter-tier gap? Widen it or
+  reduce edges.
+- [ ] For layered diagrams: do all components in the same tier share
+  the same y and height? Do I/O directions match (top-in, bottom-out)?
+
+If the pre-generation gate fails, the generated XML WILL have spaghetti.
+Fix the plan. Only proceed to Phase 2 when all checks pass.
+
 ### Phase 2 — Generate XML
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
@@ -111,6 +128,28 @@ These are NOT optional — every violation causes a real visual bug.
     around `=` or `;`. Colors: `#RRGGBB`. Booleans: `0`/`1`.
 17. **Single abstraction level.** Overview (7 nodes max) OR detail, not both.
     If the diagram has >7 process nodes, split it into sub-pages.
+
+### Coordinate system
+
+Use exact positions — never guess coordinates. Standard node sizes:
+
+| Type | W | H | Grid formula |
+|------|---|---|-------------|
+| Process | 140 | 60 | `x = col * 180 + 40, y = row * 120 + 60` |
+| Decision | 140 | 80 | Same x/y as process |
+| Start/End | 60 | 60 | Same x/y, smaller box |
+| DB cylinder | 120 | 80 | Same x/y |
+
+For layered (multi-tier) diagrams, each tier = one row. For horizontal
+pipelines, each stage = one column.
+
+### Refine before delivering
+
+After generating the XML, run `python scripts/drawio-check.py <file.drawio>`
+to verify no edge crossings, no bounding-box overlap, no color conflicts.
+Fix any issues and re-check until clean. Use `python scripts/matplotlib-check.py <script.py>`
+for matplotlib scripts to catch legend overlap, font sizing, and API misuse
+before running the code.
 
 ---
 

@@ -256,7 +256,29 @@ blocks. Use `plt.close(fig)` after saving.
     own caption system (LaTeX, Word, HTML), omit `ax.set_title(...)` to
     avoid duplication. For standalone images or slides, set the title.
 
-## Self-check (before delivering)
+## Anti-Patterns (API misuse)
+
+14. **Mixing pyplot and OO APIs** — never call `plt.plot()` inside a script
+    that also uses `fig, ax = plt.subplots()`. Use the OO API exclusively:
+    `ax.plot()`, `ax.set_xlabel()`, `fig.savefig()`.
+15. **`plt.show()` before `savefig()`** — `plt.show()` clears the figure.
+    Always `savefig()` first. Never call `plt.show()` in script code.
+16. **Global state (`plt.gca()`, `plt.gcf()`)** — implicit state-machine
+    behavior breaks with multiple figures. Always pass explicit `fig`/`ax`.
+17. **`tight_layout()` vs `constrained_layout`** — prefer
+    `constrained_layout.use = True` in rcParams.
+
+## Hybrid Export (large datasets)
+
+For scatter/contour plots with >10k points, rasterize only the
+data while keeping axes/text as sharp vectors:
+
+```python
+ax.scatter(x, y, s=1, rasterized=True)
+fig.savefig('output.pdf', dpi=300)
+```
+
+## Self-check (before delivering)## Self-check (before delivering)
 
 ```
  1. fonttype 42 set (recommended):              pass/fail
