@@ -27,10 +27,10 @@ Venn diagram, or comparison layout.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (11 non-negotiable: geometry, IDs, grid alignment, no overlap)
+- Hard rules (18 non-negotiable: geometry, IDs, grid alignment, no overlap)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
-- Common Pitfalls (9 real failures and their fixes)
+- Common Pitfalls (13 real failures and their fixes)
 - Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
@@ -68,7 +68,7 @@ line weights, spacing, and user-customizable DPI/size options.
 
 ### Phase 3 — Self-check
 
-Run the 15-item checklist from `drawio-guide.md` Self-Check section. Report
+Run the 20-item checklist from `drawio-guide.md` Self-Check section. Report
 pass/fail for each item. Fix failures before delivering.
 
 ---
@@ -111,4 +111,4 @@ pass/fail for each item. Fix failures before delivering.
 1. Did I check `drawio-layouts.md` — if the request matches a known pattern,
    did I adapt the matching template?
 2. Did I enforce flow direction consistently?
-3. Did I run the 15-item XML self-check from `drawio-guide.md`?
+3. Did I run the 20-item XML self-check from `drawio-guide.md`?

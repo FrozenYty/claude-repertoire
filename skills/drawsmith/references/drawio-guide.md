@@ -184,6 +184,13 @@ a node center.
 9. No `--` in XML comments
 10. **Flow direction consistent** — every forward edge satisfies `source.y > target.y` for TB diagrams or `source.x < target.x` for LR diagrams. If not, the stack is inverted.
 11. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
+12. **I/O direction consistent** — every component uses fixed entry/exit sides. Pick one convention per diagram: top-in-bottom-out (default for layered architectures), left-in-right-out (pipelines). Never mix entry directions on the same component.
+13. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
+14. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
+15. **Grid off for export** — set `grid=0` on `<mxGraphModel>` or set `gridSize=1` with grid color `#f5f5f5`. The grid is an alignment tool, not a visual element. Exported diagrams must not show visible grid lines.
+16. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
+17. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
+18. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
 
 ## Section Container Layout
 
@@ -311,8 +318,70 @@ Don't place small nodes in corridors.
 - Same-tier nodes share Y (LR flow) or X (TB flow), equal size
 - Main flow direction consistent — don't mix LR and TB in one figure
 - No arrow passes through a shape (orthogonal routing helps with this)
-- Max 2 line crossings
+- Max 2 line crossings per edge (use jump-over for unavoidable crosses)
 - 3 lines max per node, 25 chars/line English
+
+## Professional Layout Principles
+
+These rules prevent the most common failures observed in hand-written
+diagrams: edge spaghetti, unbalanced spacing, and invisible semantics.
+
+### Bus-style routing for parallel edges
+
+When 3+ edges travel the same direction between two tiers, merge them
+into a single "bus" channel rather than drawing N independent zigzag
+lines. The bus is a horizontal or vertical corridor through which all
+parallel edges run, branching off only near the source/target component.
+
+Pattern: source nodes → short vertical stub → horizontal bus channel →
+short vertical stub → target nodes. The bus channel sits in the routing
+corridor between tiers, keeping the dense edge region clean.
+
+```xml
+<!-- 4 services each produce to Kafka: all route through a shared bus at y=240 -->
+<mxCell id="e_us_p" style="...exitX=0.5;exitY=1;entryX=0.08;entryY=0" ...>
+  <mxGeometry relative="1" as="geometry">
+    <Array as="points"><mxPoint x="170" y="240"/><mxPoint x="110" y="240"/></Array>
+  </mxGeometry>
+</mxCell>
+```
+
+### Space allocation by density
+
+| Zone | Guidance |
+|------|----------|
+| 10+ edges crossing | gap ≥ 160px |
+| 5-10 edges | gap ≥ 100px |
+| 1-4 edges | gap ≥ 60px |
+| No edges | gap = 30-40px |
+
+Measure the gap, count the edges that cross it, apply the table. Never
+give blank space to a low-density tier while high-density tiers choke.
+
+### I/O direction convention
+
+Every component in a layered diagram uses the SAME entry and exit sides.
+For layered (top-down) diagrams: entry at top, exit at bottom. This lets
+readers identify data flow direction from the arrow-entry side alone.
+
+```
+Good (uniform):                    Bad (chaotic):
+All services take input from top    Service A: input from top
+All services send output to bottom  Service B: input from left
+                                    Service C: output to right
+```
+
+### Component alignment
+
+All components in the same tier share the SAME height and vertical
+center. Horizontal spacing is uniform — use the draw.io Arrange →
+Distribute Horizontally function (or compute `gap = (pageW - N*w)/(N+1)`).
+
+### Tier labels
+
+Add a small grey italic label to the left of each tier (e.g., "Entry",
+"Services", "Infrastructure", "Storage"). This gives the reader a mental
+map before they inspect individual components.
 
 ## Arrow Routing (critical — most common source of errors)
 
@@ -509,6 +578,34 @@ edges vertically so they run as parallel tracks (`exitY=0.35` for forward,
 `exitY=0.65` for reverse). See § Arrow Routing → Bidirectional Edge Pairs
 for the exact pattern.
 
+**10. Edges take scenic detours** — edges route around the outside of the
+diagram with 3-4 unnecessary waypoints when a short direct connection
+exists. Symptom: a produce arrow from a service to a component directly
+below it takes a path that goes up to the tier above, then horizontal,
+then back down — tripling the line length. Fix: every edge should be the
+shortest orthogonal path. If the source and target are vertically aligned,
+route straight down. Only add waypoints to avoid obstacles or distribute
+connections on the same side.
+
+**11. Color reused for unrelated link types** — the same color appears on
+two semantically different connections (e.g., yellow used for both Redis
+cache and database access). Symptom: in a dense region, the reader cannot
+tell whether a yellow line is cache or storage. Fix: assign each link type
+its own color. If you run out of colors, reduce the number of link types
+shown rather than reusing colors.
+
+**12. Space allocated inversely to edge density** — the tier with the most
+crossing edges gets the narrowest gap, while a tier with zero edges gets
+generous whitespace. Symptom: 16 edges packed into a 60px corridor while
+140px of blank space sits unused below. Fix: measure edge count per gap,
+apply the density table from § Professional Layout Principles.
+
+**13. Decorative containers with no legend entry** — dashed boxes or
+colored outlines appear around groups of nodes without any label or legend
+explanation. Symptom: a purple dashed frame overlaps with purple Kafka
+arrows, causing color confusion and adding zero semantic value. Fix: every
+container must have a label and a legend entry, or be removed.
+
 ## Self-Check (output pass/fail for each)
 
 ```
@@ -520,13 +617,18 @@ for the exact pattern.
  6.  All edges have mxGeometry:                 pass/fail
  7.  No out-of-page elements:                   pass/fail
  8.  No unescaped &lt;&gt;&amp; in values:             pass/fail
- 9.  All x/y coords multiples of 10; widths multiples of 10: pass/fail
-10.  No arrows through shapes:                  pass/fail
-11.  Fonts consistent:                          pass/fail
-12.  Flow direction consistent:                 pass/fail
-13.  No double-escaped &amp;amp; in values:          pass/fail
-14.  Multi-connection nodes distributed:         pass/fail
-15.  Bidirectional pairs use parallel tracks:    pass/fail
+ 9.  All x/y coords multiples of 10:            pass/fail
+10.  Fonts consistent:                          pass/fail
+11.  Flow direction consistent:                 pass/fail
+12.  No double-escaped &amp;amp; in values:          pass/fail
+13.  Multi-connection nodes distributed:         pass/fail
+14.  Bidirectional pairs use parallel tracks:    pass/fail
+15.  I/O direction uniform per tier:             pass/fail
+16.  One color per link type (no reuse):         pass/fail
+17.  All containers have legend entries:          pass/fail
+18.  Space allocated by edge density:            pass/fail
+19.  Grid disabled or invisible in export:       pass/fail
+20.  Edges take shortest orthogonal path:        pass/fail
 ```
 
 ---
