@@ -1,17 +1,13 @@
 # Claude Repertoire
 
-A curated collection of Claude Code skills and guides —
-self-contained, well-documented, ready to use.
+A curated collection of Claude Code skills —
+each self-contained and well-documented.
 
 ## What's Inside
 
 **[`skills/`](skills/)** — Each directory is a standalone skill.
 A skill is a folder with a `SKILL.md` that Claude loads dynamically
 to extend its capabilities. Browse the directory, pick what you need.
-
-**[`docs/`](docs/)** — Guides and reference material. The
-[claude-md-guide](docs/claude-md-guide/) is a practical handbook for
-writing effective `CLAUDE.md` behavioral rules.
 
 ## Install
 
