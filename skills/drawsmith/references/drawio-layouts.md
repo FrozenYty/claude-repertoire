@@ -24,16 +24,17 @@ see `style-guide.md`.
 
 | Type | When to use | Section |
 |---|---|---|
-| Flowchart | Decision trees, process flows, algorithm logic | §6 |
+| Flowchart | Decision trees, process flows, algorithm logic | §6 ⚠️ |
 | Entity-Relationship Diagram (ERD) | Database schemas, data models, table relationships | §7 |
-| UML Class Diagram | OOP design, architecture modeling, inheritance hierarchies | §8 |
-| Sequence Diagram | Protocol interactions, API call flows, message passing | §9 |
-| State Machine Diagram | State transitions, formal methods, protocol specifications | §10 |
+| UML Class Diagram | OOP design, architecture modeling, inheritance hierarchies | §8 ⚠️ |
+| Sequence Diagram | Protocol interactions, API call flows, message passing | §9 ⚠️ |
+| State Machine Diagram | State transitions, formal methods, protocol specifications | §10 ⚠️ |
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
 
-⚠️ = known quality limitation (see §17 header)
+⚠️ = moderate quality degradation risk for hand-written XML
+⚠️ = high risk (consider using draw.io Mermaid import instead)
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction
@@ -272,6 +273,11 @@ constant.
 ---
 
 ## §6 Flowchart
+
+> **Quality note:** Hand-written XML for this diagram type can produce
+> arrow spaghetti with complex topologies. The check-refine loop helps but
+> has a hard 3-iteration cap. Keep the diagram as simple as possible —
+> split complex cases across multiple pages.
 
 **When to use:** Decision trees, algorithm logic, process flows, approval
 workflows — any step-by-step branching logic.
