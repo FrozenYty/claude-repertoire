@@ -30,8 +30,10 @@ see `style-guide.md`.
 | Sequence Diagram | Protocol interactions, API call flows, message passing | §9 |
 | State Machine Diagram | State transitions, formal methods, protocol specifications | §10 |
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
-| Swimlane Diagram | Cross-functional process flows, RACI charts | §17 |
+| Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
+
+⚠️ = known quality limitation (see §17 header)
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction
@@ -717,6 +719,13 @@ instead of four quadrants.
 ---
 
 ## §17 Swimlane Diagram
+
+> **Capability note:** Hand-written draw.io XML for swimlanes is inherently
+> error-prone — parent-child nesting, cross-lane edge routing, and lane
+> responsibility logic often produce spaghetti on first attempt. The
+> check-refine loop helps but has a hard 3-iteration cap. For production
+> swimlane diagrams, consider using draw.io's built-in **Arrange → Insert
+> → Advanced → Mermaid** import instead, which auto-layouts perfectly.
 
 **When to use:** Cross-functional process flows, responsibility matrices,
 RACI charts — any process where tasks execute across multiple actors,

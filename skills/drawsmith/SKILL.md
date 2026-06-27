@@ -33,21 +33,18 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 **Decision rules — evaluate in order:**
 
-1. **Is it a process-flow diagram?** (swimlane, flowchart, sequence, ERD,
-   state machine) → Route to **Mermaid**. These diagram types are
-   defined by node relationships and logical flow, not spatial position.
-   Mermaid auto-layout eliminates overlapping arrows and misaligned
-   nodes by construction. → See `prompts/mermaid.md`.
+1. **Is it a conceptual structure with discrete components connected by
+   arrows?** → Route to **draw.io**. Covers: architectures, pipelines,
+   flowcharts, swimlanes, network topologies, ERDs, UML, state machines,
+   timelines, org charts, Venn diagrams, 2x2 matrices. No numerical axes.
+   → Goto **Diagram Workflow** below.
 
-2. **Is it a spatial layout with discrete components?** (architecture,
-   network topology, org chart, Venn, 2x2 matrix, timeline) → Route to
-   **draw.io XML**. These need exact spatial placement. → Goto
-   **Diagram Workflow** below.
+2. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
+   Route to **matplotlib**. Covers: bar charts, line curves, scatter
+   plots, ROC/PR, heatmaps, violin/box, Pareto, etc. → Goto
+   **Chart Workflow** below.
 
-3. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
-   Route to **matplotlib**. → Goto **Chart Workflow** below.
-
-4. **Still ambiguous?** **Ask the user to clarify.**
+3. **Still ambiguous?** **Ask the user to clarify.**
 
 | Feature | draw.io | matplotlib |
 |---------|---------|------------|
@@ -63,24 +60,9 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 | User Intent | Prompt File | Engine |
 |---|---|---|
-| Draw swimlane/flowchart/sequence/ERD/state | `prompts/mermaid.md` | Mermaid → draw.io import |
-| Draw architecture/network/topology/org/Venn | `prompts/drawio.md` | draw.io XML |
+| Draw a conceptual diagram | `prompts/drawio.md` | draw.io |
 | Pick the best chart type for data | `prompts/chart-pick.md` | — (bridge) |
 | Plot a data chart | `prompts/matplotlib.md` | matplotlib |
-
----
-
-## Mermaid Workflow (swimlane/flowchart/sequence/ERD/state)
-
-1. **Read `prompts/mermaid.md`** — generate Mermaid `.mmd` text.
-2. Write the `.mmd` file.
-3. Tell the user how to open it:
-   - **draw.io (recommended)**: Arrange → Insert → Advanced → Mermaid → paste
-     the `.mmd` text. Fully editable, high-resolution export.
-   - **VS Code (quick preview)**: install "Mermaid Preview" extension → open `.mmd`
-     → Alt+D for live preview.
-
-No XML, no coordinates, no fix loop. Mermaid auto-layout handles everything.
 
 ---
 

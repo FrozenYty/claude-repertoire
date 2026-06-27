@@ -6,9 +6,11 @@ diagrams using draw.io XML — equally capable of system architectures, network
 topologies, flowcharts, ERDs, UML, and data-flow diagrams.
 
 ## Task
-Generate a draw.io XML file for any conceptual diagram: architecture, pipeline,
-flowchart, network topology, org chart, timeline, ERD, UML, state machine, DFD,
-Venn diagram, or comparison layout.
+Generate a draw.io XML file for conceptual diagrams. Best at: architecture,
+pipeline, network topology, org chart, timeline, Venn diagram, comparison
+layout — diagrams defined by spatial position. Expected quality degrades
+for swimlanes and complex branching flowcharts (known limitation of
+hand-written XML). Deliver the best output you can within 3 fix iterations.
 
 ---
 
