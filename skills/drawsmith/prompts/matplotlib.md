@@ -107,8 +107,10 @@ Output nothing else.
   the user explicitly requests shared axes or when data ranges are identical.
   When ranges differ (e.g. Hydro 1260 vs Other 101), independent axes prevent
   compression.
-- Set spacing: `fig.get_layout_engine().set(hspace=0.25, wspace=0.25)` for
-  comfortable separation between panels.
+- Spacing: start with constrained_layout defaults. If labels overlap or
+  panels feel tight, add physical padding: `fig.get_layout_engine().set(
+  w_pad=6/72, h_pad=6/72)`. Only use `wspace`/`hspace` (fractional,
+  figure-size-dependent) as a last resort — prefer `w_pad`/`h_pad` (inches).
 - Panel labels OUTSIDE axes (above top-left corner): use
   `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)` with va='bottom'.
   Place labels BEFORE gridlines and data for clean Z-order.
