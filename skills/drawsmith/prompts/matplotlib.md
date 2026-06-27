@@ -118,7 +118,9 @@ Output nothing else.
 - DPI: 150, 300, 600 (default), 800, 1000, 1200
 - Figure size: `(width, height)` in inches — e.g., `(8, 4.5)` for wide, `(5, 5)` for square
 - Color palette: name any palette from `style-guide.md` §1 (Nature, Science, Cell, etc.)
-- Font: Times New Roman (default), Arial/Helvetica, or any system font
+- Font: Times New Roman (default), Arial/Helvetica, or any system font.
+  For Chinese charts, use SimHei (title) + SimSun (body) per GB/T convention.
+  See `style-guide.md` §11 for the cross-platform CJK font fallback chain.
 - Title: yes (embed in image) or no (default, caption in document)
 - Axis labels, units
 - Output format: `.png` only, `.pdf` only, or both (default)

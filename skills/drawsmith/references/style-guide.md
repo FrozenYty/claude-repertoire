@@ -613,3 +613,69 @@ Use for cross-functional flowcharts, BPMN, and process flows.
 
 Node shapes inside a lane use the lane stroke color as their border,
 with white fill for process steps and decision-diamond yellow for branches.
+
+---
+
+## 11. CJK (Chinese) Typography for matplotlib
+
+When the chart contains Chinese text, apply this font configuration.
+For English-only charts, the default Times New Roman serif is used.
+
+### 11.1 Chinese Academic Standard (GB/T 7713 convention)
+
+| Element | Font | English name | Size |
+|---------|------|-------------|------|
+| Chart title | 黑体 | `SimHei` | 12pt |
+| Axis labels / legend | 宋体 | `SimSun` | 9-10pt |
+| Tick labels | 宋体 | `SimSun` | 8-9pt |
+| Annotations / footnotes | 楷体 | `KaiTi` | 8pt |
+| Numbers / English in labels | Times New Roman | `serif` | match parent |
+
+### 11.2 Cross-Platform Font Fallback Chain
+
+```python
+mpl.rcParams.update({
+    "font.sans-serif": [
+        "Noto Sans CJK SC",    # Linux (open-source, preferred)
+        "SimHei",              # Windows 黑体
+        "PingFang SC",         # macOS 苹方
+        "Microsoft YaHei",     # Windows 微软雅黑
+        "Source Han Sans SC",  # 思源黑体 (open-source)
+    ],
+    "axes.unicode_minus": False,  # Prevent minus-sign glyph bug
+})
+```
+
+### 11.3 Per-element Font Selection
+
+For mixed CJK/English charts, use different fonts for different elements:
+
+```python
+# Title in bold 黑体, body labels in 宋体, annotations in 楷体
+ax.set_title("中文图表标题", fontfamily="SimHei", fontsize=12, fontweight="bold")
+ax.set_xlabel("时间", fontfamily="SimSun", fontsize=10)
+ax.set_ylabel("数值", fontfamily="SimSun", fontsize=10)
+ax.annotate("p < 0.01", xy=(...), fontfamily="KaiTi", fontsize=8)
+```
+
+### 11.4 Font Availability Check
+
+Before using a CJK font, verify it is installed:
+
+```python
+from matplotlib.font_manager import FontManager
+fm = FontManager()
+available = {f.name for f in fm.ttflist}
+required = ["SimHei", "SimSun", "KaiTi"]
+missing = [f for f in required if f not in available]
+if missing:
+    print(f"Missing CJK fonts: {missing}. Install or use Noto Sans CJK SC.")
+```
+
+### 11.5 When to Apply
+
+- Chart has any Chinese axis labels, title, or annotation → apply CJK chain.
+- Chart is purely English/numeric → keep Times New Roman default.
+- User requests a specific Chinese font → honor the request.
+- Journal submission → check journal guidelines; most Chinese journals use
+  SimHei (title) + SimSun (body) as the standard.
