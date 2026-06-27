@@ -28,6 +28,7 @@ def parse_drawio(path):
             continue
         if cell.get("vertex") == "1":
             vertices[cid] = {
+                "id": cid,
                 "x": float(geom.get("x", 0)),
                 "y": float(geom.get("y", 0)),
                 "w": float(geom.get("width", 0)),
@@ -51,11 +52,34 @@ def parse_drawio(path):
                 "points": points,
             })
 
+    # Resolve absolute coordinates through parent chain
+    for vid in vertices:
+        v = vertices[vid]
+        px, py = 0.0, 0.0
+        pid = v["parent"]
+        while pid and pid != "1":
+            if pid in vertices:
+                pv = vertices[pid]
+                px += pv["x"]
+                py += pv["y"]
+                pid = pv["parent"]
+            else:
+                break
+        v["x"] += px
+        v["y"] += py
+
+    # Edge waypoints are in root coordinates (parent="1"); no resolution needed
+
     return {"pw": pw, "ph": ph, "vertices": vertices, "edges": edges}
 
 
 def bbox_overlap(a, b):
-    """Check if two bounding boxes overlap."""
+    """Check if two bounding boxes overlap.
+
+    Returns False if shapes are fully separated, or if one fully contains
+    the other (parent-child containment). Also returns False if a parent-
+    child relationship exists (one's parent ID equals the other's ID).
+    """
     ax1, ay1 = a["x"], a["y"]
     ax2, ay2 = a["x"] + a["w"], a["y"] + a["h"]
     bx1, by1 = b["x"], b["y"]
@@ -63,12 +87,15 @@ def bbox_overlap(a, b):
     # Allow edge-touching (exact alignment), only flag true overlap
     if ax2 <= bx1 or bx2 <= ax1 or ay2 <= by1 or by2 <= ay1:
         return False
-    # Check if one is a container for the other (parent-child)
-    # A contains B if B is fully inside A with >=10px padding
-    a_contains_b = (ax1 + 10 <= bx1 and ay1 + 10 <= by1 and
-                    ax2 >= bx2 + 10 and ay2 >= by2 + 10)
-    b_contains_a = (bx1 + 10 <= ax1 and by1 + 10 <= ay1 and
-                    bx2 >= ax2 + 10 and by2 >= ay2 + 10)
+    # Check parent-child relationship by ID
+    if a.get("parent") == b.get("id") or b.get("parent") == a.get("id"):
+        return False
+    # Check if one is a container for the other (no padding requirement
+    # for text/ label elements; just check full containment)
+    a_contains_b = (ax1 <= bx1 and ay1 <= by1 and
+                    ax2 >= bx2 and ay2 >= by2)
+    b_contains_a = (bx1 <= ax1 and by1 <= ay1 and
+                    bx2 >= ax2 and by2 >= ay2)
     if a_contains_b or b_contains_a:
         return False
     return True
@@ -150,12 +177,21 @@ def check(filepath):
             all_segments.append((e["id"], seg))
 
     crossings = []
+    # Build edge adjacency info
+    edge_vertices = {}
+    for e in edges:
+        edge_vertices[e["id"]] = {e["source"], e["target"]}
     for i in range(len(all_segments)):
         for j in range(i + 1, len(all_segments)):
             eid1, (p1, p2) = all_segments[i]
             eid2, (q1, q2) = all_segments[j]
             # Skip segments sharing a source/target (they naturally meet)
             if eid1 == eid2:
+                continue
+            # Skip edges that share any endpoint vertex
+            vset1 = edge_vertices.get(eid1, set())
+            vset2 = edge_vertices.get(eid2, set())
+            if vset1 & vset2:
                 continue
             if line_segments_intersect(p1, p2, q1, q2):
                 crossings.append((eid1, eid2))
@@ -206,7 +242,7 @@ def check(filepath):
         report.append("PASS: No color semantic conflicts detected")
 
     # 5. Multi-connection node check
-    connections_per_side = defaultdict(lambda: defaultdict(list))
+    connections_per_side = defaultdict(list)
     for e in edges:
         style = parse_style(e["style"])
         ex = style.get("exitX", "")
