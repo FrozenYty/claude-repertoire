@@ -107,7 +107,7 @@ Output nothing else.
   the user explicitly requests shared axes or when data ranges are identical.
   When ranges differ (e.g. Hydro 1260 vs Other 101), independent axes prevent
   compression.
-- Set spacing: `fig.get_layout_engine().set(hspace=0.4, wspace=0.4)` for
+- Set spacing: `fig.get_layout_engine().set(hspace=0.25, wspace=0.25)` for
   comfortable separation between panels.
 - Panel labels OUTSIDE axes (above top-left corner): use
   `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)` with va='bottom'.
