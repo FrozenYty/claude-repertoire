@@ -108,9 +108,9 @@ Output nothing else.
   When ranges differ (e.g. Hydro 1260 vs Other 101), independent axes prevent
   compression.
 - Spacing: use constrained_layout defaults. Only increase if labels overlap.
-- Panel labels OUTSIDE axes (above top-left corner): use
-  `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)` with va='bottom'.
-  Place labels BEFORE gridlines and data for clean Z-order.
+- Panel labels OUTSIDE axes: `(a)` format with parentheses. Use
+  `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)`, va='bottom',
+  8pt bold, sans-serif (Nature standard: Helvetica or Arial).
 - Shared colorbar: `fig.colorbar(im, ax=axes.ravel().tolist(), shrink=0.8)`.
 - Grid below data: `ax.set_axisbelow(True)` on every subplot.
 - Figure legend: use `loc='outside right upper'` (matplotlib >=3.7).
