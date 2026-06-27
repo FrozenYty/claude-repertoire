@@ -31,7 +31,7 @@ Venn diagram, or comparison layout.
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
 - Common Pitfalls (13 real failures and their fixes)
-- Self-check checklist (15 items)
+- Self-check checklist (20 items)
 
 **If the request matches a known layout pattern, read
 `references/drawio-layouts.md`.** It contains 18 canonical templates with
@@ -73,28 +73,45 @@ pass/fail for each item. Fix failures before delivering.
 
 ---
 
-## Key Rules (from drawio-guide.md)
+## Key Rules — enforce during generation
 
-1. **Flow direction first.** TB stacks: data flows bottom-to-top,
-   `source.y > target.y` for every forward arrow. LR pipelines:
-   `source.x < target.x`. Don't mix directions in one figure.
-2. **No overlap.** No two vertex bounding boxes intersect (except
-   containers fully enclosing their children with >=10px padding).
-3. **Coords multiples of 10.** All x, y, w multiples of 10.
-4. **Every edge has full mxGeometry.** `<mxGeometry relative="1" as="geometry"/>`.
-5. **Template first.** Check `drawio-layouts.md` before designing from scratch.
+These are NOT optional — every violation causes a real visual bug.
+
+1. **Flow direction first.** TB: `source.y > target.y`. LR: `source.x < target.x`.
+2. **I/O direction uniform per tier.** Every component in the same tier uses the
+   same entry/exit sides (top-in-bottom-out for layered diagrams). Never mix.
+3. **Shortest orthogonal path.** Every edge takes the shortest path. If source
+   and target are vertically aligned, route straight down. Only add waypoints
+   to avoid obstacles or distribute connections on the same side.
+4. **One color per link type.** Each semantic link type gets its own color.
+   Never reuse a color for unrelated connections. If a reader can't tell two
+   yellow lines apart, you've failed.
+5. **No decorative containers.** Every dashed box or outline must have a label
+   and a legend entry. If it has no semantic meaning, don't draw it.
+6. **Space by edge density.** Count edges per inter-tier gap before picking
+   heights: 10+ edges → >=160px, 5-10 → >=100px, 1-4 → >=60px.
+7. **Bidirectional pairs on parallel tracks.** Offset produce/consume arrows
+   (`exitY=0.35` vs `exitY=0.65`) so they don't overlap.
+8. **Jump-over on crossings.** Set `jumpStyle=arc` on `<mxGraphModel>`.
+9. **Grid off for export.** `grid=0` — the grid is a tool, not a visual element.
+10. **No overlap.** Vertex bboxes don't intersect (containers excepted).
+11. **Coords multiples of 10.** All x, y, w, h multiples of 10.
+12. **Every edge has `<mxGeometry relative="1" as="geometry"/>`.**
 
 ---
 
 ## Constraints
 
-- One `.drawio` file per diagram
-- Labels inside containers at top-left (+10, +6 offset)
-- Max 5-6 distinct colors; use IEEE semantic palette from `style-guide.md`
-- Labels <=25 chars/line, <=3 lines per node
-- Write output to `./diagrams/<name>.drawio` in the working directory
-
----
+- One `.drawio` file per diagram.
+- Labels inside containers at top-left (+10, +6 offset from container origin).
+- Use the IEEE semantic palette from `style-guide.md` for color assignments.
+  Aim for 2-3 main colors; max 6 for complex diagrams.
+- Labels <=25 chars per line, <=3 lines per node.
+- Tier labels: add a small grey italic label to the left of each tier
+  (e.g., "Entry", "Services", "Infra").
+- Legend: always include a legend box explaining each color and line style.
+- Every component in a tier shares the same height.
+- Write output to the user-specified path, or `./diagrams/<name>.drawio`.
 
 ## Input
 
@@ -108,7 +125,26 @@ pass/fail for each item. Fix failures before delivering.
 ---
 
 ## Self-Audit (before delivering)
-1. Did I check `drawio-layouts.md` — if the request matches a known pattern,
-   did I adapt the matching template?
-2. Did I enforce flow direction consistently?
-3. Did I run the 20-item XML self-check from `drawio-guide.md`?
+
+For each rule below, inspect the generated XML and confirm it holds. If any
+item fails, fix the XML before saving.
+
+1. **Template first** — if a matching layout exists in `drawio-layouts.md`,
+   was it adapted instead of designing from scratch?
+2. **Flow direction** — every forward edge satisfies `source.y > target.y` (TB)
+   or `source.x < target.x` (LR). No inversions.
+3. **I/O direction uniform** — all components in the same tier use the same
+   entry/exit sides. No component mixes input from top and left.
+4. **Shortest path** — every edge is the shortest orthogonal route. Scan for
+   edges with 3+ waypoints when source and target are vertically/horizontally
+   aligned — those are "scenic detours."
+5. **Color-per-link-type** — each color encodes exactly one semantic role.
+   Scan for the same color used on unrelated connections.
+6. **No decorative containers** — every dashed box/outline has a label and
+   appears in the legend.
+7. **Space by density** — the tier with the most crossing edges has the widest
+   gap. No narrow corridor packed with 10+ edges while blank space sits unused.
+8. **Jump-over enabled** — `jumpStyle=arc` is set on `<mxGraphModel>`.
+9. **Grid invisible** — `grid=0` or grid color is extremely light.
+10. **Legend present** — a legend box explains every color and line style used.
+11. Run the 20-item XML self-check from `drawio-guide.md`.
