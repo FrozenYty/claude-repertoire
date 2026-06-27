@@ -58,26 +58,6 @@ now trigger it.
 
 ### Claude.ai (web / desktop app)
 
-Clone the repo first, then package it:
-
-```bash
-git clone https://github.com/FrozenYty/claude-repertoire.git
-cd claude-repertoire/skills/papersmith
-zip -r papersmith.skill SKILL.md prompts/ references/
-```
-
-The `.skill` file expects `SKILL.md` at the zip root. Verify the layout:
-
-```bash
-unzip -l papersmith.skill | head -5
-# Expected:
-#   SKILL.md
-#   prompts/...
-#   references/...
-```
-
-Upload via **Settings → Capabilities → Skills** in Claude.ai.
-
 ### Manual / one-off use
 
 Even without installing as a skill, you can drop the relevant prompt
