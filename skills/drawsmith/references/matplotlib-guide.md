@@ -413,13 +413,22 @@ fig.get_layout_engine().set(w_pad=0.1, h_pad=0.1, wspace=0.2, hspace=0.2)
 
 ### Panel labels
 
-For academic multi-panel figures, add bold lowercase labels:
+Use `ScaledTranslation` for physical offsets (Nature standard: 8pt bold,
+lowercase, sans-serif). This guarantees consistent placement regardless of
+figure size:
 
 ```python
-for ax, label in zip(axes.flat, ['a', 'b', 'c', 'd']):
-    ax.text(-0.1, 1.1, label, transform=ax.transAxes,
-            fontweight='bold', fontsize=12, va='top')
+import matplotlib.transforms as mtransforms
+
+for label, ax in zip(['a', 'b', 'c', 'd'], axes.flat):
+    trans = mtransforms.ScaledTranslation(8/72, -4/72, fig.dpi_scale_trans)
+    ax.text(0.0, 1.0, label, transform=ax.transAxes + trans,
+            fontsize=8, fontweight='bold', va='top', fontfamily='sans-serif',
+            bbox=dict(facecolor='white', edgecolor='none', pad=2.0))
 ```
+
+Never use raw `ax.text(-0.1, 1.1, ...)` in axes fraction — the offset
+varies with subplot size, causing label misalignment across panels.
 
 ### Colorbar with subplots
 
@@ -484,6 +493,44 @@ leg.set_in_layout(False)
    the constraint engine. Pick one, never mix.
 5. **`subplots_adjust()` with constrained layout** — raises warning,
    layout breaks. Use `get_layout_engine().set()` instead.
+6. **Grid lines over data** — grid defaults to zorder=2, same as markers.
+   Set `ax.set_axisbelow(True)` so grid draws behind all data artists.
+7. **`fig.legend()` without `loc='outside ...'`** — older matplotlib ignores
+   figure-level legends under constrained_layout. Use
+   `fig.legend(loc='outside right upper')` (3.7+) or reserve a legend subplot.
+
+### Dual-axis combo charts
+
+For bar + line overlays with `twinx()`:
+
+```python
+fig, ax1 = plt.subplots(figsize=(8, 4), layout='constrained')
+
+# Bars on left axis — use alpha so line is visible
+ax1.bar(x, bar_data, color='tab:blue', alpha=0.5, label='Revenue (k$)')
+ax1.set_ylabel('Revenue (k$)', color='tab:blue')
+ax1.tick_params(axis='y', labelcolor='tab:blue')
+
+# Line on right axis — color-code axis to match
+ax2 = ax1.twinx()
+ax2.plot(x, line_data, color='tab:orange', marker='o', linewidth=2,
+         label='Margin (%)', zorder=5)
+ax2.set_ylabel('Margin (%)', color='tab:orange')
+ax2.tick_params(axis='y', labelcolor='tab:orange')
+
+# Single combined legend (never ax1.legend() + ax2.legend() separately)
+handles1, labels1 = ax1.get_legend_handles_labels()
+handles2, labels2 = ax2.get_legend_handles_labels()
+ax1.legend(handles1 + handles2, labels1 + labels2, loc='upper left')
+```
+
+Key rules:
+- Color-code Y-axis labels and ticks to match data (blue=left, orange=right).
+- Combine legends into ONE box — two separate `legend()` calls overlap.
+- Set `alpha=0.3-0.5` on bars so the line is visible through bar occlusion.
+- Set `zorder=5` on the line to ensure it draws above bars (both default to 2).
+- Align zero baselines when both datasets start near zero.
+- Do NOT use dual axes for extreme scale differences (1-100 vs 0.0001-0.001).
 
 ---
 
