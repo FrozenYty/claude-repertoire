@@ -1,6 +1,6 @@
 # Papersmith
 
-A Claude Code / Claude.ai skill for academic research writing, paper
+A Claude Code skill for academic research writing, paper
 diagrams, and publication-ready figures. Drop it in, and Claude will
 route paper-related requests through 27 specialist prompts, 15 drawio
 diagram templates, 19 plotting templates, and 8 reference guides.
@@ -55,8 +55,6 @@ You should see `papersmith` in the list. Any paper-related request will
 now trigger it.
 
 **To update:** `cd ~/.claude/skills/papersmith && git pull`
-
-### Claude.ai (web / desktop app)
 
 ### Manual / one-off use
 

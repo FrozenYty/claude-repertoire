@@ -19,10 +19,6 @@ ln -s "$PWD"/claude-repertoire/skills/* ~/.claude/skills/
 The wildcard installs every skill at once. To install individually,
 symlink a single skill directory instead.
 
-For Claude.ai and the API, upload the skill folder directly. See the
-[official skills documentation](https://docs.anthropic.com/en/docs/claude-code/skills)
-for details.
-
 ## How Skills Work
 
 Claude reads `SKILL.md` at the start of every session. The file
