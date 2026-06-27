@@ -112,6 +112,30 @@ def check(path):
             "if the document has its own caption system, omit the title"
         )
 
+    # 11. Subplot colorbar without vmin/vmax
+    has_colorbar = "colorbar(" in code
+    has_multi_axes = "subplots(" in code and "ravel(" in code
+    has_vmin = "vmin=" in code and "vmax=" in code
+    if has_colorbar and has_multi_axes and not has_vmin:
+        warnings.append(
+            "Shared colorbar across subplots without explicit vmin/vmax — "
+            "last-plotted image range determines the colorbar; may be misleading"
+        )
+
+    # 12. tight_layout + constrained_layout conflict
+    if "tight_layout()" in code and "constrained_layout" in code:
+        issues.append(
+            "tight_layout() used with constrained_layout — "
+            "calling tight_layout() permanently disables the constraint engine"
+        )
+
+    # 13. subplots_adjust with constrained_layout
+    if "subplots_adjust(" in code and "constrained_layout" in code:
+        issues.append(
+            "subplots_adjust() used with constrained_layout — "
+            "use fig.get_layout_engine().set() instead"
+        )
+
     # Summary
     print(f"Matplotlib Check: {path}")
     print(f"  Issues: {len(issues)}")

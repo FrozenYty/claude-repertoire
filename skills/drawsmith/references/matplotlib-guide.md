@@ -389,6 +389,104 @@ is optional but recommended for quicker setup.
 
 ---
 
+## Subplots & Composite Charts
+
+Subplots and multi-panel figures are the most error-prone matplotlib pattern.
+Get these right or the entire figure is broken.
+
+### Layout engine
+
+Use the modern `layout='constrained'` parameter (matplotlib >= 3.8):
+
+```python
+fig, axes = plt.subplots(2, 3, figsize=(10, 6), layout='constrained')
+```
+
+Never mix `tight_layout()` with constrained layout — calling
+`tight_layout()` permanently disables the constraint solver. Never call
+`subplots_adjust()` with constrained layout active — use
+`fig.get_layout_engine().set()` instead:
+
+```python
+fig.get_layout_engine().set(w_pad=0.1, h_pad=0.1, wspace=0.2, hspace=0.2)
+```
+
+### Panel labels
+
+For academic multi-panel figures, add bold lowercase labels:
+
+```python
+for ax, label in zip(axes.flat, ['a', 'b', 'c', 'd']):
+    ax.text(-0.1, 1.1, label, transform=ax.transAxes,
+            fontweight='bold', fontsize=12, va='top')
+```
+
+### Colorbar with subplots
+
+Three patterns, ranked by reliability:
+
+**1. Shared colorbar (simplest):**
+
+```python
+fig, axes = plt.subplots(2, 2, layout='constrained')
+for ax in axes.flat:
+    im = ax.pcolormesh(data, vmin=0, vmax=1, cmap='viridis')
+fig.colorbar(im, ax=axes.ravel().tolist(), shrink=0.8)
+```
+
+Always set `vmin`/`vmax` explicitly — without them, the last-plotted
+image's range determines the colorbar, which is misleading.
+
+**2. Individual colorbars (complex):**
+
+```python
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+for ax in axes.flat:
+    im = ax.imshow(data, cmap='viridis')
+    divider = make_axes_locatable(ax)
+    cax = divider.append_axes('right', size='5%', pad=0.1)
+    fig.colorbar(im, cax=cax)
+```
+
+**3. Never pass a regular axes as `cax=`** — this steals the axis space
+and destroys the subplot grid. Always use `make_axes_locatable` or
+`fig.add_axes()`.
+
+### Legend with subplots
+
+Multi-panel figures should use ONE legend, not one per panel:
+
+```python
+handles, labels = axes[0, 0].get_legend_handles_labels()
+fig.legend(handles, labels, loc='upper center',
+           bbox_to_anchor=(0.5, 1.02), ncol=len(labels))
+```
+
+If placing a legend outside an axes with `bbox_to_anchor`, call
+`leg.set_in_layout(False)` so the subplot doesn't shrink:
+
+```python
+leg = ax.legend(loc='center left', bbox_to_anchor=(1.02, 0.5))
+leg.set_in_layout(False)
+```
+
+> Note: `constrained_layout` does not yet handle `Figure.legend()` in
+> matplotlib 3.10. Legends at figure level require manual adjustment.
+
+### Common subplot failures
+
+1. **Colorbar on single axes** — steals space, breaks alignment.
+   Use `fig.colorbar(..., ax=all_axes)` or `make_axes_locatable`.
+2. **Missing `vmin`/`vmax`** — inconsistent color mapping across panels
+   when sharing a colorbar. Always set both explicitly.
+3. **Legend on every panel** — merge into one `fig.legend()`.
+4. **`tight_layout()` after constrained layout** — permanently disables
+   the constraint engine. Pick one, never mix.
+5. **`subplots_adjust()` with constrained layout** — raises warning,
+   layout breaks. Use `get_layout_engine().set()` instead.
+
+---
+
 ## See also
 - `style-guide.md` — color palettes, typefaces, resolution standards shared with draw.io
 - `matplotlib-templates.md` — 19 runnable chart templates
