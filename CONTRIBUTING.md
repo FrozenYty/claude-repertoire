@@ -36,6 +36,37 @@
 | `prompts/` | Prompt templates loaded by the skill |
 | `references/` | Reference docs loaded on demand |
 
+## Commit Messages
+
+Every commit must follow this format:
+
+```
+<type>: <short description>
+
+<optional body — why, not what>
+
+Author: <Your Name>
+```
+
+### Types
+
+| Type | Use |
+|------|-----|
+| `feat` | New skill, major feature, or significant enhancement |
+| `fix` | Bug fix |
+| `docs` | Documentation only |
+| `refactor` | Restructuring without functional change |
+| `style` | Formatting, visual polish, typography |
+| `chore` | Maintenance, repo config, dependency updates |
+
+### Rules
+
+- Subject line: 72 characters max, lowercase after colon, no trailing period.
+- Body: optional, separated by blank line. Explain **why**, not what.
+- `Author:` line is required on every commit.
+- No megacommits — one logical change per commit.
+- Stage files individually (`git add <file>`), never `git add -A`.
+
 ## Pull Request Checklist
 
 - [ ] All documentation in English.
