@@ -15,7 +15,7 @@
 - [Arrow Routing](#arrow-routing-critical----most-common-source-of-errors) — waypoints, diagonals, residuals
 - [Visual Style Guide](#visual-style-guide) — references `style-guide.md` for colors/fonts/weights
 - [Common Pitfalls](#common-pitfalls-real-failures-from-past-generations) — 14 real failures and their fixes
-- [Self-Check](#self-check-output-passfail-for-each) — 19-item output checklist
+- [Self-Check](#self-check-output-passfail-for-each) — 24-item output checklist
 
 ---
 
@@ -704,8 +704,12 @@ XML parser catches this but the fix is to write the entity correctly.
 16.  One color per link type (no reuse):         pass/fail
 17.  All containers have legend entries:          pass/fail
 18.  Space allocated by edge density:            pass/fail
-19.  Grid disabled or invisible in export:       pass/fail
+19.  Grid is user preference (not forced off):     pass/fail
 20.  Edges take shortest orthogonal path:        pass/fail
+21.  Native shape types used (not plain rects):     pass/fail
+22.  Parent-child nesting for containers:           pass/fail
+23.  Cross-container edges at root level:           pass/fail
+24.  Single abstraction level maintained:           pass/fail
 ```
 
 ---

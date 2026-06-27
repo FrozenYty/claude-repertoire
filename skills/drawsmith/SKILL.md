@@ -1,6 +1,6 @@
 ---
 name: drawsmith
-version: 0.1.0
+version: 0.2.0
 description: >
   Professional diagram and chart generation using draw.io and matplotlib.
   Use when the user asks to draw, plot, visualize, diagram, chart, or
@@ -81,7 +81,7 @@ or "illustration", decide which engine to use BEFORE starting work.
 5. **Generate XML** — write the `.drawio` file. Follow all hard rules:
    every vertex has geometry, every edge has `<mxGeometry relative="1"
    as="geometry"/>`, coords multiples of 10, no overlap.
-6. **Self-check** — run the 20-item checklist from `drawio-guide.md`.
+6. **Self-check** — run the 24-item checklist from `drawio-guide.md`.
    Fix failures before delivering.
 
 ---
@@ -124,7 +124,7 @@ Users may override any default. Honor these requests:
 | File | Content | Read when |
 |------|---------|-----------|
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
-| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 20-item self-check | Every draw.io diagram |
+| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 24-item self-check | Every draw.io diagram |
 | `references/drawio-layouts.md` | 18 reusable draw.io layout templates | Matching diagram patterns |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |
 | `references/matplotlib-templates.md` | 19 runnable chart code skeletons | Adapting a known chart type |

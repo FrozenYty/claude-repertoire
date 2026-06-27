@@ -200,4 +200,4 @@ item fails, fix the XML before saving.
 8. **Jump-over enabled** — `jumpStyle=arc` is set on `<mxGraphModel>`.
 9. **Grid invisible** — `grid=0` or grid color is extremely light.
 10. **Legend present** — a legend box explains every color and line style used.
-11. Run the 20-item XML self-check from `drawio-guide.md`.
+11. Run the 24-item XML self-check from `drawio-guide.md`.
