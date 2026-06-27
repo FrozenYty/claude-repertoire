@@ -1,0 +1,274 @@
+---
+name: papersmith
+version: 0.3.6
+description: >
+  This skill should be used when the user asks to "polish my paper",
+  "translate this abstract", "draw a model architecture diagram",
+  "plot experiment results", "write a rebuttal to reviewers",
+  "draft a cover letter", or "analyze experiment data". Covers
+  academic paper writing, polishing, translation (zh↔en), diagramming
+  (draw.io), and publication-quality plotting (matplotlib) for papers,
+  theses, abstracts, cover letters, and rebuttals.
+when_to_use: >
+  User is working on academic papers, theses, or scholarly documents:
+  writing, polishing, translating between Chinese and English, drawing
+  model architecture or pipeline diagrams, creating charts and plots
+  from experiment data, drafting abstracts, titles, cover letters, or
+  rebuttals, responding to reviewers, analyzing experiment results.
+  Venue signals: NeurIPS, ICML, ICLR, CVPR, ICCV, ECCV, ACL, EMNLP,
+  NAACL, AAAI, IJCAI, ACM, IEEE. Lifecycle signals: LaTeX, .tex,
+  camera-ready, revision, accepted, rejected, submission, peer review.
+author: Tianyu Yao
+allowed-tools: Read, Write, Edit, Bash(git:*), Bash(mkdir:*), Bash(ls:*), Bash(cat:*), Bash(head:*), Bash(python:*), Bash(pip:*), Bash(cd:*), Bash(find:*), Glob, Grep, WebSearch, WebFetch, AskUserQuestion, Agent
+---
+
+# Papersmith
+
+Route the user's request to the correct prompt template below. Read the
+matched file in full, then follow its instructions to accomplish the task.
+Do not deviate from the prompt template unless the user explicitly asks.
+
+## Prompt Index
+
+### Translation
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Translate Chinese draft to English LaTeX | Chinese text + LaTeX needed | `prompts/translate-zh-to-en-latex.md` |
+| Translate English LaTeX to plain Chinese | English LaTeX snippet | `prompts/translate-en-to-zh-latex.md` |
+| Translate English to Chinese for Word | English text (for Word) | `prompts/translate-en-to-zh-word.md` |
+| Translate Chinese draft to English for Word | Chinese text (for Word) | `prompts/translate-zh-to-en-word.md` |
+
+### Rewriting & Polishing
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Rewrite fragmented Chinese draft into formal academic prose | Chinese draft (scattered points, colloquial) | `prompts/rewrite-zh-draft.md` |
+| Polish English LaTeX for clarity and rigor | English LaTeX snippet | `prompts/polish-en.md` |
+| Polish Chinese text with minimal intervention | Chinese paragraph (near-final) | `prompts/polish-zh.md` |
+| Polish abstract into the 5-part structure | Current abstract + optional venue limit | `prompts/polish-abstract.md` |
+| Generate 5-10 candidate titles + scoring | Abstract or summary | `prompts/polish-title.md` |
+| Writing templates (7 sections: Introduction, Related Work, Methodology, Experiments, Conclusion, Abstract, General Principles) | — (loaded on demand) | `references/writing-templates.md` |
+
+### Length Adjustment
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Slightly shorten English LaTeX (~5-15 words) | English LaTeX snippet | `prompts/shorten-en.md` |
+| Slightly expand English LaTeX (~5-15 words) | English LaTeX snippet | `prompts/expand-en.md` |
+
+### Quality & Style
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Final consistency and logic check before submission | English LaTeX (near-final) | `prompts/check-logic.md` |
+| Remove AI-generated writing patterns from English LaTeX | English LaTeX snippet | `prompts/humanize-en.md` |
+| Remove machine-translation tone from Chinese text | Chinese paragraph | `prompts/humanize-zh.md` |
+| Chinese and English academic writing anti-patterns (24 patterns, Bad→Rewritten) | — (loaded on demand) | `references/writing-anti-patterns.md` |
+| Rewrite text to avoid plagiarism similarity while preserving meaning | Original text with similarity concerns | `prompts/rewrite-to-avoid-plagiarism.md` |
+
+### Figures & Charts
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Generate a paper diagram (architecture, pipeline, training stages, GNN, diffusion, RAG, etc.) | Methodology description + target conference | `prompts/draw-diagram.md` |
+| Draw.io XML syntax reference | — (loaded on demand) | `references/drawio-reference.md` |
+| Canonical templates (15 total: 4 architecture + 11 layout/classic types) | — (loaded on demand) | `references/drawio-templates.md` |
+| Recommend the best chart type for given data | Experiment data (table/CSV) + conclusion to emphasize | `prompts/recommend-chart.md` |
+| Generate Python plotting code (publication-ready) | Chart type + data + optional target venue | `prompts/plot-figure.md` |
+| Python plotting style reference (rcParams, palettes, conventions) | — (loaded on demand) | `references/plotting-reference.md` |
+| Python plotting templates (19 chart types) | — (loaded on demand) | `references/plotting-templates.md` |
+| Write a figure caption in English | Chinese description of the figure | `prompts/write-figure-caption.md` |
+| Write a table caption in English | Chinese description of the table | `prompts/write-table-caption.md` |
+| Generate a publication-ready LaTeX table from data | CSV/table data + caption description | `prompts/generate-latex-table.md` |
+| CJK font configuration guide for matplotlib figures | — (loaded on demand) | `references/cjk-fonts-guide.md` |
+
+### Analysis & Review
+
+| User Intent | Expected Input | Prompt File |
+|---|---|---|
+| Analyze experiment results and write LaTeX analysis | Experiment data table + key findings | `prompts/analyze-experiments.md` |
+| Simulate a peer review for a paper draft | Paper PDF + target conference name | `prompts/simulate-peer-review.md` |
+| Draft a point-by-point response to reviewers | Reviewer comments + optional list of changes | `prompts/respond-to-reviewers.md` |
+| Draft a 250-400 word cover letter for submission | Title + venue + manuscript summary | `prompts/draft-cover-letter.md` |
+| Write broader impact / ethical considerations statement | Title + abstract + method description + optional venue | `prompts/write-broader-impact.md` |
+| Verify reference list completeness, format, and existence | LaTeX snippet + optional target venue | `prompts/verify-references.md` |
+| Citation format guide (10+ venues, required fields, style files) | — (loaded on demand) | `references/venue-citation-guide.md` |
+
+## Chinese Typography Rules (CRITICAL)
+
+When writing **any Chinese text** — whether in prompts, output format
+descriptions, translations, or inline examples — follow these rules:
+
+1. **Quotation marks**: ALWAYS use full-width Chinese quotation marks `""`
+   (U+201C / U+201D). NEVER use ASCII half-width `""` (U+0022) around or
+   within Chinese text. This is the single most common formatting error.
+2. **Punctuation**: Use Chinese full-width marks throughout: `， 。 ； ：`
+   (not ASCII `, . ; :`). The only exception is when the surrounding
+   paragraph is entirely in English.
+3. **Self-check**: Before finalizing any output containing Chinese, scan
+   for ASCII `"` (0x22) characters adjacent to Chinese text and replace
+   them with full-width `""`.
+
+This rule applies to ALL prompt templates in this toolkit and to any ad-hoc
+Chinese text you generate while assisting the user.
+
+## Routing Rules
+
+1. **Single intent**: If the user's request clearly matches one scenario, read
+   and execute that file only.
+2. **Ambiguous intent**: If the request could match multiple scenarios, ask the
+   user to clarify before proceeding. Present the top 2-3 matches briefly.
+3. **Compound request**: If the user asks for multiple operations (e.g.,
+   "translate this, then polish it"), execute them sequentially in the natural
+   order (translate first, then polish, then check).
+4. **No match**: If no scenario fits, state that clearly and ask what the user
+   intended.
+
+## Iron Rules
+
+These are non-negotiable. Every prompt template in this toolkit inherits
+them. When a rule fires, it takes precedence over anything a prompt says.
+
+1. **IRON RULE — No fabricated content.** Never invent citations, author
+   names, benchmark scores, dataset statistics, or experimental results.
+   If the user hasn't provided a number, don't make one up. Use
+   `{{PLACEHOLDER}}` or ask.
+
+2. **IRON RULE — `pdf.fonttype = 42` always.** Every Python plotting script
+   must set `pdf.fonttype = 42` and `ps.fonttype = 42` in its rcParams.
+   Type-3 fonts fail ACM/IEEE submission. This is the single most common
+   paper rejection at the PDF-check stage.
+
+3. **IRON RULE — Flow direction before drawing.** Every drawio diagram
+   must declare its flow direction before any coordinate is written. ML
+   stacks bottom-to-top (`source.y > target.y`). Pipelines left-to-right
+   (`source.x < target.x`). Inverted stacks are the most common diagram
+   bug.
+
+4. **IRON RULE — Error bars disclosed.** If a chart shows error bars,
+   confidence bands, or significance markers, the caption or figure text
+   must state what they represent (±1 SD, 95% CI, etc.) and over how many
+   runs/seeds. Never show error bars silently.
+
+5. **IRON RULE — No Markdown in Word output.** Any prompt producing
+   Word-bound output must strip all Markdown syntax (`**`, `*`, `###`,
+   backticks). The result must paste cleanly into Word with zero
+   formatting artifacts.
+
+6. **IRON RULE — Full-width Chinese punctuation.** Any Chinese text
+   output must use `""` (U+201C/U+201D) for quotation marks and `，。；：`
+   for punctuation. ASCII `"` adjacent to Chinese text is a hard error.
+
+7. **IRON RULE — Prompt before template.** When a request matches a known
+   diagram or chart type, read the template file from `references/` first.
+   Don't draw from scratch when a canonical layout already exists. Adapt
+   the template; don't guess the coordinates.
+
+## Figure Routing: Diagram vs. Plot (READ FIRST)
+
+When the user asks for a "figure", "diagram", "chart", "plot", "graph",
+or "illustration", decide which path to take BEFORE starting work. The
+wrong choice produces a bar chart in drawio (waste) or a Transformer
+architecture in matplotlib (waste).
+
+**Decision rules — evaluate in order:**
+
+1. **Is it a conceptual structure with discrete components connected by
+   arrows?** → Read `prompts/draw-diagram.md`. This covers: model
+   architectures, training/inference pipelines, RAG pipelines, GNN
+   message-passing, diffusion chains, flowcharts, system overviews,
+   comparison diagrams. No numerical axes needed. Goto § Diagram Workflow
+   below.
+
+2. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
+   Read `prompts/plot-figure.md` (after running `prompts/recommend-chart.md`
+   if the chart type hasn't been chosen yet). This covers: bar charts,
+   line curves, scatter plots, ROC/PR, heatmaps, violin/box, Pareto, etc.
+   Goto § Plotting Workflow below.
+
+3. **Still ambiguous?** (e.g. "visualize my training process" — could be a
+   Python loss curve or a drawio multi-stage pipeline; "compare our
+   methods" — could be a Python bar chart or a drawio comparison table).
+   **Ask the user to clarify.** Present the two interpretations in one
+   sentence each and let them pick. Never silently guess — a diagram and
+   a plot use completely different tools and both take non-trivial time.
+
+**Self-check before proceeding:** did you read one of the two workflow
+sections below? If not, the routing decision was skipped. Pause and
+re-evaluate.
+
+## Diagram Workflow (drawio)
+
+Drawing directly without planning produces overlapping shapes, diagonal
+arrows, broken labels, and inverted stacks. A 30-second layout plan
+eliminates these problems entirely. When routed here from Figure Routing
+(conceptual diagram):
+
+1. **Check templates first** — if the request matches a common architecture
+   (Transformer encoder-decoder, GPT decoder-only, Seq2Seq, CNN classifier,
+   Diffusion forward/reverse, RAG pipeline, multi-stage training, GNN
+   message-passing), read `references/drawio-templates.md` and adapt the
+   matching template. Skip Phase 1 planning when a template fits — the
+   layout math is already done.
+2. **Plan first** (if no template fits) — follow the Phase 1 workflow in
+   `references/drawio-reference.md`. Decide flow direction up front
+   (default bottom-up for ML stacks, left-to-right for pipelines), then
+   determine canvas size, layout zones, node table (in data-flow order),
+   and edge table. Present the plan concisely.
+3. **Generate XML** — write the `.drawio` file to `./diagrams/<name>.drawio` in
+   the working directory. Follow all hard rules: every vertex has geometry,
+   every edge has `<mxGeometry relative="1" as="geometry"/>`, all coords
+   multiples of 10, XML escapes applied, every forward edge has
+   `source.y > target.y` (TB) or `source.x < target.x` (LR).
+4. **Self-check** — verify edges reference existing vertices, no out-of-page
+   elements, no unescaped characters, no inverted stacks (flow direction
+   consistent).
+
+**Key rules enforced by `references/drawio-reference.md`:**
+- **Flow direction**: ML stacks flow bottom-to-top — input at largest y,
+  output at smallest y, arrows always point UP. Inverted stacks are the
+  most common failure mode.
+- Tight vertical stacks preferred — integrate inputs/embeddings into the stack,
+  don't place them far away. This makes all arrows short and direct.
+- Cross-stack horizontal arrows (e.g. encoder→decoder K,V): align Y-centers
+  so the line is straight, no waypoint jogs.
+- Vertical gap 24-30px between stacked modules.
+- Fonts 12-14px for titles, strokeWidth 1.5-2.5, A4 page (827×1169) default.
+
+## Plotting Workflow (Python charts)
+
+Arrive here from § Figure Routing when the user wants data visualization
+(numerical axes). Don't enter this section unless Figure Routing resolved
+to "Python plot."
+
+1. **Pick the chart type** — if the user hasn't specified, route through
+   `prompts/recommend-chart.md` first. The recommend prompt outputs one or
+   two chart types matched to the data.
+2. **Read references** — `references/plotting-reference.md` for rcParams,
+   palettes, sizing, statistical conventions. Then
+   `references/plotting-templates.md` for the matching template (19 chart
+   types, indexed by recommend-chart's numbering).
+3. **Generate code** — follow `prompts/plot-figure.md`. Output one
+   self-contained `.py` file that produces both `.pdf` (vector) and `.png`
+   (600 dpi minimum, venue-adaptive) versions of the figure.
+4. **Self-check** — output the 10-item checklist from
+   `plotting-reference.md` § Self-check, especially `pdf.fonttype = 42`
+   (Type-3 fonts fail ACM/IEEE submission).
+
+**Key rules enforced by `references/plotting-reference.md`:**
+- `pdf.fonttype = 42` always — this is the most-failed paper submission
+  check.
+- Figure size matches the venue (IEEE single-column 3.5", NeurIPS 5.5",
+  Nature 3.5"/7.2"). Don't use matplotlib defaults.
+- Color palette from this file (Nature / Science / Cell / IEEE-semantic).
+  Don't use matplotlib defaults; don't use `jet` / `rainbow`.
+- Error bars / bands MUST be disclosed in the caption — never silent.
+- Title omitted for paper figures (caption is in LaTeX), set for slides.
+
+## Input Handling
+
+Each prompt template expects user input signaled by `{{PLACEHOLDER}}` markers.
+Before executing a prompt, confirm you have the required input from the user.
+If the user already provided the content inline, use it directly. If input is
+missing, ask for it explicitly before proceeding.

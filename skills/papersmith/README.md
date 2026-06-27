@@ -1,0 +1,238 @@
+# Papersmith
+
+A Claude Code / Claude.ai skill for academic research writing, paper
+diagrams, and publication-ready figures. Drop it in, and Claude will
+route paper-related requests through 27 specialist prompts, 15 drawio
+diagram templates, 19 plotting templates, and 8 reference guides.
+
+> 🙏 Built on top of [awesome-ai-research-writing](https://github.com/Leey21/awesome-ai-research-writing) by Leey21. Prompts adapted with gratitude; diagram and plotting reference layers added on top.
+
+> **What it covers:** translation, polishing, abstract / title /
+> cover-letter / rebuttal drafting, peer-review simulation, drawio
+> architecture diagrams (Transformer, Diffusion, RAG, GNN, …), and
+> publication-ready Python plots (bar, line, ROC, heatmap, violin,
+> Pareto, …) with ACM/IEEE-compliant Type-42 font embedding.
+
+## Why this exists
+
+LLMs writing paper diagrams and plots routinely make the same mistakes:
+
+- Transformer figures drawn upside-down (data flows top-down instead of
+  the canonical bottom-up).
+- Cards overlapping because section labels intrude on neighboring
+  containers.
+- PDFs failing ACM/IEEE submission because matplotlib defaults to
+  Type-3 fonts.
+- Abstracts that bury the contribution under three sentences of
+  background.
+- Cover letters that read like AI-generated form mail.
+
+This toolkit encodes the conventions, hard rules, and copy-pasteable
+templates that prevent each of those failures. Most rules are stated
+with their *why* — past failure modes traced into prescriptions you can
+override when the situation warrants.
+
+## Install
+
+### Claude Code (CLI)
+
+```bash
+git clone https://github.com/FrozenYty/claude-repertoire.git
+ln -s $(pwd)/claude-repertoire/skills/papersmith ~/.claude/skills/papersmith
+```
+
+Claude Code auto-discovers skills under `~/.claude/skills/`. On Windows
+(Git Bash / WSL), `~` works the same way; for Command Prompt or
+PowerShell, clone to `%USERPROFILE%\.claude\skills\papersmith` instead.
+
+Restart your session if Claude Code is already running, then verify:
+
+```
+> /skills
+```
+
+You should see `papersmith` in the list. Any paper-related request will
+now trigger it.
+
+**To update:** `cd ~/.claude/skills/papersmith && git pull`
+
+### Claude.ai (web / desktop app)
+
+Clone the repo first, then package it:
+
+```bash
+git clone https://github.com/FrozenYty/claude-repertoire.git
+cd claude-repertoire/skills/papersmith
+zip -r papersmith.skill SKILL.md prompts/ references/
+```
+
+The `.skill` file expects `SKILL.md` at the zip root. Verify the layout:
+
+```bash
+unzip -l papersmith.skill | head -5
+# Expected:
+#   SKILL.md
+#   prompts/...
+#   references/...
+```
+
+Upload via **Settings → Capabilities → Skills** in Claude.ai.
+
+### Manual / one-off use
+
+Even without installing as a skill, you can drop the relevant prompt
+content into a Claude conversation directly. Each prompt is a
+self-contained Markdown file — browse them in
+[`prompts/`](https://github.com/FrozenYty/claude-repertoire/tree/main/skills/papersmith/prompts).
+
+## Quick start
+
+After installing, ordinary conversational requests trigger the toolkit:
+
+**Drawing an architecture figure:**
+> Draw a Transformer encoder-decoder for our translation paper. 6
+> encoder layers, 6 decoder layers.
+
+Claude reads `references/drawio-templates.md` §1, adapts the canonical
+template to your spec, and writes a `.drawio` file ready to open in
+[draw.io](https://app.diagrams.net/).
+
+**Plotting an experiment:**
+> Plot a bar chart comparing 3 methods on 4 metrics, with ±1 SD error
+> bars, IEEE single-column.
+
+Claude reads `references/plotting-templates.md` §I-1, applies the
+publication style block (Type-42 fonts, IEEE palette), and writes a
+self-contained Python script that produces both `.pdf` (vector) and
+`.png` (600 dpi).
+
+**Polishing an abstract:**
+> Polish this abstract for ICML, 250 words max: <abstract text>
+
+Claude routes to `prompts/polish-abstract.md`, restructures into the
+canonical 5-part form (background → gap → method → results → impact),
+trims to budget, and returns the rewrite + a sentence-to-part map.
+
+**Drafting a rebuttal:**
+> Reviewers said: [comments]. Help me draft a response.
+
+Claude routes to `prompts/respond-to-reviewers.md`, produces a
+point-by-point reply with the three response types (concession /
+clarification / disagreement) clearly signaled.
+
+See [`SKILL.md`](SKILL.md) for the full prompt index — 27 prompts in 6
+categories.
+
+## Repository structure
+
+```
+papersmith/
+├── SKILL.md             # entry point — Claude reads this first
+├── README.md            # you are here
+├── CONTRIBUTING.md      # how to add prompts / templates
+├── CHANGELOG.md         # version history
+├── prompts/             # 27 task-specific prompts
+└── references/          # 8 long-form references
+    ├── drawio-reference.md          # rules for architecture diagrams
+    ├── drawio-templates.md          # 15 templates (4 architectures + 11 patterns)
+    ├── plotting-reference.md        # rules for Python plots
+    ├── plotting-templates.md        # 19 chart templates
+    ├── writing-anti-patterns.md     # 24 anti-patterns (12 zh + 12 en)
+    ├── writing-templates.md         # 7 section structure templates
+    ├── venue-citation-guide.md      # 10+ venue citation formats
+    └── cjk-fonts-guide.md           # CJK font setup for matplotlib figures
+```
+
+## What's covered
+
+**Writing tasks** — translate (zh↔en, LaTeX or Word), polish (Chinese,
+English, abstract, title), shorten/expand, humanize, logic-check,
+analyze experiments, simulate peer review, respond to reviewers, draft
+cover letter.
+
+**Architecture diagrams** (drawio XML, 15 templates) — Transformer
+encoder-decoder, Diffusion, RAG pipeline, multi-stage training, plus 11
+layout patterns: vertical stack, horizontal pipeline, center hub,
+side-by-side comparison, grid/table, flowchart, ERD, UML class,
+sequence, state machine, data flow diagram (DFD).
+
+**Charts** (Python / matplotlib) — grouped bar, horizontal bar, Pareto
+front, radar, stacked bar, line + CI band, line + zoomed inset, scatter
++ fit, ROC, PR, heatmap, predicted-vs-true scatter, bubble, violin,
+box, donut, dual y-axis, bar+line combo, faceted grid.
+
+## Design rules baked in
+
+- **Drawio Flow Direction**: ML stacks flow bottom-to-top — input at
+  the largest y, output at the smallest y, every forward edge satisfies
+  `source.y > target.y`. Inverted stacks were the #1 failure mode in
+  early drafts.
+- **Drawio No-Overlap**: vertex bboxes don't intersect (containers +
+  modules excepted with ≥10px padding). Section labels go *inside* the
+  container at top-left, never above.
+- **Plotting `pdf.fonttype = 42`**: enforced everywhere — Type-3 fonts
+  fail ACM/IEEE submission. Verified via PDF stream inspection in the
+  reference example.
+- **Chinese typography**: full-width quotation marks (U+201C/U+201D)
+  and punctuation (， 。 ； ：) throughout any Chinese output.
+
+Full rationale in [`references/drawio-reference.md`](references/drawio-reference.md)
+and [`references/plotting-reference.md`](references/plotting-reference.md).
+
+## Versioning
+
+Semver. See [`CHANGELOG.md`](CHANGELOG.md). Current: **v0.3.6**.
+
+## Contributing
+
+Contributions welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) for the
+conventions — file formats, registration locations, testing guidance.
+
+The big picture: toolkit content is roughly half *prompts* (per-task
+behavior) and half *references* (rules + templates loaded on demand).
+Adding a new prompt shouldn't require editing references; adding a new
+template shouldn't require editing prompts. The structure is designed
+to keep these orthogonal.
+
+## License & Attribution
+
+**No license** — this toolkit mirrors the licensing approach of its primary
+upstream source (see Acknowledgments below).
+
+The prompt templates under `prompts/` are adapted and extended from
+[Leey21/awesome-ai-research-writing](https://github.com/Leey21/awesome-ai-research-writing),
+a Chinese-language collection of academic writing prompts curated from
+researchers at MSRA, ByteDance Seed, Shanghai AI Lab, and several
+universities. The original repository carries no explicit license, so
+this fork maintains the same posture: shared publicly for reference and
+discussion, with the intent to defer to the upstream author's wishes.
+
+**Original components in this repository** (drawio templates, Python
+plotting templates, drawio/plotting reference rules, SKILL.md routing
+structure, and contributing guide) are likewise shared as-is, no
+specific license attached.
+
+If you'd like to use, redistribute, or relicense any part of this work,
+please reach out to the upstream author for the prompts, or open an
+issue here for the original components.
+
+## Acknowledgments
+
+- **Prompt templates adapted from
+  [Leey21/awesome-ai-research-writing](https://github.com/Leey21/awesome-ai-research-writing)** —
+  a community-curated collection of academic writing prompts from
+  researchers at top labs and universities. The `prompts/` directory in
+  this repository builds on those patterns, extending them into a routed
+  skill structure and adding new prompts (cover letter, response to
+  reviewers, polish abstract, polish title, plot figure) along with
+  the diagram and plotting reference layers.
+- Color palettes adapted from Nature, Science, Cell, Nature Physics
+  2025 publication conventions.
+- IEEE semantic palette adapted from the NN-Models drawio library.
+- Style block conventions informed by SciencePlots (`science`, `ieee`,
+  `nature` styles).
+- Skill structure follows the patterns documented in Anthropic's
+  skill-creator framework.
+
+Inspired by, derived from, and indebted to the above. Not affiliated
+with any of them.
