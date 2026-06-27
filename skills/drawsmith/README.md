@@ -41,7 +41,7 @@ diagrams. Colorblind-safe colormaps (viridis, cividis, turbo).
 
 ```bash
 git clone https://github.com/FrozenYty/claude-repertoire.git
-ln -s $(pwd)/claude-repertoire/skills/drawsmith ~/.claude/skills/
+ln -s $(pwd)/claude-repertoire/skills/drawsmith ~/.claude/skills/drawsmith
 ```
 
 ## See Also

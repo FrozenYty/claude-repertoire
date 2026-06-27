@@ -1,5 +1,6 @@
 ---
 name: drawsmith
+version: 0.1.0
 description: Professional diagram and chart generation using draw.io and matplotlib. Use when the user asks to draw, plot, visualize, diagram, chart, or graph anything — architectures, flowcharts, network topologies, UML, ERDs, timelines, org charts, Venn diagrams, bar charts, line plots, scatter plots, heatmaps, or any other conceptual diagram or data chart. Two engines: draw.io for structural diagrams (discrete components + arrows), matplotlib for numerical charts (X/Y axes). Routes automatically based on the request type.
 ---
 

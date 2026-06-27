@@ -41,12 +41,18 @@
 Every commit must follow this format:
 
 ```
-<type>: <short description>
+<type>[(scope)]: <short description>
 
 <optional body — why, not what>
 
 Author: <Your Name>
 ```
+
+Optional `(scope)` identifies the affected skill (e.g., `feat(papersmith):`,
+`fix(drawsmith):`). Omit for repo-wide changes.
+
+Mark breaking changes with `!` after the type: `feat!: ...` or
+`feat(scope)!: ...`.
 
 ### Types
 

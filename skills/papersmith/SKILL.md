@@ -1,6 +1,6 @@
 ---
 name: papersmith
-version: 0.3.6
+version: 0.3.7
 description: >
   This skill should be used when the user asks to "polish my paper",
   "translate this abstract", "draw a model architecture diagram",
