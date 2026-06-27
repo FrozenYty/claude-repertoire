@@ -103,10 +103,15 @@ Output nothing else.
 
 ### Subplot / multi-panel (when user requests subplots)
 
-- Use `sharex='col', sharey='row'` when panels share data ranges.
-- Set spacing: `fig.get_layout_engine().set(hspace=0.3, wspace=0.3)`.
-- Panel labels: use `ScaledTranslation(8/72, -4/72, fig.dpi_scale_trans)`
-  for consistent placement. Never raw `ax.text(-0.1, 1.1, ...)`.
+- Each panel has its OWN axes by default. Only use `sharex`/`sharey` when
+  the user explicitly requests shared axes or when data ranges are identical.
+  When ranges differ (e.g. Hydro 1260 vs Other 101), independent axes prevent
+  compression.
+- Set spacing: `fig.get_layout_engine().set(hspace=0.4, wspace=0.4)` for
+  comfortable separation between panels.
+- Panel labels OUTSIDE axes (above top-left corner): use
+  `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)` with va='bottom'.
+  Place labels BEFORE gridlines and data for clean Z-order.
 - Shared colorbar: `fig.colorbar(im, ax=axes.ravel().tolist(), shrink=0.8)`.
 - Grid below data: `ax.set_axisbelow(True)` on every subplot.
 - Figure legend: use `loc='outside right upper'` (matplotlib >=3.7).

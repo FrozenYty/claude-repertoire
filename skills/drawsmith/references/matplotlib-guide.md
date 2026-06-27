@@ -413,22 +413,22 @@ fig.get_layout_engine().set(w_pad=0.1, h_pad=0.1, wspace=0.2, hspace=0.2)
 
 ### Panel labels
 
-Use `ScaledTranslation` for physical offsets (Nature standard: 8pt bold,
-lowercase, sans-serif). This guarantees consistent placement regardless of
-figure size:
+Use `ScaledTranslation` for physical offsets. Place labels OUTSIDE the
+axes (above top-left corner) to avoid overlapping axis tick labels:
 
 ```python
 import matplotlib.transforms as mtransforms
 
 for label, ax in zip(['a', 'b', 'c', 'd'], axes.flat):
-    trans = mtransforms.ScaledTranslation(8/72, -4/72, fig.dpi_scale_trans)
+    trans = mtransforms.ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)
     ax.text(0.0, 1.0, label, transform=ax.transAxes + trans,
-            fontsize=8, fontweight='bold', va='top', fontfamily='sans-serif',
-            bbox=dict(facecolor='white', edgecolor='none', pad=2.0))
+            fontsize=8, fontweight='bold', va='bottom', fontfamily='sans-serif')
 ```
 
-Never use raw `ax.text(-0.1, 1.1, ...)` in axes fraction — the offset
-varies with subplot size, causing label misalignment across panels.
+- `va='bottom'` anchors text above the axis top edge (no overlap with ticks).
+- Negative x-offset (-15pt) shifts label left to clear the top-right corner.
+- Never use raw `ax.text(-0.1, 1.1, ...)` in axes fraction — the offset
+  varies with subplot size.
 
 ### Colorbar with subplots
 
