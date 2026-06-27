@@ -108,6 +108,8 @@ Output nothing else.
   When ranges differ (e.g. Hydro 1260 vs Other 101), independent axes prevent
   compression.
 - Spacing: use constrained_layout defaults. Only increase if labels overlap.
+- Figure title: when present, set `y=1.06` in `fig.suptitle()` and add
+  `fig.get_layout_engine().set(h_pad=8/72)` for clearance above subplots.
 - Panel labels OUTSIDE axes: `(a)` format with parentheses. Use
   `ScaledTranslation(-15/72, 8/72, fig.dpi_scale_trans)`, va='bottom',
   8pt bold, sans-serif (Nature standard: Helvetica or Arial; use whichever is installed).
