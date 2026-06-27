@@ -687,7 +687,7 @@ g.set_titles("{col_name}")
 g.set_axis_labels("", "Accuracy (%)")
 g.tight_layout()
 g.savefig("fig_facets.pdf")
-fig.savefig("fig_facets.png", dpi=600)
+g.savefig("fig_facets.png", dpi=600)
 ```
 
 **Conventions:** Share y-axis across facets so readers can compare

@@ -24,8 +24,8 @@ symlink a single skill directory instead.
 Claude reads `SKILL.md` at the start of every session. The file
 contains YAML frontmatter — a `name` and `description` that determine
 when the skill triggers — followed by markdown instructions, prompt
-templates, and workflow rules. Supporting files in `prompts/` and
-`references/` are loaded on demand.
+templates, and workflow rules. Supporting files — prompt templates, reference docs, style guides, or
+other resources — are loaded on demand as the skill routes requests.
 
 ## Creating a Skill
 

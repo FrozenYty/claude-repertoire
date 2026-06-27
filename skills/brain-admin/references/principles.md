@@ -12,7 +12,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 2: Simplicity First
+## Rule 6: Simplicity First
 
 **Why:** LLMs have an instinct for over-engineering. Training data is saturated with production-grade code, so models pattern-match "code that solves X" to the most complex version, not the simplest.
 
@@ -20,7 +20,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 3: Surgical Changes
+## Rule 7: Surgical Changes
 
 **Why:** LLMs edit files like a well-meaning houseguest tidying your apartment — they "optimize" nearby formatting, rewrite comments they find unclear, and refactor helper functions in the same file. These drive-by cleanups drown the actual change in noise.
 
@@ -28,7 +28,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 4: Goal-Driven Execution
+## Rule 2: Goal-Driven Execution
 
 **Why:** Vague success criteria produce two symmetric failures: the agent stops too early (delivers something that "looks ready" but fails under scrutiny) or never stops (endlessly polishing because "good enough" is undefined).
 
@@ -36,7 +36,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 5: Language
+## Rule 3: Language
 
 **Why:** LLMs don't know about the chat-vs-file language split, and don't understand CJK typography. They default to English or mix languages inconsistently within the same response. For CJK languages, ASCII quotes adjacent to Chinese characters produce broken typography that looks correct to human eyes but is technically wrong — `""` (U+201C/U+201D) and `""` (U+0022) are visually identical in most editors. The Edit tool will silently fail on a quote-swap because it sees identical rendered characters with different byte representations.
 
@@ -44,7 +44,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 6: Output Workspace
+## Rule 8: Output Workspace
 
 **Why:** LLM sessions produce artifacts — temporary scripts, generated reports, screenshots, logs. Without a designated location, these accumulate in the project root, indistinguishable from permanent source files. The worst case is when artifacts leak into different project subdirectories, each with its own convention. A single workspace-level output directory (`CLAUDE_CODE_FILES/`) with dated session subfolders solves this with minimal cognitive overhead.
 
@@ -52,7 +52,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 7: Cross-Reference Discipline
+## Rule 9: Cross-Reference Discipline
 
 **Why:** LLMs treat tasks as point edits — fix one file, declare success, move on. But projects are graphs of references. When you change X, every file pointing to the old X is now a bug.
 
@@ -62,7 +62,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 8: Generated Artifact Self-Check
+## Rule 10: Generated Artifact Self-Check
 
 **Why:** Agents confidently deliver output that "looks right" but fails under structural review — unclosed tags, missing required attributes, wrong flow direction, unescaped characters. These aren't hidden bugs; they're detectable in ten seconds if you run a checklist.
 
@@ -70,7 +70,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 9: Sub-Agent Dispatch
+## Rule 20: Sub-Agent Dispatch
 
 **Why:** A single agent working sequentially on large tasks hits context limits, loses focus between subtasks, and produces inconsistent output. The key insight is the pre-dispatch question: "Can parts of this run in parallel?" If yes, sequential execution is pure waste. The background-vs-synchronous dispatch distinction also matters: `run_in_background` for independent work you don't need immediately, synchronous parallel dispatch when you need all results to continue. Both are faster than solo.
 
@@ -78,7 +78,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 10: Professional Domain Guardrails
+## Rule 11: Professional Domain Guardrails
 
 **Why:** In regulated professional domains (accounting, law, tax, medicine), a wrong number isn't just a bug — it's liability. LLMs trained as generalists will confidently invent tax rates, cite nonexistent regulations, and produce plausible-but-wrong financial analyses. Without explicit guardrails, the model's default behavior (fill in the blank, sound confident) is exactly the wrong behavior for professional work.
 
@@ -86,7 +86,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 11: Role-Consistent Output
+## Rule 12: Role-Consistent Output
 
 **Why:** Without an explicit persona definition, Claude defaults to a generic helpful-assistant tone. For a professional user (accountant, lawyer, executive), this means explaining basic domain terms they already know, or worse, using casual language in a context that demands professional precision. For a non-technical user, it means jargon-dense responses they can't follow. A defined role constrains both failures.
 
@@ -94,7 +94,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 12: Self-Documenting Configuration
+## Rule 13: Self-Documenting Configuration
 
 **Why:** Most CLAUDE.md files are written once by a technical user and never touched again. Non-technical users who inherit them find opaque instruction blocks they don't understand and therefore ignore. Section comments (the `<!-- PURPOSE -->` pattern), inline rationales ("this rule exists because..."), and copy-pasteable commands turn a black-box config into a self-teaching document.
 
@@ -102,7 +102,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 13: Incremental Delivery with Checkpoints
+## Rule 4: Incremental Delivery with Checkpoints
 
 **Why:** LLMs are single-pass engines — they receive a task, produce output, and stop. Without explicit checkpoints, Claude will complete an entire multi-step task in one run, building each step on the output of the previous. If step 2 was wrong, steps 3-10 are all wrong too — and the user can't intervene until the entire run is complete. Checkpoints turn a one-shot transaction into a collaborative loop.
 
@@ -110,7 +110,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 14: Technical Candor
+## Rule 21: Technical Candor
 
 **Why:** LLMs are trained to be helpful and compliant. In professional contexts, this becomes a liability: Claude will silently implement a technically unsound request rather than push back. The user discovers the problem hours or days later, and the natural question is "why didn't you tell me this was wrong?" Compliance without candor is not helpful — it's harmful.
 
@@ -118,7 +118,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 15: Scaled Communication
+## Rule 5: Scaled Communication
 
 **Why:** LLMs have no native sense of "how much explanation is appropriate." They over-narrate simple tasks ("I will now read the file... I have read the file... I will now edit...") and under-explain complex decisions ("chose approach A" — but why?). The user either drowns in deliberation trace or is left confused about critical tradeoffs. Communication depth should match task complexity: concise for routine, thorough for consequential.
 
@@ -140,7 +140,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 19: Design Token Discipline
+## Rule 15: Design Token Discipline
 
 **Why:** LLMs default to raw visual values (hex colors, magic-number spacing, arbitrary font sizes) because their training data is full of them. But raw values create silent visual drift — two buttons that look "same blue" differ by 3 hex digits, margins that work on one screen break on another. Design tokens (CSS custom properties, spacing scales, typography steps) are the single source of visual truth. This applies beyond UI code — to document formatting, presentation design, and any visual output.
 
@@ -148,7 +148,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 20: Finish the Job
+## Rule 19: Finish the Job
 
 **Why:** LLMs have a "first success" bias — they stop at the minimum output that technically satisfies the request and declare "done." The user then discovers incomplete implementations, unhandled edge cases, and cleanup debris minutes or hours later. The cost isn't just the rework — it's the trust erosion of "why didn't you handle this obvious case?"
 
@@ -156,7 +156,7 @@ Why each rule exists, with real case studies. Edit to add your own case studies 
 
 ---
 
-## Rule 21: Replace, Don't Deprecate
+## Rule 23: Replace, Don't Deprecate
 
 **Why:** LLMs are trained on codebases saturated with `@deprecated` markers, dual-path implementations, and backward-compatibility shims. They pattern-match "add new alongside old" as the safe choice. But every dual path doubles the test surface, creates confusion about which is canonical, and accumulates indefinitely. Removal is the only mechanism that prevents the old code from being accidentally used or maintained.
 

@@ -30,8 +30,8 @@ Venn diagram, or comparison layout.
 - Hard rules (11 non-negotiable: geometry, IDs, grid alignment, no overlap)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
-- Common Pitfalls (7 real failures and their fixes)
-- Self-check checklist (13 items)
+- Common Pitfalls (9 real failures and their fixes)
+- Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
 `references/drawio-layouts.md`.** It contains 18 canonical templates with

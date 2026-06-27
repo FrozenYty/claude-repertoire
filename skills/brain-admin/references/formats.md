@@ -90,7 +90,7 @@ No `paths:` field → rule loads every session like CLAUDE.md.
 
 When auditing `.claude/rules/` files, verify:
 
-- [ ] Every file with `paths:` has valid YAML frontmatter (run `python -c "import yaml; yaml.safe_load(open('file'))"` to verify)
+- [ ] Every file with `paths:` has valid YAML frontmatter (run `python -c "import yaml, sys; yaml.safe_load(open(sys.argv[1]))" <target>` to verify)
 - [ ] `paths:` is an array, not a string (e.g., `paths: ["src/**"]` not `paths: "src/**"`)
 - [ ] `paths:` is not empty (an empty array matches nothing)
 - [ ] Frontmatter has opening and closing `---` delimiters
