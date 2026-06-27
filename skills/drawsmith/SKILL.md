@@ -34,10 +34,10 @@ or "illustration", decide which engine to use BEFORE starting work.
 **Decision rules — evaluate in order:**
 
 1. **Is it a process-flow diagram?** (swimlane, flowchart, sequence, ERD,
-   state machine) → Route to **PlantUML**. These diagram types are
+   state machine) → Route to **Mermaid**. These diagram types are
    defined by node relationships and logical flow, not spatial position.
-   PlantUML auto-layout eliminates overlapping arrows and misaligned
-   nodes by construction. → See `prompts/plantuml.md`.
+   Mermaid auto-layout eliminates overlapping arrows and misaligned
+   nodes by construction. → See `prompts/mermaid.md`.
 
 2. **Is it a spatial layout with discrete components?** (architecture,
    network topology, org chart, Venn, 2x2 matrix, timeline) → Route to
@@ -63,24 +63,24 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 | User Intent | Prompt File | Engine |
 |---|---|---|
-| Draw swimlane/flowchart/sequence/ERD/state | `prompts/plantuml.md` | PlantUML → draw.io import |
+| Draw swimlane/flowchart/sequence/ERD/state | `prompts/mermaid.md` | Mermaid → draw.io import |
 | Draw architecture/network/topology/org/Venn | `prompts/drawio.md` | draw.io XML |
 | Pick the best chart type for data | `prompts/chart-pick.md` | — (bridge) |
 | Plot a data chart | `prompts/matplotlib.md` | matplotlib |
 
 ---
 
-## PlantUML Workflow (swimlane/flowchart/sequence/ERD/state)
+## Mermaid Workflow (swimlane/flowchart/sequence/ERD/state)
 
-1. **Read `prompts/plantuml.md`** — generate PlantUML `.puml` text.
-2. Write the `.puml` file.
+1. **Read `prompts/mermaid.md`** — generate Mermaid `.mmd` text.
+2. Write the `.mmd` file.
 3. Tell the user how to open it:
-   - **draw.io (recommended)**: Arrange → Insert → Advanced → PlantUML → paste
-     the `.puml` text. Fully editable, high-resolution export.
-   - **VS Code (quick preview)**: install "PlantUML" extension → open `.puml`
+   - **draw.io (recommended)**: Arrange → Insert → Advanced → Mermaid → paste
+     the `.mmd` text. Fully editable, high-resolution export.
+   - **VS Code (quick preview)**: install "Mermaid Preview" extension → open `.mmd`
      → Alt+D for live preview.
 
-No XML, no coordinates, no fix loop. PlantUML auto-layout handles everything.
+No XML, no coordinates, no fix loop. Mermaid auto-layout handles everything.
 
 ---
 
