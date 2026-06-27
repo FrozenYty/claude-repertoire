@@ -136,6 +136,40 @@ def check(path):
             "use fig.get_layout_engine().set() instead"
         )
 
+    # 14. Missing set_axisbelow with grid — grid lines may cover data markers
+    has_grid = "grid(" in code or "grid=True" in code or "axes.grid" in code
+    has_axisbelow = "set_axisbelow" in code or "axes.axisbelow" in code
+    if has_grid and not has_axisbelow:
+        warnings.append(
+            "Grid enabled without set_axisbelow(True) — "
+            "grid lines default to zorder=2, same as data markers; may cover points"
+        )
+
+    # 15. twinx() with separate legends — produces overlapping legend boxes
+    if "twinx()" in code or "twinx(" in code:
+        leg_count = len(re.findall(r"\.legend\(", code))
+        if leg_count > 1:
+            warnings.append(
+                "twinx() with separate legend() calls — "
+                "produces overlapping legend boxes. Merge into one combined legend."
+            )
+
+    # 16. Bar + line overlay without alpha on bars
+    if ("twinx()" in code or "twinx(" in code) and ".bar(" in code:
+        if "alpha=" not in code:
+            warnings.append(
+                "Bar chart with twinx() overlay without alpha on bars — "
+                "line may be invisible behind opaque bars. Add alpha=0.3-0.5."
+            )
+
+    # 17. Multi-panel without set_axisbelow
+    has_multi = len(re.findall(r"subplots\(\s*\d+\s*,\s*\d+", code)) > 0
+    if has_multi and not has_axisbelow:
+        warnings.append(
+            "Multi-panel figure without set_axisbelow(True) — "
+            "grid lines will draw on top of data markers in all panels."
+        )
+
     # Summary
     print(f"Matplotlib Check: {path}")
     print(f"  Issues: {len(issues)}")
