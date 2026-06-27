@@ -66,7 +66,7 @@ mpl.rcParams.update({
     "ps.fonttype": 42,
     "savefig.dpi": 600,
     "savefig.bbox": "tight",
-    "savefig.pad_inches": 0.05,
+    "savefig.pad_inches": 0.1,
     # Figure size (single-column paper figure default)
     "figure.figsize": (3.5, 2.6),
     "figure.constrained_layout.use": True,
