@@ -751,8 +751,8 @@ Key points:
 
 ### Lane color palette (official draw.io pastels)
 
-| Role | Lane fill | Lane stroke | Node stroke (inside) |
-|------|-----------|-------------|---------------------|
+| Role | Lane fill | Lane stroke | Node stroke |
+|------|-----------|-------------|-------------|
 | Customer/Client |  |  |  |
 | Internal system |  |  |  |
 | Payment/Finance |  |  |  |
