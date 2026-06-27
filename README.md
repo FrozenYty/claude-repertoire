@@ -1,20 +1,15 @@
 # Claude Repertoire
 
-A curated repertoire of Claude Code skills and guides. One `git clone` gets everything.
+A curated repertoire of Claude Code skills and guides.
 
-## Skills
+## What's Inside
 
-| Skill | Purpose | Install |
-|-------|---------|---------|
-| [papersmith](skills/papersmith/) | Academic paper writing — translate, polish, diagram, review, submit | `ln -s $(pwd)/skills/papersmith ~/.claude/skills/` |
-| [drawsmith](skills/drawsmith/) | Professional diagram & chart generation — draw.io + matplotlib | `ln -s $(pwd)/skills/drawsmith ~/.claude/skills/` |
-| [brain-admin](skills/brain-admin/) | Manage the three-tier CLAUDE.md instruction system | `ln -s $(pwd)/skills/brain-admin ~/.claude/skills/` |
+**[`skills/`](skills/)** — Independently installable Claude Code skills.
+Each has its own `README.md` with feature docs and install instructions.
+Browse the directory to see what's available.
 
-## Docs
-
-| Doc | Description |
-|-----|-------------|
-| [claude-md-guide](docs/claude-md-guide/) | A practical guide to building and using `CLAUDE.md` — nine behavioral rules, three-tier system, real case studies |
+**[`docs/`](docs/)** — Guides and reference material for Claude Code
+workflows and conventions.
 
 ## Quick Install
 
@@ -23,9 +18,17 @@ git clone https://github.com/FrozenYty/claude-repertoire.git ~/claude-repertoire
 ln -s ~/claude-repertoire/skills/* ~/.claude/skills/
 ```
 
+The wildcard `skills/*` picks up every skill automatically —
+add a new skill to the repo, pull, re-link, and it's available.
+
+## Adding a Skill
+
+1. Create `skills/<name>/` with `SKILL.md`, `README.md`, `CONTRIBUTING.md`, `CHANGELOG.md`.
+2. Push. No root-level files need updating — each skill is self-documenting.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for conventions.
+
 ## Philosophy
 
-Each tool works standalone. Together they form a complete Claude Code
-workshop — write papers with papersmith, draw figures with drawsmith,
-and manage project instructions with brain-admin, all guided by the
-claude-md-guide.
+Every tool in this repo is designed to work standalone. Pick the ones
+you need, install them individually, or grab the whole set with one clone.
