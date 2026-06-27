@@ -143,13 +143,11 @@ Use exact positions — never guess coordinates. Standard node sizes:
 For layered (multi-tier) diagrams, each tier = one row. For horizontal
 pipelines, each stage = one column.
 
-### Refine before delivering
+### Refine before delivering (max 3 iterations)
 
-After generating the XML, run `python scripts/drawio-check.py <file.drawio>`
-to verify no edge crossings, no bounding-box overlap, no color conflicts.
-Fix any issues and re-check until clean. Use `python scripts/matplotlib-check.py <script.py>`
-for matplotlib scripts to catch legend overlap, font sizing, and API misuse
-before running the code.
+Run `python scripts/drawio-check.py <file.drawio>`. Fix issues and re-check.
+**Hard limit: 3 iterations.** If issues remain after 3 rounds, deliver with
+a note listing unresolved items. Do NOT loop beyond 3 — cost exceeds value.
 
 ---
 

@@ -33,21 +33,21 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 **Decision rules — evaluate in order:**
 
-1. **Is it a conceptual structure with discrete components connected by
-   arrows?** → Route to **draw.io**. Covers: architectures, pipelines,
-   flowcharts, network topologies, ERDs, UML, state machines, timelines,
-   org charts, Venn diagrams, 2x2 matrices — anything where components
-   are logically arranged and connected. No numerical axes. → Goto
+1. **Is it a process-flow diagram?** (swimlane, flowchart, sequence, ERD,
+   state machine) → Route to **PlantUML**. These diagram types are
+   defined by node relationships and logical flow, not spatial position.
+   PlantUML auto-layout eliminates overlapping arrows and misaligned
+   nodes by construction. → See `prompts/plantuml.md`.
+
+2. **Is it a spatial layout with discrete components?** (architecture,
+   network topology, org chart, Venn, 2x2 matrix, timeline) → Route to
+   **draw.io XML**. These need exact spatial placement. → Goto
    **Diagram Workflow** below.
 
-2. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
-   Route to **matplotlib**. Covers: bar charts, line curves, scatter
-   plots, ROC/PR, heatmaps, violin/box, Pareto, etc. → Goto
-   **Chart Workflow** below.
+3. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
+   Route to **matplotlib**. → Goto **Chart Workflow** below.
 
-3. **Still ambiguous?** (e.g., "visualize my pipeline" — could be a
-   draw.io multi-stage diagram or a matplotlib Gantt chart). **Ask the
-   user to clarify.** Present the two interpretations and let them pick.
+4. **Still ambiguous?** **Ask the user to clarify.**
 
 | Feature | draw.io | matplotlib |
 |---------|---------|------------|
@@ -63,9 +63,22 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 | User Intent | Prompt File | Engine |
 |---|---|---|
-| Draw a conceptual diagram | `prompts/drawio.md` | draw.io |
+| Draw swimlane/flowchart/sequence/ERD/state | `prompts/plantuml.md` | PlantUML → draw.io import |
+| Draw architecture/network/topology/org/Venn | `prompts/drawio.md` | draw.io XML |
 | Pick the best chart type for data | `prompts/chart-pick.md` | — (bridge) |
 | Plot a data chart | `prompts/matplotlib.md` | matplotlib |
+
+---
+
+## PlantUML Workflow (swimlane/flowchart/sequence/ERD/state)
+
+1. **Read `prompts/plantuml.md`** — generate PlantUML `.puml` text.
+2. Write the `.puml` file.
+3. Tell the user how to open it in draw.io:
+   **Arrange → Insert → Advanced → PlantUML → paste the text.**
+   Or use VS Code PlantUML extension for live preview.
+
+No XML, no coordinates, no fix loop. PlantUML auto-layout handles everything.
 
 ---
 
