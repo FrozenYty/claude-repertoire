@@ -74,10 +74,11 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 1. **Read `prompts/plantuml.md`** — generate PlantUML `.puml` text.
 2. Write the `.puml` file.
-3. Tell the user ALL three viewing options:
-   - **draw.io**: Arrange → Insert → Advanced → PlantUML → paste the text
-   - **VS Code**: install "PlantUML" extension → open `.puml` → Alt+D preview
-   - **Online**: paste at [plantuml.com](https://www.plantuml.com)
+3. Tell the user how to open it:
+   - **draw.io (recommended)**: Arrange → Insert → Advanced → PlantUML → paste
+     the `.puml` text. Fully editable, high-resolution export.
+   - **VS Code (quick preview)**: install "PlantUML" extension → open `.puml`
+     → Alt+D for live preview.
 
 No XML, no coordinates, no fix loop. PlantUML auto-layout handles everything.
 

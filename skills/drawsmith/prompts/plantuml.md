@@ -69,9 +69,8 @@ skinparam diamondBorderColor #D6B656
 Write the file to the user-specified path (or `./diagrams/<name>.puml`).
 
 Output a one-paragraph guide:
-- Tell the user they can open the `.puml` file in draw.io: **Arrange → Insert → Advanced → PlantUML → paste the text**
-- Or use the VS Code PlantUML extension for live preview
-- Or paste at [plantuml.com](https://www.plantuml.com)
+- **Recommended**: open in draw.io — **Arrange → Insert → Advanced → PlantUML → paste the `.puml` text**. This gives editable, high-resolution output.
+- **Quick preview**: VS Code PlantUML extension, Alt+D for live render.
 
 ---
 
