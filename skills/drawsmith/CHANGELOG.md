@@ -22,7 +22,7 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ### Changed
 
-- Golden XML examples expanded from 6 to 10 (Section 1-4, 6, 13, 20-23)
+- Complete XML examples: 7 (Section 1-4, 6, 13, 20) (Section 1-4, 6, 13, 20-23)
 - Template count: 19 -> 23
 
 ## [0.3.0] - 2026-07-01
