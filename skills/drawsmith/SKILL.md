@@ -37,10 +37,7 @@ or "illustration", decide which engine to use BEFORE starting work.
    arrows?** -> Route to **draw.io**. Covers: architectures, pipelines,
    flowcharts, swimlanes, network topologies, ERDs, UML, state machines,
    timelines, org charts, Venn diagrams, 2x2 matrices. No numerical axes.
-   -> Goto **Diagram Workflow (draw.io)** below. → Route to **draw.io**. Covers: architectures, pipelines,
-   flowcharts, swimlanes, network topologies, ERDs, UML, state machines,
-   timelines, org charts, Venn diagrams, 2x2 matrices. No numerical axes.
-   → Goto **Diagram Workflow** below.
+   -> Goto **Diagram Workflow (draw.io)** below.
 
 2. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
    Route to **matplotlib**. Covers: bar charts, line curves, scatter
@@ -157,10 +154,11 @@ These are non-negotiable unless marked "recommended."
    what they represent (+/-1 SD, 95% CI, etc.) and over how many runs/
    seeds. Never show error bars silently.
 
-4. **IRON RULE — Template first.** Before designing any diagram or chart
-   from scratch, check whether a canonical template already exists in
-   `drawio-layouts.md` or `matplotlib-templates.md`. Adapt the template;
-   don't guess coordinates or parameters.
+4. **IRON RULE — Template first.** Before writing ANY XML, find the
+   matching template in `drawio-layouts.md`. Copy its Golden XML skeleton.
+   Change labels, keep coordinates. Designing from scratch when a template
+   fits is a HARD ERROR. Same for charts: adapt from `matplotlib-templates.md`;
+   don't guess rcParams or parameters.
 
 5. **IRON RULE — Full-width Chinese punctuation.** Any Chinese text
    output must use `""` (U+201C/U+201D) for quotation marks and `，。；：`

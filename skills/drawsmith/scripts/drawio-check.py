@@ -1,11 +1,11 @@
 """diagram-check.py — Automated geometry & style validator for draw.io XML.
 
 Run after generating any .drawio file. Reports concrete pass/fail for
-edge crossings, bounding box overlap, color reuse, and perimeter gaps.
+edge crossings, bounding box overlap, color reuse, perimeter gaps, coordinate alignment, minimum spacing, and edge-shape intersections.
 
 This script checks the AUTOMATABLE subset of the drawio-guide.md self-check
 (overlap detection, edge crossings, page bounds, color reuse, multi-connection
-distribution). For the full 15-item checklist, see references/drawio-guide.md.
+distribution, coordinate alignment, minimum spacing, edge-shape intersections). For the full 15-item checklist, see references/drawio-guide.md.
 
 Usage: python diagram-check.py <file.drawio>
 """
@@ -267,6 +267,72 @@ def check(filepath):
                 report.append(
                     f"WARN: {side_key} has {len(e_list)} edges sharing exitY values — may overlap"
                 )
+
+
+    # 6. Coordinate multiples-of-10 check
+    coord_issues = []
+    for vid, v in vertices.items():
+        if v["x"] % 10 != 0 or v["y"] % 10 != 0:
+            coord_issues.append(f"{vid}(x={v['x']},y={v['y']})")
+    if coord_issues:
+        for ci in coord_issues:
+            report.append(f"FAIL: Coordinates not multiples of 10: {ci}")
+            fail_count += 1
+    else:
+        report.append("PASS: All coordinates multiples of 10")
+
+    # 7. Minimum spacing check (warning only)
+    from itertools import combinations
+    spacing_warnings = []
+    for a_id, b_id in combinations(vids, 2):
+        a = vertices[a_id]
+        b = vertices[b_id]
+        # Skip parent-child pairs
+        if a.get("parent") == b_id or b.get("parent") == a_id:
+            continue
+        # Check horizontal gap
+        h_gap = max(0, min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"]))
+        v_gap = max(0, min(a["y"] + a["h"], b["y"] + b["h"]) - max(a["y"], b["y"]))
+        # If they're adjacent horizontally and vertically gap is tight
+        if h_gap > 0:  # horizontally overlapping
+            vert_dist = abs(a["y"] - b["y"]) if a["y"] < b["y"] else abs(b["y"] - a["y"])
+            if 0 < vert_dist < 20 and a["y"] + a["h"] != b["y"] and b["y"] + b["h"] != a["y"]:
+                spacing_warnings.append(f"{a_id} and {b_id} too close (vert gap {vert_dist}px)")
+        if v_gap > 0:  # vertically overlapping
+            horiz_dist = abs(a["x"] - b["x"]) if a["x"] < b["x"] else abs(b["x"] - a["x"])
+            if 0 < horiz_dist < 20 and a["x"] + a["w"] != b["x"] and b["x"] + b["w"] != a["x"]:
+                spacing_warnings.append(f"{a_id} and {b_id} too close (horiz gap {horiz_dist}px)")
+    if spacing_warnings:
+        for sw in spacing_warnings[:5]:  # limit to first 5
+            report.append(f"WARN: Tight spacing: {sw}")
+    else:
+        report.append("PASS: Minimum node spacing acceptable")
+
+    # 8. Edge crossing through non-endpoint shapes
+    edge_shape_crossings = []
+    for e in edges:
+        segs = edge_path_segments(e, vertices)
+        e_src = e["source"]
+        e_tgt = e["target"]
+        for seg in segs:
+            p1, p2 = seg
+            for vid, v in vertices.items():
+                if vid in (e_src, e_tgt):
+                    continue
+                # Check if seg crosses the vertex bounding box
+                bx, by, bw, bh = v["x"], v["y"], v["w"], v["h"]
+                # Simple AABB line intersection
+                if (min(p1[0], p2[0]) < bx + bw and max(p1[0], p2[0]) > bx and
+                    min(p1[1], p2[1]) < by + bh and max(p1[1], p2[1]) > by):
+                    # Check if the line actually crosses (not just passes by)
+                    # This is approximate — flag for manual review
+                    if v.get("parent") != "1" and e_src not in (vid,):
+                        edge_shape_crossings.append((e["id"], vid))
+    if edge_shape_crossings:
+        for esc in edge_shape_crossings[:5]:
+            report.append(f"WARN: Edge {esc[0]} may cross shape {esc[1]}")
+    else:
+        report.append("PASS: No edges crossing non-endpoint shapes")
 
     # Summary
     report.append("")

@@ -80,9 +80,13 @@ waypoints. Every edge satisfies `source.y > target.y` (arrows go UP).
 **To adapt:** change node count, labels, and the flow direction comment.
 Shift all `y` values by the same offset to move the stack up or down.
 
+**Golden XML example (6-layer stack, bottom-up data flow):**
 
 
----
+
+**Key patterns:** same x/w (centered column), y=row*80+140, bottom-to-top flow.
+
+
 
 ## §2 Horizontal pipeline (LR)
 
@@ -117,7 +121,30 @@ Data-source → stage edges: d1 → s1 (↑), d3 → s3 (↑), d5 → s5 (↑).
 
 **To adapt:** add/remove stages, rename labels, change data-source box
 labels to match your pipeline's artifacts. Keep `x` spacing uniform:
-`gap = (pageWidth - n * w) / (n + 1)` for n equally-spaced stages.
+`gap = (pageWidth - n * w) / (n + 1)` for n equally-
+
+**Golden XML example (5-stage pipeline, left-to-right flow):**
+
+```xml
+<mxGraphModel dx="1200" dy="500" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="300" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <mxCell id="s1" value="Stage 1 &lt;br&gt;&lt;b&gt;Ingest&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="30" y="100" width="170" height="60" as="geometry"/></mxCell>
+    <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="s1" target="s2"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="s2" value="Stage 2 &lt;br&gt;&lt;b&gt;Process&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="240" y="100" width="170" height="60" as="geometry"/></mxCell>
+    <mxCell id="e23" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="s2" target="s3"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="s3" value="Stage 3 &lt;br&gt;&lt;b&gt;Validate&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="450" y="100" width="170" height="60" as="geometry"/></mxCell>
+    <mxCell id="e34" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="s3" target="s4"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="s4" value="Stage 4 &lt;br&gt;&lt;b&gt;Export&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="660" y="100" width="170" height="60" as="geometry"/></mxCell>
+    <mxCell id="e45" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="s4" target="s5"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="s5" value="Stage 5 &lt;br&gt;&lt;b&gt;Archive&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="870" y="100" width="170" height="60" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
+
+**Key patterns:** same y/h per stage, x=col*210+30, left-to-right flow.
+
+spaced stages.
 
 
 
@@ -162,7 +189,30 @@ All edges are direct `exitX=0.5;exitY=1` or `exitX=1;exitY=0.5` etc.
 No waypoints needed because satellites are axis-aligned with the hub.
 
 **To adapt:** change hub and satellite labels, add corner satellites
-at (40, 60), (560, 60), (560, 460), (40, 460) for an 8-node star.
+at (40, 60), (560, 60), (560
+
+**Golden XML example (hub + 4 satellites, star topology):**
+
+```xml
+<mxGraphModel dx="1000" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="750" pageHeight="600" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <mxCell id="hub" value="&lt;b&gt;System Core&lt;/b&gt;&lt;br&gt;Orchestrator" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=2;fontFamily=Times New Roman;fontStyle=0;fontSize=13;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="255" y="230" width="240" height="100" as="geometry"/></mxCell>
+    <mxCell id="sat_input" value="&lt;b&gt;Input Adapter&lt;/b&gt;&lt;br&gt;Data Ingestion" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="255" y="60" width="240" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_in" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="sat_input" target="hub"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="sat_output" value="&lt;b&gt;Output&lt;/b&gt;&lt;br&gt;API Gateway" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="560" y="250" width="150" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="hub" target="sat_output"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="sat_storage" value="&lt;b&gt;Storage&lt;/b&gt;&lt;br&gt;Persistent Layer" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="255" y="460" width="240" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_sto" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="hub" target="sat_storage"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="sat_control" value="&lt;b&gt;Control&lt;/b&gt;&lt;br&gt;Management API" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="250" width="150" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_ctrl" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="sat_control" target="hub"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
+
+**Key patterns:** hub centered with strokeWidth=2, 4 axis-aligned satellites, no waypoints.
+
+, 460), (40, 460) for an 8-node star.
 
 
 
@@ -207,7 +257,36 @@ Separator: a vertical edge at x=450 from y=90 to y=540, `endArrow=none`,
 `dashed=1;dashPattern=12 6;strokeColor=#AAAAAA;strokeWidth=1`.
 
 **To adapt:** change element count (add/remove pairs with corresponding
-Y shifts), rename labels, optionally use different fill colors for
+Y shifts), rename labels, op
+
+**Golden XML example (4-element comparison, Method A vs B):**
+
+```xml
+<mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="650" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <mxCell id="hdr_a" value="&lt;b&gt;Method A&lt;/b&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=13;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="40" width="320" height="40" as="geometry"/></mxCell>
+    <mxCell id="hdr_b" value="&lt;b&gt;Method B&lt;/b&gt;" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=13;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="540" y="40" width="320" height="40" as="geometry"/></mxCell>
+    <mxCell id="sep" style="endArrow=none;dashed=1;dashPattern=12 6;strokeColor=#AAAAAA;strokeWidth=1" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="450" y="80" as="sourcePoint"/><mxPoint x="450" y="600" as="targetPoint"/></mxGeometry></mxCell>
+    <mxCell id="a1" value="Element A-1 &lt;br&gt;Description" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="120" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="b1" value="Element B-1 &lt;br&gt;Description" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="540" y="120" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="m1" style="endArrow=none;dashed=1;dashPattern=8 4;strokeColor=#AAAAAA;strokeWidth=1" edge="1" parent="1" source="a1" target="b1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="a2" value="Element A-2" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="230" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="b2" value="Element B-2" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="540" y="230" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="m2" style="endArrow=none;dashed=1;dashPattern=8 4;strokeColor=#AAAAAA;strokeWidth=1" edge="1" parent="1" source="a2" target="b2"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="a3" value="Element A-3" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="340" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="b3" value="Element B-3" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="540" y="340" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="m3" style="endArrow=none;dashed=1;dashPattern=8 4;strokeColor=#AAAAAA;strokeWidth=1" edge="1" parent="1" source="a3" target="b3"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="a4" value="Element A-4" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="40" y="450" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="b4" value="Element B-4" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F5F5F5;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="540" y="450" width="320" height="70" as="geometry"/></mxCell>
+    <mxCell id="m4" style="endArrow=none;dashed=1;dashPattern=8 4;strokeColor=#AAAAAA;strokeWidth=1" edge="1" parent="1" source="a4" target="b4"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
+
+**Key patterns:** paired elements share y-position, mapping edges (no arrowhead), separator line down middle.
+
+tionally use different fill colors for
 column A vs column B.
 
 
