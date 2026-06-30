@@ -57,26 +57,6 @@ or "illustration", decide which engine to use BEFORE starting work.
 | Bar / line / scatter / heatmap | No | Yes |
 | Output format | `.drawio` | `.py` (produces `.png` + `.pdf`) |
 
-### MCP Enhancement (recommended)
-
-For the best draw.io experience, install the official
-[drawio-mcp](https://github.com/jgraph/drawio-mcp) server.
-It provides two tools that this skill will automatically use when available:
-
-- **`search_shapes`** — search 10,000+ icons (AWS, Azure, GCP, Cisco,
-  Kubernetes, etc.) by keyword. Returns exact style strings.
-- **`create_diagram`** with `routing: "libavoid"` — obstacle-avoiding
-  orthogonal edge routing. No hand-routing needed for dense diagrams.
-
-```bash
-# In Claude Code, run two commands:
-/plugin marketplace add jgraph/drawio-mcp
-/plugin install drawio@drawio
-```
-
-When drawio-mcp is connected, this skill automatically switches to the MCP
-path (Tier 1). Without it, proven manual routing rules handle every case
-(Tier 2). Both produce identical visual results — MCP just skips the math.
 
 ---
 
@@ -102,12 +82,10 @@ path (Tier 1). Without it, proven manual routing rules handle every case
    routing, container layout, self-check.
 4. **Read `references/style-guide.md`** — colors (IEEE palette for
    technical diagrams), fonts, line weights, spacing.
-5. **Generate XML** — write the `.drawio` file.
-   - If MCP available: use `create_diagram` with `routing: "libavoid"`
-     for dense diagrams. Use `search_shapes` for cloud/network icons.
-   - If MCP unavailable: place nodes on exact grid, hand-route edges
-     where needed (see `drawio-guide.md` Arrow Routing Tier 2).
-   Follow all hard rules from `drawio-guide.md`:
+5. **Generate XML** — write the `.drawio` file. Place nodes on exact grid
+   (col*180+40, row*120+40, coords multiples of 10). Hand-route edges
+   where needed (exitY distribution, waypoints — see `drawio-guide.md`
+   Arrow Routing). Follow all hard rules from `drawio-guide.md`:
    every vertex has geometry, every edge has `<mxGeometry relative="1"
    as="geometry"/>`, rough grid placement, no overlap.
 6. **Self-check** — run the 15-item checklist from `drawio-guide.md`.

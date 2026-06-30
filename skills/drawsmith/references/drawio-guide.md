@@ -286,8 +286,7 @@ a node center.
 6. Use the rigid grid for placement: column x = col_index * 180 + 40,
    row y = row_index * 120 + 40. All coordinates MUST be multiples of 10.
    Node sizes: rectangles 140x60, diamonds 140x80, circles 60x60, documents
-   120x80, cylinders 100x70. When MCP is available the router handles fine
-   alignment; without MCP, exact grid placement prevents overlap by construction.
+   120x80, cylinders 100x70. Exact grid placement prevents overlap by construction.
 7. All elements within page bounds (x+w ≤ pageWidth, y+h ≤ pageHeight)
 8. Uncompressed XML only (no `compressed="true"`)
 9. No `--` in XML comments
@@ -564,26 +563,11 @@ Add a small grey italic label to the left of each tier (e.g., "Entry",
 "Services", "Infrastructure", "Storage"). This gives the reader a mental
 map before they inspect individual components.
 
-## Arrow Routing (two-tier: MCP preferred, manual fallback)
+## Arrow Routing
 
-### Tier 1 — MCP available (preferred)
-
-When the user has drawio-mcp connected, use the `create_diagram` tool
-with `routing: "libavoid"` or `postLayout: "elk"`:
-
-| Pass | What it does | When to use |
-|------|-------------|-------------|
-| `routing: "libavoid"` | Keeps vertex positions, re-routes edges orthogonally around shapes | Architecture, network topology, deployment |
-| `postLayout: "elk"` | Full re-layout: vertices + edges repositioned hierarchically | Flowcharts, process/state diagrams, decision flows |
-
-With MCP, just declare `source`/`target` on each edge. The router handles the rest.
-Do NOT add waypoints or exitX/exitY.
-
-### Tier 2 — Manual routing (MCP unavailable)
-
-When MCP is not available, draw.io's built-in router only does simple
-straight/right-angle lines with NO obstacle avoidance. Hand-route edges
-using the rules below, refined through real production use.
+draw.io's built-in router only does simple straight/right-angle lines with
+NO obstacle avoidance. Hand-route edges using the rules below, refined
+through real production use.
 
 **Edge style (always choose one, consistent per diagram):**
 
