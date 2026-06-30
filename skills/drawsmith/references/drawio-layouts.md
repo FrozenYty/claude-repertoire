@@ -390,6 +390,49 @@ workflows — any step-by-step branching logic.
 edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5
 ```
 
+
+**Golden XML example (3-step with decision, Yes/No branches):**
+
+```xml
+<mxGraphModel dx="900" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="650" pageHeight="1000" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <!-- Start -->
+    <mxCell id="start" value="Start" style="ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="225" y="30" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_start_p1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="start" target="p1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Process: Read Input -->
+    <mxCell id="p1" value="Read Input" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="225" y="170" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_p1_dec" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="p1" target="dec"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Decision: Valid? -->
+    <mxCell id="dec" value="Valid?" style="rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=rhombusPerimeter;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="250" y="300" width="150" height="80" as="geometry"/></mxCell>
+    <!-- Yes branch (right side) -->
+    <mxCell id="e_dec_yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="dec" target="p2" value="Yes"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- No branch (left side) -->
+    <mxCell id="e_dec_no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="dec" target="p3" value="No"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Process: Process Data (Yes path) -->
+    <mxCell id="p2" value="Process Data" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="460" y="460" width="200" height="60" as="geometry"/></mxCell>
+    <!-- Process: Fix & Retry (No path) -->
+    <mxCell id="p3" value="Fix &amp; Retry" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="50" y="460" width="200" height="60" as="geometry"/></mxCell>
+    <!-- Rejoin to Output -->
+    <mxCell id="e_p2_out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="p2" target="out"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="e_p3_out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="p3" target="out"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Output Result -->
+    <mxCell id="out" value="Output Result" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="225" y="600" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_out_end" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="out" target="end"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- End -->
+    <mxCell id="end" value="End" style="ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="275" y="720" width="100" height="50" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
+
+**Key patterns to copy:**
+- Spine nodes (start/p1/dec/out/end) centered at x=225-275
+- Decision rhombus at center, Yes branch goes RIGHT, No branch goes LEFT
+- Both branches rejoin at the output node
+- Edge labels "Yes"/"No" set via `value` attribute on edge
+- `perimeter=rhombusPerimeter` and `perimeter=ellipsePerimeter` required for non-rect shapes
+
+
 **Example node table** (3-step process with one decision):
 
 ```

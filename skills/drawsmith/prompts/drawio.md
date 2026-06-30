@@ -28,6 +28,14 @@ Designing coordinates from scratch when a template exists is a HARD ERROR.
    (x/y/w/h coordinates) as-is.
 3. Only design from scratch if NO template matches.
 
+**Before proceeding to XML generation, output this confirmation line:**
+`TEMPLATE: <section> | CHANGES: <list what differs from golden XML>`
+
+Example: `TEMPLATE: Section 1 | CHANGES: renamed layers to OSI, added Layer 6, changed input color to attention`
+If no template matches: `TEMPLATE: none | DESIGN: from scratch, <flow direction>, <node count>`
+
+This confirmation proves you read the template. Do NOT skip it.
+
 ### Diagram type - flowchart | architecture | pipeline | network | ERD | UML | swimlane | timeline | org-chart | comparison | venn | other
 3. **Actors / stages** - who or what (one word each, e.g. "User, API, DB, Cache")
 4. **Grouping** - swimlanes? containers? none?

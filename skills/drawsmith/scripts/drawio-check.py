@@ -5,7 +5,9 @@ edge crossings, bounding box overlap, color reuse, perimeter gaps, coordinate al
 
 This script checks the AUTOMATABLE subset of the drawio-guide.md self-check
 (overlap detection, edge crossings, page bounds, color reuse, multi-connection
-distribution, coordinate alignment, minimum spacing, edge-shape intersections). For the full 15-item checklist, see references/drawio-guide.md.
+distribution, coordinate alignment, minimum spacing, edge-shape intersections,
+edge reference validity, ID uniqueness, XML structure, font/edge consistency,
+legend presence, html=1 requirements, container child coordinates). For the full 15-item checklist, see references/drawio-guide.md.
 
 Usage: python diagram-check.py <file.drawio>
 """
@@ -333,6 +335,129 @@ def check(filepath):
             report.append(f"WARN: Edge {esc[0]} may cross shape {esc[1]}")
     else:
         report.append("PASS: No edges crossing non-endpoint shapes")
+
+
+    # 9. Edge source/target reference validation (Hard Rule 4)
+    edge_ref_issues = []
+    vertex_ids = set(vertices.keys())
+    for e in edges:
+        if e["source"] not in vertex_ids:
+            edge_ref_issues.append(f"{e['id']}: source '{e['source']}' not found")
+        if e["target"] not in vertex_ids:
+            edge_ref_issues.append(f"{e['id']}: target '{e['target']}' not found")
+    if edge_ref_issues:
+        for er in edge_ref_issues:
+            report.append(f"FAIL: Edge ref invalid: {er}")
+            fail_count += 1
+    else:
+        report.append("PASS: All edge references valid")
+
+    # 10. Duplicate ID check (Hard Rule 5)
+    seen_ids = {}
+    all_cells = []
+    for e in edges:
+        all_cells.append(("edge", e["id"]))
+    for vid in vertices:
+        all_cells.append(("vertex", vid))
+    dup_issues = []
+    for cell_type, cid in all_cells:
+        if cid in seen_ids:
+            dup_issues.append(f"{cid} (first as {seen_ids[cid]}, then as {cell_type})")
+        else:
+            seen_ids[cid] = cell_type
+    if dup_issues:
+        for di in dup_issues:
+            report.append(f"FAIL: Duplicate ID: {di}")
+            fail_count += 1
+    else:
+        report.append("PASS: All IDs unique")
+
+    # 11. XML structure validation (Hard Rules 1-3)
+    # Verify id="0" and id="1" exist as root/structure cells
+    tree2 = ET.parse(filepath)
+    all_ids = {c.get("id") for c in tree2.getroot().iter("mxCell")}
+    if "0" not in all_ids:
+        report.append("FAIL: Missing cell id=0 (root)")
+        fail_count += 1
+    elif "1" not in all_ids:
+        report.append("FAIL: Missing cell id=1 (default layer)")
+        fail_count += 1
+    else:
+        report.append("PASS: Root cells id=0/1 present")
+    # 12. Font consistency check
+    fonts_used = set()
+    for vid, v in vertices.items():
+        style = parse_style(v["style"])
+        ff = style.get("fontFamily", "")
+        if ff:
+            fonts_used.add(ff)
+    if len(fonts_used) > 1:
+        report.append(f"WARN: Multiple fonts used: {fonts_used}")
+    elif len(fonts_used) == 1:
+        report.append(f"PASS: Consistent font ({list(fonts_used)[0]})")
+    else:
+        report.append("PASS: No font declarations (will use app default)")
+
+    # 13. Edge style consistency check
+    edge_styles_used = set()
+    for e in edges:
+        style = parse_style(e["style"])
+        es = style.get("edgeStyle", "none")
+        edge_styles_used.add(es)
+    if len(edge_styles_used) > 1:
+        report.append(f"WARN: Multiple edge styles used: {edge_styles_used}")
+    else:
+        report.append(f"PASS: Consistent edge style ({list(edge_styles_used)[0]})")
+
+    # 14. Legend presence check (warn if >3 colors, no legend-like node)
+    colors_in_use = set()
+    for vid, v in vertices.items():
+        style = parse_style(v["style"])
+        sc = style.get("strokeColor", "")
+        if sc and sc not in ("none", "default", "#000000"):
+            colors_in_use.add(sc)
+    has_legend = any("legend" in v.get("value", "").lower() or
+                     "legend" in v.get("id", "").lower()
+                     for v in vertices.values())
+    if len(colors_in_use) > 3 and not has_legend:
+        report.append(f"WARN: {len(colors_in_use)} colors used, no legend node detected")
+    else:
+        report.append("PASS: Legend check OK")
+
+
+    # 15. html=1 check on cells with HTML tags in value
+    html_issues = []
+    tree3 = ET.parse(filepath)
+    for cell in tree3.getroot().iter("mxCell"):
+        value = cell.get("value", "")
+        style = cell.get("style", "")
+        if value and ("&lt;" in value or "<br>" in value or "<b>" in value or "<i>" in value):
+            if "html=1" not in style:
+                html_issues.append(cell.get("id", "?"))
+    if html_issues:
+        for hi in html_issues[:5]:
+            report.append(f"FAIL: Cell {hi} has HTML tags in value but no html=1 in style")
+            fail_count += 1
+    else:
+        report.append("PASS: HTML cells have html=1")
+
+    # 16. Container child coordinate check (Hard Rule 12)
+    container_ids = set()
+    for vid, v in vertices.items():
+        style = parse_style(v["style"])
+        if style.get("container") == "1" or style.get("swimlane") is True:
+            container_ids.add(vid)
+    child_coord_issues = []
+    for vid, v in vertices.items():
+        if v["parent"] in container_ids:
+            # Child of a container - coords should be small (relative to container)
+            if v["x"] > 1000 or v["y"] > 1000:
+                child_coord_issues.append(f"{vid} (parent={v['parent']}, x={v['x']}, y={v['y']})")
+    if child_coord_issues:
+        for cci in child_coord_issues[:5]:
+            report.append(f"WARN: Container child may have absolute coords: {cci}")
+    else:
+        report.append("PASS: Container child coordinates OK")
 
     # Summary
     report.append("")
