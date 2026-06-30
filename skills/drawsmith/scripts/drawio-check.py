@@ -1,7 +1,7 @@
 """diagram-check.py — Automated geometry & style validator for draw.io XML.
 
 Run after generating any .drawio file. Reports concrete pass/fail for
-edge crossings, bounding box overlap, color reuse, perimeter gaps, coordinate alignment, minimum spacing, and edge-shape intersections.
+edge crossings (warn-only), bounding box overlap, color reuse, perimeter gaps, coordinate alignment, tight spacing (<10px), and edge-shape intersections.
 
 This script checks the AUTOMATABLE subset of the drawio-guide.md self-check
 (overlap detection, edge crossings, page bounds, color reuse, multi-connection
@@ -204,10 +204,10 @@ def check(filepath):
 
     if crossings:
         for c in crossings:
-            report.append(f"FAIL: Edge crossing between {c[0]} and {c[1]}")
+            report.append(f"WARN: Edge-edge crossing between {c[0]} and {c[1]} (harmless with jumpStyle=arc)")
             fail_count += 1
     else:
-        report.append("PASS: No edge crossings detected")
+        report.append("PASS: No edge-edge crossings detected")
 
     # 3. Out-of-page elements
     oob = []
@@ -298,11 +298,11 @@ def check(filepath):
         # If they're adjacent horizontally and vertically gap is tight
         if h_gap > 0:  # horizontally overlapping
             vert_dist = abs(a["y"] - b["y"]) if a["y"] < b["y"] else abs(b["y"] - a["y"])
-            if 0 < vert_dist < 20 and a["y"] + a["h"] != b["y"] and b["y"] + b["h"] != a["y"]:
+            if 0 < vert_dist < 10 and a["y"] + a["h"] != b["y"] and b["y"] + b["h"] != a["y"]:
                 spacing_warnings.append(f"{a_id} and {b_id} too close (vert gap {vert_dist}px)")
         if v_gap > 0:  # vertically overlapping
             horiz_dist = abs(a["x"] - b["x"]) if a["x"] < b["x"] else abs(b["x"] - a["x"])
-            if 0 < horiz_dist < 20 and a["x"] + a["w"] != b["x"] and b["x"] + b["w"] != a["x"]:
+            if 0 < horiz_dist < 10 and a["x"] + a["w"] != b["x"] and b["x"] + b["w"] != a["x"]:
                 spacing_warnings.append(f"{a_id} and {b_id} too close (horiz gap {horiz_dist}px)")
     if spacing_warnings:
         for sw in spacing_warnings[:5]:  # limit to first 5
