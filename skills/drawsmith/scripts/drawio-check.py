@@ -224,6 +224,21 @@ def check(filepath):
                 report.append(f"FAIL: Cell {cell.get('id','?')} has HTML but no html=1")
                 fail_count += 1
 
+    # 6. Bidirectional edge overlap (critical: arrows drawn on top of each other)
+    from collections import defaultdict as dd
+    pairs = dd(list)
+    for e in edges:
+        key = tuple(sorted([e["source"], e["target"]]))
+        pairs[key].append(e)
+    for key, elist in pairs.items():
+        if len(elist) >= 2:
+            styles = [parse_style(e["style"]) for e in elist]
+            # Only flag if edges exit/enter on the SAME side (both exitX or both exitY match)
+            positions = [(s.get("exitX", "0.5"), s.get("exitY", "0.5")) for s in styles]
+            if len(set(positions)) < len(positions):
+                report.append(f"FAIL: Bidirectional edges {key[0]}<->{key[1]} overlap at same exit point")
+                fail_count += 1
+
     # Summary
     report.append("")
     report.append(f"Total: {fail_count} failures")
