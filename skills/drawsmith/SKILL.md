@@ -94,8 +94,8 @@ or "illustration", decide which engine to use BEFORE starting work.
    technical diagrams), fonts, line weights, spacing.
 5. **Generate XML** — write the `.drawio` file. Follow all hard rules:
    every vertex has geometry, every edge has `<mxGeometry relative="1"
-   as="geometry"/>`, coords multiples of 10, no overlap.
-6. **Self-check** — run the 24-item checklist from `drawio-guide.md`.
+   as="geometry"/>`, rough grid placement, no overlap.
+6. **Self-check** — run the 10-item checklist from `drawio-guide.md`.
    Fix failures before delivering.
 
 ---

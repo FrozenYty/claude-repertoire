@@ -15,7 +15,7 @@
 - [Arrow Routing](#arrow-routing-critical----most-common-source-of-errors) — waypoints, diagonals, residuals
 - [Visual Style Guide](#visual-style-guide) — references `style-guide.md` for colors/fonts/weights
 - [Common Pitfalls](#common-pitfalls-real-failures-from-past-generations) — 14 real failures and their fixes
-- [Self-Check](#self-check-output-passfail-for-each) — 24-item output checklist
+- [Self-Check](#self-check-output-passfail-for-each) — 10-item output checklist
 
 ---
 
@@ -660,7 +660,7 @@ edges vertically so they run as parallel tracks (`exitY=0.35` for forward,
 `exitY=0.65` for reverse). See § Arrow Routing → Bidirectional Edge Pairs
 for the exact pattern.
 
-**10. Edges take scenic detours** — edges route around the outside of the
+**10. Edges take scenic detours** (legacy concern — automatic routing via libavoid/ELK eliminates this). Edges route around the outside of the
 diagram with 3-4 unnecessary waypoints when a short direct connection
 exists. Symptom: a produce arrow from a service to a component directly
 below it takes a path that goes up to the tier above, then horizontal,

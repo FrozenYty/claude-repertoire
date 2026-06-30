@@ -29,11 +29,11 @@ pre-generation gates. The router handles placement.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (22 non-negotiable: geometry, IDs, grid alignment, no overlap)
+- Hard rules (well-formedness, shape types, containment)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
 - Common Pitfalls (14 real failures and their fixes)
-- Self-check checklist (24 items)
+- Self-check checklist (10 items)
 
 **If the request matches a known layout pattern, read
 `references/drawio-layouts.md`.** It contains 18 canonical templates with
