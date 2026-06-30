@@ -1,15 +1,14 @@
-"""diagram-check.py — Automated geometry & style validator for draw.io XML.
+"""drawio-check.py — Automated critical-defect validator for draw.io XML.
 
 Run after generating any .drawio file. Reports concrete pass/fail for
-edge crossings (warn-only), bounding box overlap, color reuse, perimeter gaps, coordinate alignment, tight spacing (<10px), and edge-shape intersections.
+defects that would render the diagram broken or visually unreadable:
+vertex overlap, broken edge refs, duplicate IDs, out-of-page elements,
+html=1 missing, bidirectional overlap, duplicate edges, invisible arrows,
+and exit-point collisions.
 
-This script checks the AUTOMATABLE subset of the drawio-guide.md self-check
-(overlap detection, edge crossings, page bounds, color reuse, multi-connection
-distribution, coordinate alignment, minimum spacing, edge-shape intersections,
-edge reference validity, ID uniqueness, XML structure, font/edge consistency,
-legend presence, html=1 requirements, container child coordinates). For the full 15-item checklist, see references/drawio-guide.md.
+For the full 15-item checklist, see references/drawio-guide.md.
 
-Usage: python diagram-check.py <file.drawio>
+Usage: python drawio-check.py <file.drawio>
 """
 
 import sys
@@ -238,6 +237,56 @@ def check(filepath):
             if len(set(positions)) < len(positions):
                 report.append(f"FAIL: Bidirectional edges {key[0]}<->{key[1]} overlap at same exit point")
                 fail_count += 1
+
+
+    # 7. Duplicate edges (same source->target AND same exit side = visual overlap)
+    from collections import defaultdict as dd2
+    edge_pairs = dd2(list)
+    for e in edges:
+        style = parse_style(e["style"])
+        exit_side = f'{style.get("exitX","0.5")}-{style.get("exitY","0.5")}'
+        key = (e["source"], e["target"], exit_side)
+        edge_pairs[key].append(e["id"])
+    for (src, tgt, side), eids in edge_pairs.items():
+        if len(eids) > 1:
+            report.append(f"FAIL: Overlapping edges {src}->{tgt} at exit {side}: {eids}")
+            fail_count += 1
+
+    # 8. Invisible / extremely short edges (gap < 10px between connected nodes)
+    short_count = 0
+    for e in edges:
+        src_v = vertices.get(e["source"])
+        tgt_v = vertices.get(e["target"])
+        if src_v and tgt_v:
+            # Calculate the gap between the two nodes (center to center distance minus radii)
+            scx, scy = src_v["x"] + src_v["w"]/2, src_v["y"] + src_v["h"]/2
+            tcx, tcy = tgt_v["x"] + tgt_v["w"]/2, tgt_v["y"] + tgt_v["h"]/2
+            dist = ((tcx - scx)**2 + (tcy - scy)**2)**0.5
+            if src == tgt:
+                continue  # self-loops use curved=1, distance is irrelevant
+            if dist < 30:  # center-to-center < 30px = arrow nearly invisible
+                short_count += 1
+                report.append(f"WARN: Very short edge {e['id']} ({src}->{tgt}, center distance {dist:.0f}px)")
+    if short_count == 0:
+        report.append("PASS: All edge lengths acceptable")
+
+    # 9. Same-exit-point collision (edges from same source sharing same exitX+exitY)
+    from collections import defaultdict as dd3
+    exit_map = dd3(list)
+    for e in edges:
+        style = parse_style(e["style"])
+        ex = style.get("exitX", "0.5")
+        ey = style.get("exitY", "0.5")
+        key = (e["source"], ex, ey)
+        exit_map[key].append(e["id"])
+    exit_collisions = 0
+    for key, eids in exit_map.items():
+        if len(eids) > 1:
+            exit_collisions += 1
+            report.append(f"FAIL: Edges from {key[0]} share exit point ({key[1]},{key[2]}): {eids}")
+            fail_count += 1
+    if exit_collisions == 0:
+        report.append("PASS: No exit-point collisions")
 
     # Summary
     report.append("")
