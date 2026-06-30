@@ -8,14 +8,14 @@
 - [Cross-Stack Y-Alignment](#cross-stack-y-alignment) — encoder-decoder horizontal edge alignment
 - [Design Philosophy](#design-philosophy) — Concise, Clear, Consistent (Three Cs)
 - [Shape type conventions](#shape-type-conventions) — built-in shapes, never approximate
-- [Hard Rules](#hard-rules-always-enforced) — 20 hard rules
+- [Hard Rules](#hard-rules-always-enforced) — 21 hard rules
 - [Section Container Layout](#section-container-layout) — labels inside containers, no overlap
 - [XML Escapes](#xml-escapes) — `&amp;`, `&lt;`, `&#xa;`, etc.
 - [Layout Rules](#layout-rules) — spacing, margins, line limits
 - [Arrow Routing](#arrow-routing-critical----most-common-source-of-errors) — waypoints, diagonals, residuals
 - [Visual Style Guide](#visual-style-guide) — references `style-guide.md` for colors/fonts/weights
 - [Common Pitfalls](#common-pitfalls-real-failures-from-past-generations) — 14 real failures and their fixes
-- [Self-Check](#self-check-output-passfail-for-each) — 10-item output checklist
+- [Self-Check](#self-check-output-passfail-for-each) — 15-item output checklist
 
 ---
 
@@ -239,6 +239,15 @@ architectures) typically flow LEFT-TO-RIGHT. Use the same logic with x instead
 of y: source on the left, target on the right, every forward arrow has
 `source.x < target.x`. Don't mix LR and TB in one figure.
 
+**Quick self-test** — before writing XML, scan your node table:
+- For every adjacent pair A -> B in data-flow order, check A.y > B.y (TB) or A.x < B.x (LR).
+- If any pair fails, the stack is inverted. Fix before generating XML.
+
+**When NOT to use bottom-up:** Pipeline / system / data-flow diagrams (not ML
+architectures) typically flow LEFT-TO-RIGHT. Use the same logic with x instead
+of y: source on the left, target on the right, every forward arrow has
+`source.x < target.x`. Don't mix LR and TB in one figure.
+
 ## Cross-Stack Y-Alignment
 
 For encoder-decoder diagrams, align the Y-coordinates of layers connected by
@@ -274,10 +283,11 @@ a node center.
 3. Every edge HAS `<mxGeometry relative="1" as="geometry"/>` — self-closing edges are INVALID
 4. Edge `source`/`target` must reference existing vertex IDs
 5. IDs unique, semantic, lowercase_underscore — no random strings
-6. Use the rigid grid for rough placement - column x = col_index * 180 + 40,
-   row y = row_index * 120 + 40. Node sizes: rectangles 140x60, diamonds
-   140x80, circles 60x60, documents 120x80, cylinders 100x70. The router
-   or layout pass handles alignment; exact coordinate tuning is unnecessary.
+6. Use the rigid grid for placement: column x = col_index * 180 + 40,
+   row y = row_index * 120 + 40. All coordinates MUST be multiples of 10.
+   Node sizes: rectangles 140x60, diamonds 140x80, circles 60x60, documents
+   120x80, cylinders 100x70. When MCP is available the router handles fine
+   alignment; without MCP, exact grid placement prevents overlap by construction.
 7. All elements within page bounds (x+w ≤ pageWidth, y+h ≤ pageHeight)
 8. Uncompressed XML only (no `compressed="true"`)
 9. No `--` in XML comments
@@ -285,19 +295,27 @@ a node center.
 11. **Use native shape types** — process: `rounded=1`, decision: `rhombus`,
     start/end: `ellipse`, DB: `shape=cylinder3`. Never approximate semantic
     shapes with plain rectangles.
-12. **Cross-container edges at root** — edges between nodes in different
+12. **Parent-child for containers** — when a shape belongs inside another
+    (swimlane lane, section group), set `parent="container_id"`. Child
+    coordinates are RELATIVE to container top-left. Moving the container
+    moves all children automatically.
+13. **Cross-container edges at root** — edges between nodes in different
     containers use `parent="1"` (root level). Otherwise connectors are
     clipped to the source container bounding box.
 13. **Single abstraction level** — a diagram is EITHER high-level overview
     (7 nodes max) OR detailed drill-down, never both mixed. Use sub-pages
     for detail layers.
 14. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
-15. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
-16. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
-17. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
-18. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
-19. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
-20. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
+15. **I/O direction consistent** — every component uses fixed entry/exit
+    sides. Pick one convention per diagram: top-in-bottom-out (default for
+    layered architectures), left-in-right-out (pipelines). Never mix entry
+    directions on the same component.
+16. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
+17. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
+18. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
+19. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
+20. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
+21. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
 
 ## Section Container Layout
 
@@ -546,42 +564,79 @@ Add a small grey italic label to the left of each tier (e.g., "Entry",
 "Services", "Infrastructure", "Storage"). This gives the reader a mental
 map before they inspect individual components.
 
-## Arrow Routing (AUTOMATIC - do not hand-route)
+## Arrow Routing (two-tier: MCP preferred, manual fallback)
 
-**Golden rule: never hand-route edges.** Declare only `source` and `target`
-on each edge. Do NOT add `<mxPoint>` waypoints. Do NOT set `exitX`/`exitY`/
-`entryX`/`entryY` connection-point overrides.
+### Tier 1 — MCP available (preferred)
 
-draw.io's edge router handles the rest. For obstacle-avoiding orthogonal
-routing around shapes, use the `libavoid` pass. For a full canonical
-re-layout where vertices are repositioned, use the `elk` pass.
+When the user has drawio-mcp connected, use the `create_diagram` tool
+with `routing: "libavoid"` or `postLayout: "elk"`:
 
 | Pass | What it does | When to use |
 |------|-------------|-------------|
-| *(none)* | Basic straight/right-angle lines, no obstacle avoidance | Sparse diagrams where connected nodes sit in clear rows/columns with open space |
-| `libavoid` | Keeps your vertex positions, re-routes edges orthogonally around shapes | Architecture, network topology, deployment, UML |
-| `elk` | Full re-layout: vertices + edges repositioned hierarchically | Flowcharts, process/state diagrams, decision flows, pipelines |
+| `routing: "libavoid"` | Keeps vertex positions, re-routes edges orthogonally around shapes | Architecture, network topology, deployment |
+| `postLayout: "elk"` | Full re-layout: vertices + edges repositioned hierarchically | Flowcharts, process/state diagrams, decision flows |
 
-**Edge style (you still choose this):**
+With MCP, just declare `source`/`target` on each edge. The router handles the rest.
+Do NOT add waypoints or exitX/exitY.
+
+### Tier 2 — Manual routing (MCP unavailable)
+
+When MCP is not available, draw.io's built-in router only does simple
+straight/right-angle lines with NO obstacle avoidance. Hand-route edges
+using the rules below, refined through real production use.
+
+**Edge style (always choose one, consistent per diagram):**
 
 | Style | Syntax | Best for |
 |-------|--------|---------|
-| Orthogonal | `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` | Flowcharts, architecture, network - default |
+| Orthogonal | `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` | Default for most diagrams |
 | Straight | no `edgeStyle` key | UML class/sequence, direct connections |
 | Entity Relation | `edgeStyle=entityRelationEdgeStyle` | ER diagrams - perpendicular stubs |
 | Curved | `curved=1` | Mind maps, informal diagrams |
 
-Use a CONSISTENT edge style within each diagram. Pick one per diagram type.
-
 **Edge labels:** Short (1-3 words). Set `value` directly on the edge cell.
-Drop labels that restate an obvious action; move long explanations into node
-text or a small legend node.
 
-**What NOT to do:**
-- Do NOT add `<Array as="points"><mxPoint .../></Array>` waypoints
-- Do NOT set `exitX`/`exitY`/`entryX`/`entryY` on edges
-- Do NOT compute "routing corridors" or "bus-style routing channels"
-- Do NOT hand-calculate edge paths around obstacles
+#### Multi-Connection Nodes
+
+When 3+ edges connect to the same side of a node, distribute `exitY`
+values evenly across [0,1] to prevent visual overlap:
+
+```
+N=2 edges: exitY=0.3, exitY=0.7
+N=3 edges: exitY=0.2, exitY=0.5, exitY=0.8
+N=4 edges: exitY=0.15, exitY=0.4, exitY=0.6, exitY=0.85
+```
+
+Only set exitX/exitY when a node has 2+ connections on the same side.
+
+#### Bidirectional Edge Pairs
+
+When two nodes have both forward (A->B) and reverse (B->A) edges,
+offset exitY values so they run as parallel tracks, not overlapping:
+
+```
+Forward:  exitX=1;exitY=0.35;entryX=0;entryY=0.35
+Reverse:  exitX=0;exitY=0.65;entryX=1;entryY=0.65;dashed=1
+```
+
+#### Waypoints (use sparingly)
+
+Only add waypoints when an edge would otherwise cross through a shape.
+Follow the shortest orthogonal path. Max 2 waypoints per edge.
+
+```xml
+<mxCell id="e1" style="...exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="A" target="B">
+  <mxGeometry relative="1" as="geometry">
+    <Array as="points"><mxPoint x="390" y="484"/></Array>
+  </mxGeometry>
+</mxCell>
+```
+
+#### Anti-Patterns
+
+- No diagonal arrows crossing through shapes
+- No "scenic detours" with 3+ unnecessary waypoints when source/target are aligned
+- No routing around the outside of the entire diagram
 
 ## Visual Style Guide
 
@@ -707,8 +762,12 @@ XML parser catches this but the fix is to write the entity correctly.
  7. All IDs unique:                                   pass/fail
  8. `&lt;`, `&gt;`, `&amp;` escaped in values:             pass/fail
  9. No double-escaped `&amp;amp;` in values:            pass/fail
-10. Container children use `parent="containerId"` with
-    relative coords; cross-container edges use `parent="1"`: pass/fail
+10. All x/y coords multiples of 10:                   pass/fail
+11. Flow direction consistent (TB: source.y > target.y; LR: source.x < target.x): pass/fail
+12. Container children use `parent="containerId"` with relative coords: pass/fail
+13. Cross-container edges use `parent="1"`:            pass/fail
+14. Multi-connection nodes have distinct exitY values:  pass/fail
+15. One color per link type (no semantic reuse):       pass/fail
 ```
 
 ## Official Shape Libraries

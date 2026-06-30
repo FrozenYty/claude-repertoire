@@ -92,10 +92,14 @@ or "illustration", decide which engine to use BEFORE starting work.
    routing, container layout, self-check.
 4. **Read `references/style-guide.md`** — colors (IEEE palette for
    technical diagrams), fonts, line weights, spacing.
-5. **Generate XML** — write the `.drawio` file. Follow all hard rules:
+5. **Generate XML** — write the `.drawio` file.
+   - If MCP available: use `create_diagram` with `routing: "libavoid"`
+     for dense diagrams. Use `search_shapes` for cloud/network icons.
+   - If MCP unavailable: place nodes on exact grid, hand-route edges
+     where needed. Follow all hard rules from `drawio-guide.md`:
    every vertex has geometry, every edge has `<mxGeometry relative="1"
    as="geometry"/>`, rough grid placement, no overlap.
-6. **Self-check** — run the 10-item checklist from `drawio-guide.md`.
+6. **Self-check** — run the 15-item checklist from `drawio-guide.md`.
    Fix failures before delivering.
 
 ---
@@ -138,7 +142,7 @@ Users may override any default. Honor these requests:
 | File | Content | Read when |
 |------|---------|-----------|
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
-| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 10-item self-check | Every draw.io XML diagram |
+| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 15-item self-check | Every draw.io XML diagram |
 | `references/drawio-mermaid.md` | Mermaid syntax reference (28 diagram types) | Flowcharts, sequences, ER, Gantt, mindmaps, etc. |
 | `references/drawio-layouts.md` | 18 reusable draw.io XML layout templates | Matching diagram patterns (XML only) |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |

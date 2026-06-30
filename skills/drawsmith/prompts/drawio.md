@@ -14,6 +14,24 @@ hand-written XML). Deliver the best output you can within 3 fix iterations.
 
 ---
 
+## MCP Detection (READ FIRST)
+
+Before starting, check if the `create_diagram` or `search_shapes` MCP tools
+are available in your tool list.
+
+**MCP available:** preferred path.
+- Use `search_shapes` to find exact style strings for cloud/network/industry icons.
+- Declare `source`/`target` on edges only. Use `routing: "libavoid"` or
+  `postLayout: "elk"` on `create_diagram`. No waypoints needed.
+- Place nodes on rough grid; the router handles alignment.
+
+**MCP unavailable:** fallback path.
+- Place nodes on exact grid (x = col*180+40, y = row*120+40, coords multiples of 10).
+- Hand-route edges where needed (exitY distribution, waypoints for obstacle avoidance).
+- Follow all manual routing rules in `drawio-guide.md`.
+
+---
+
 ## Workflow (MANDATORY)
 
 ### Phase 1 - Plan (3 lines max)
@@ -77,17 +95,48 @@ pass/fail for each item. Fix failures before delivering.
 
 ## Key Rules
 
+### Shape & Layout
+
 1. **Pick the right shape.** Process=`rounded=1`, decision=`rhombus`,
-   start/end=`ellipse`, DB=`shape=cylinder3`. Never approximate semantic
-   shapes with plain rectangles.
-2. **Rough grid, don't tune.** Place nodes at approximate positions:
-   x = col * 180 + 40, y = row * 120 + 40. The router handles alignment.
-3. **Declare edges, don't route.** Set `source` and `target` only. No
-   waypoints, no exitX/exitY. Orthogonal edge style for most diagrams.
-4. **Parent-child for containers.** Nodes inside a lane/group use
+   start/end=`ellipse`, DB=`shape=cylinder3`. A decision drawn as a rounded
+   rect is a bug.
+2. **Grid placement.** x = col * 180 + 40, y = row * 120 + 40. Coords
+   MUST be multiples of 10. With MCP the router fine-tunes; without MCP
+   exact placement prevents overlap.
+3. **Flow direction first.** TB: source.y > target.y. LR: source.x < target.x.
+   Inverted stacks are the single most common diagram bug.
+
+### Edges (MCP available)
+
+4. **Declare edges, don't route.** Set `source` and `target` only. Use
+   `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` as base style.
+   Add `routing: "libavoid"` to `create_diagram` for dense diagrams.
+
+### Edges (MCP unavailable — manual fallback)
+
+5. **Multi-connection nodes.** When 3+ edges connect to the same side,
+   distribute exitY values evenly across [0,1] (N=3: 0.2, 0.5, 0.8).
+6. **Bidirectional pairs.** Offset exitY (0.35 forward, 0.65 reverse)
+   so push/pull arrows run as parallel tracks.
+7. **Shortest path.** Every edge takes the shortest orthogonal route.
+   Only add waypoints to avoid obstacles or distribute connections.
+   Max 2 waypoints per edge.
+
+### Containers & Abstraction
+
+8. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
-5. **One abstraction level per diagram.** Overview (<=7 nodes) OR detail, not both.
-6. **Every color has meaning.** One color per semantic role. Legend required.
+9. **Cross-container edges at root.** Edges between nodes in different
+   containers use `parent="1"`.
+10. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
+
+### Semantics
+
+11. **One color per link type.** No color reuse across unrelated connections.
+    Max 5-6 distinct colors per diagram.
+12. **Legend required.** Every color and line style must be explained.
+13. **Native shapes always.** Never approximate a decision with a rounded
+    rectangle or a database with a plain rectangle.
 
 ## Constraints
 
@@ -115,18 +164,23 @@ pass/fail for each item. Fix failures before delivering.
 
 ## Self-Audit (before delivering)
 
-1. **Template first** - if a matching layout exists in `drawio-layouts.md`,
+1. **MCP aware** — did I check for MCP tools and choose the right path?
+2. **Template first** — if a matching layout exists in `drawio-layouts.md`,
    was it adapted instead of designing from scratch?
-2. **Rough grid used** - are nodes placed on the col*180+40, row*120+40 grid?
-3. **No hand-routing** - every edge has only `source`/`target`, no waypoints,
-   no exitX/exitY?
-4. **Native shapes** - are semantically different concepts visually distinct
-   (rounded rect vs rhombus vs ellipse vs cylinder)?
-5. **Parent-child correct** - container children use `parent="containerId"`
-   with relative coords; cross-container edges use `parent="1"`?
-6. **One color per link type** - no color reuse across unrelated connections?
-7. **Legend present** - does a legend explain every color and line style?
-8. **Single abstraction level** - overview (<=7 nodes) or detail, not both?
-9. **No XML comments** - are `<!-- -->` absent from the output?
-10. Run the 10-item XML self-check from `drawio-guide.md`.
+3. **Flow direction** — every forward edge satisfies source.y > target.y (TB)
+   or source.x < target.x (LR)?
+4. **Grid placement** — are nodes on the col*180+40, row*120+40 grid with
+   coords multiples of 10?
+5. **Native shapes** — are semantically different concepts visually distinct?
+6. **Edges routed** — no "scenic detours" with 3+ unnecessary waypoints?
+7. **Multi-connection nodes** — distributed exitY values where needed?
+8. **Bidirectional pairs** — parallel tracks (exitY=0.35/0.65)?
+9. **Parent-child correct** — relative coords inside containers, parent="1"
+   for cross-container edges?
+10. **One color per link type** — no semantic color reuse?
+11. **Legend present** — every color and line style explained?
+12. **Single abstraction level** — overview or detail, not both?
+13. **No XML comments** — are <!-- --> absent?
+14. **I/O direction uniform** — same entry/exit sides per tier?
+15. Run the 15-item XML self-check from `drawio-guide.md`.
 
