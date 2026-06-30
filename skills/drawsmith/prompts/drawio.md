@@ -47,14 +47,14 @@ pre-generation gates. The router handles placement.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (well-formedness, shape types, containment)
-- Arrow routing (orthogonal, residual, feedback loops)
-- Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
-- Common Pitfalls (14 real failures and their fixes)
-- Self-check checklist (10 items)
+- Hard rules (21 rules: well-formedness, layout, routing, semantics)
+- Arrow routing (source/target only, exitY distribution, waypoints sparingly)
+- Container layout (labels inside, >=10px padding, parent-child nesting)
+- Layers, Tags, Metadata (advanced draw.io features)
+- Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
-`references/drawio-layouts.md`.** It contains 18 canonical templates with
+`references/drawio-layouts.md`.** It contains 19 templates (5 with Golden XML)
 pre-verified coordinates:
 
 | Section | Pattern | When to use |
