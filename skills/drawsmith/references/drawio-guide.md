@@ -22,12 +22,13 @@
 ## Reasoning Budget (READ FIRST)
 
 Your job is to declare the LOGICAL STRUCTURE of the diagram -- what nodes
-exist, what edges connect them, what labels they carry. The edge router
-and optional layout pass handle positioning.
+exist, what edges connect them, what labels they carry.
 
 - Identify diagram type + actors/stages (1-2 sentences)
-- Place nodes on a rough grid: x = col * 180 + 40, y = row * 120 + 40
-- Declare edges by source/target only -- never add waypoints
+- Place nodes on the grid: x = col * 180 + 40, y = row * 120 + 40
+- For simple edges (1-to-1, clear path): declare source/target only
+- For self-loops, bidirectional pairs, cross-panel edges: ADD waypoints
+  (see Arrow Routing section for exact patterns)
 - Go straight to XML. Do NOT compute coordinates in prose
 
 ## Design Philosophy
@@ -565,62 +566,88 @@ map before they inspect individual components.
 
 ## Arrow Routing
 
-draw.io's built-in router only does simple straight/right-angle lines with
-NO obstacle avoidance. Hand-route edges using the rules below, refined
-through real production use.
+**CRITICAL: draw.io's built-in router is unreliable.** It produces:
+- Invisible arrows (gap < 30px between nodes)
+- Overlapping bidirectional edges (same exitY)
+- Self-loops that hug the node (invisible)
+- Straight lines cutting through shapes
 
-**Edge style (always choose one, consistent per diagram):**
+You MUST hand-route edges in these cases. Follow the patterns below,
+verified through real production use.
+
+### Edge style (always choose one, consistent per diagram):
 
 | Style | Syntax | Best for |
 |-------|--------|---------|
-| Orthogonal | `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` | Default for most diagrams |
+| Orthogonal | `edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;` | Default for most diagrams |
 | Straight | no `edgeStyle` key | UML class/sequence, direct connections |
-| Entity Relation | `edgeStyle=entityRelationEdgeStyle` | ER diagrams - perpendicular stubs |
-| Curved | `curved=1` | Mind maps, informal diagrams |
+| Entity Relation | `edgeStyle=entityRelationEdgeStyle` | ER diagrams |
 
-**Edge labels:** Short (1-3 words). Set `value` directly on the edge cell.
+### Self-loops (CRITICAL — must be visible)
 
-#### Multi-Connection Nodes
-
-When 3+ edges connect to the same side of a node, distribute `exitY`
-values evenly across [0,1] to prevent visual overlap:
-
-```
-N=2 edges: exitY=0.3, exitY=0.7
-N=3 edges: exitY=0.2, exitY=0.5, exitY=0.8
-N=4 edges: exitY=0.15, exitY=0.4, exitY=0.6, exitY=0.85
-```
-
-Only set exitX/exitY when a node has 2+ connections on the same side.
-
-#### Bidirectional Edge Pairs
-
-When two nodes have both forward (A->B) and reverse (B->A) edges,
-offset exitY values so they run as parallel tracks, not overlapping:
-
-```
-Forward:  exitX=1;exitY=0.35;entryX=0;entryY=0.35
-Reverse:  exitX=0;exitY=0.65;entryX=1;entryY=0.65;dashed=1
-```
-
-#### Waypoints (use sparingly)
-
-Only add waypoints when an edge would otherwise cross through a shape.
-Follow the shortest orthogonal path. Max 2 waypoints per edge.
+Self-loops with `curved=1` alone produce invisible, node-hugging arcs.
+ALWAYS add TWO waypoints to pull the loop OUT from the node:
 
 ```xml
-<mxCell id="e1" style="...exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="A" target="B">
+<mxCell id="e_self" value="tick / update()"
+  style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;curved=1;exitX=0;exitY=0.5;entryX=0;entryY=0.75"
+  edge="1" parent="1" source="running" target="running">
   <mxGeometry relative="1" as="geometry">
-    <Array as="points"><mxPoint x="390" y="484"/></Array>
+    <Array as="points">
+      <mxPoint x="350" y="215"/>
+      <mxPoint x="350" y="235"/>
+    </Array>
   </mxGeometry>
 </mxCell>
 ```
 
-#### Anti-Patterns
+Waypoint formula for a node at (nx, ny, nw, nh):
+- wp1: x = nx - 40, y = ny - 10   (above-left of node)
+- wp2: x = nx - 40, y = ny + nh + 10  (below-left of node)
+- exitX=0, exitY=0.5, entryX=0, entryY=0.75
 
-- No diagonal arrows crossing through shapes
-- No "scenic detours" with 3+ unnecessary waypoints when source/target are aligned
-- No routing around the outside of the entire diagram
+### Bidirectional Pairs (must be offset)
+
+When A->B and B->A both exist, offset exitY so they run as parallel tracks:
+
+```
+Forward:  exitX=1; exitY=0.35; entryX=0; entryY=0.35
+Reverse:  exitX=0; exitY=0.65; entryX=1; entryY=0.65; dashed=1
+```
+
+### Cross-panel Routing (avoid obstacles)
+
+When an edge must cross the diagram (e.g., error->idle reset), use waypoints
+to route through clear space. Keep waypoints outside all node bounding boxes:
+
+```xml
+<mxCell id="e_cross" style="...exitX=0;exitY=0.5;entryX=0;entryY=0.5"
+  edge="1" parent="1" source="src" target="tgt">
+  <mxGeometry relative="1" as="geometry">
+    <Array as="points">
+      <mxPoint x="387" y="471"/>
+      <mxPoint x="190" y="471"/>
+    </Array>
+  </mxGeometry>
+</mxCell>
+```
+
+### Minimum Arrow Length
+
+Node-to-node gap MUST be >= 30px. At < 30px the arrow shaft is invisible.
+Use this spacing: nodes with h=50-80 → gap >= 50px; nodes with h=30 → gap >= 35px.
+
+### Multi-Connection Nodes
+
+When 3+ edges connect to the same side of a node, distribute exitY values
+evenly across [0,1]. Same exitY on the same side = invisible overlap:
+```
+N=2: 0.3, 0.7
+N=3: 0.2, 0.5, 0.8
+N=4: 0.15, 0.4, 0.6, 0.85
+```
+
+Edge labels: short (1-3 words). Set `value` directly on the edge cell.
 
 ## Visual Style Guide
 

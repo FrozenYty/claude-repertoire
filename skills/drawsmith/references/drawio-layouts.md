@@ -627,6 +627,26 @@ horizontally (LR) or in a circle depending on transition count.
 edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=10;fontColor=#333333
 ```
 
+
+**Golden self-loop example (visible with waypoints):**
+
+```xml
+<mxCell id="e_tick" value="tick / update()"
+  style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;curved=1;exitX=0;exitY=0.5;entryX=0;entryY=0.75"
+  edge="1" parent="1" source="running" target="running">
+  <mxGeometry relative="1" x="0.2" y="-15" as="geometry">
+    <Array as="points">
+      <mxPoint x="350" y="215"/>
+      <mxPoint x="350" y="235"/>
+    </Array>
+  </mxGeometry>
+</mxCell>
+```
+
+**Key pattern:** waypoints pull the loop OUT from the node.
+For a node at (nx, ny, nw, nh): wp1=(nx-40, ny-10), wp2=(nx-40, ny+nh+10).
+Without waypoints, `curved=1` alone produces an invisible node-hugging arc.
+
 **Edge style (self-loop):**
 ```
 edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;curved=1;exitX=0;exitY=0.5;entryX=0;entryY=0.2

@@ -92,43 +92,66 @@ pass/fail for each item. Fix failures before delivering.
    `drawio-layouts.md` before writing any XML. Copy its Golden XML
    skeleton - change labels, keep coordinates.
 
+### Shapes & Layout
+
 1. **Pick the right shape.** Process=`rounded=1`, decision=`rhombus`,
-   start/end=`ellipse`, DB=`shape=cylinder3`.
+   start/end=`ellipse`, DB=`shape=cylinder3`. Add `perimeter=<type>Perimeter`
+   on non-rect shapes.
 
 2. **Grid placement.** x = col * 180 + 40, y = row * 120 + 40. Coords
-   MUST be multiples of 10.
+   MUST be multiples of 10. Exact placement prevents overlap.
 
 3. **Flow direction first.** TB: source.y > target.y. LR: source.x < target.x.
    Inverted stacks are the single most common diagram bug.
 
-4. **Declare edges, don't route.** Set `source` and `target` only. Use
-   `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` as base style.
+### Edge Routing (CRITICAL — do NOT trust the auto-router)
 
-5. **Multi-connection nodes.** When 3+ edges connect to the same side,
-   distribute exitY values evenly across [0,1] (N=3: 0.2, 0.5, 0.8).
+**The built-in draw.io router is unreliable.** It produces invisible arrows,
+overlapping lines, and edge-through-shape crossings. You MUST hand-route
+edges in these THREE cases:
 
-6. **Bidirectional pairs.** Offset exitY (0.35 forward, 0.65 reverse)
-   so push/pull arrows run as parallel tracks.
+4. **Self-loops — pull the arrow OUT.** Never let a self-loop hug the node.
+   Add TWO waypoints to create visible curvature:
+   ```
+   exitX=0; exitY=0.5  →  waypoint 1 (node.x-40, node.y-10)
+                       →  waypoint 2 (node.x-40, node.y+node.h+10)
+                       →  entryX=0; entryY=0.75
+   ```
+   The label sits OUTSIDE the loop arc, not inside the curve.
 
-7. **Shortest path.** Every edge takes the shortest orthogonal route.
-   Only add waypoints to avoid obstacles or distribute connections.
-   Max 2 waypoints per edge.
+5. **Bidirectional edges — offset the tracks.** When A->B and B->A both exist,
+   they MUST use different exitY values so they run as parallel tracks:
+   ```
+   Forward:  exitX=1; exitY=0.35; entryX=0; entryY=0.35
+   Reverse:  exitX=0; exitY=0.65; entryX=1; entryY=0.65; dashed=1
+   ```
 
-8. **Parent-child for containers.** Nodes inside a lane/group use
+6. **Multi-connection nodes — distribute exit points.** When 3+ edges leave
+   the same node side, distribute exitY evenly: N=3 -> 0.2, 0.5, 0.8.
+   Same-side exits with identical exitY produce invisible overlap.
+
+7. **Cross-panel edges — route AROUND obstacles.** When an edge must cross
+   the diagram (e.g., error->idle reset), add waypoints to route it through
+   clear space. Never let a straight line cut through a node. See §10
+   Golden XML for an example.
+
+8. **Minimum arrow length.** Adjacent nodes MUST have >= 30px gap between
+   bottom of source and top of target. Arrows shorter than this are invisible.
+
+### Containers
+
+9. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
+10. **Cross-container edges at root.** Edges between nodes in different
+    containers use `parent="1"`.
 
-9. **Cross-container edges at root.** Edges between nodes in different
-   containers use `parent="1"`.
+### Semantics
 
-10. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
-
-11. **One color per link type.** No color reuse across unrelated connections.
-    Max 5-6 distinct colors per diagram.
-
-12. **Legend required.** Every color and line style must be explained.
-
-13. **Native shapes always.** Never approximate a decision with a rounded
-    rectangle or a database with a plain rectangle.
+11. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
+12. **One color per link type.** No color reuse. Max 5-6 distinct colors.
+13. **Legend required.** Every color and line style must be explained.
+14. **Native shapes always.** No plain rectangles for semantically
+    different concepts.
 
 ## Constraints
 
