@@ -8,6 +8,23 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.4.0] - 2026-07-01
+
+### Added -- Specific architecture templates (from papersmith)
+
+- **Section 20 Transformer encoder-decoder**: complete 296-line XML skeleton manually
+  debugged for production use. Includes all edges, residual connections, K,V
+  cross-attention alignment, container layout, and legend.
+- **Section 21 Diffusion** forward/reverse process (DDPM/DDIM)
+- **Section 22 RAG pipeline** (retrieval-augmented LLM systems)
+- **Section 23 Multi-stage training** (Pretrain -> SFT -> RLHF)
+- Ported from papersmith v0.3.7 drawio-templates.md
+
+### Changed
+
+- Golden XML examples expanded from 6 to 10 (Section 1-4, 6, 13, 20-23)
+- Template count: 19 -> 23
+
 ## [0.3.0] - 2026-07-01
 
 ### Added — MCP integration + Cross-Functional Table

@@ -47,7 +47,7 @@ This confirmation proves you read the template. Do NOT skip it.
 - Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
-`references/drawio-layouts.md`.** It contains 19 templates (6 with Golden XML)
+`references/drawio-layouts.md`.** It contains 23 templates (10 with complete XML)
 pre-verified coordinates:
 
 | Section | Pattern | When to use |
