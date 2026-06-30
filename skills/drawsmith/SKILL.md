@@ -69,8 +69,9 @@ It provides two tools that this skill will automatically use when available:
   orthogonal edge routing. No hand-routing needed for dense diagrams.
 
 ```bash
-# One-line install
-npx @drawio/mcp
+# In Claude Code, run two commands:
+/plugin marketplace add jgraph/drawio-mcp
+/plugin install drawio@drawio
 ```
 
 When drawio-mcp is connected, this skill automatically switches to the MCP
