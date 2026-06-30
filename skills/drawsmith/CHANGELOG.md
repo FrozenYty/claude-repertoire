@@ -8,6 +8,36 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.3.0] - 2026-07-01
+
+### Added — MCP integration + Cross-Functional Table
+
+- **MCP enhancement section** in `SKILL.md`: plugin-based drawio-mcp install
+  instructions (`search_shapes` + `create_diagram` with libavoid/ELK routing).
+  Skill auto-detects MCP availability and switches between Tier 1 (auto-routing)
+  and Tier 2 (proven manual rules).
+- **§19 Cross-Functional Table** template in `drawio-layouts.md`: actor x phase
+  grid using draw.io native `tableLayout`.
+
+### Changed — Two-tier routing architecture
+
+- **Arrow Routing rewritten**: Tier 1 (MCP available) declares source/target only,
+  router handles placement. Tier 2 (MCP unavailable) uses restored practical
+  rules: exitY distribution for multi-connection nodes, bidirectional pair
+  parallel tracks, shortest orthogonal path, coords multiples of 10.
+- **Hard Rules**: restored parent-child containers and I/O direction consistency.
+  Total: 21 rules (renumbered 1-21).
+- **Self-Check**: 24 items -> 15 items. Merged official CRITICAL rules (10)
+  with practice-verified checks (5): flow direction, coords, multi-connection,
+  color reuse.
+- **drawio.md prompt**: Phase 1 simplified to 3-line plan. MCP Detection section
+  added. Key Rules split by tier (13 items). Self-Audit updated to 15 items.
+
+### Removed
+
+- **Mermaid**: all references, `drawio-mermaid.md`, and routing priority removed.
+  All diagrams now route through draw.io XML exclusively.
+
 ## [0.2.0] - 2026-06-28
 
 ### Added — Professional layout enforcement
@@ -19,7 +49,7 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
   density-based gap table, I/O convention, component alignment, tier labels.
 - **4 new Common Pitfalls (10-13)**: scenic detour edges, color reuse, inverted
   space allocation, decorative containers with no legend.
-- Self-check expanded from 15 to 20 items (now 24 items after subsequent revision).
+- Self-check expanded from 15 to 20 items (later revised to 15 in v0.3.0).
 - **drawio.md prompt rewritten**: 12 Key Rules enforced during generation (not
   just post-hoc), 11-item Self-Audit with per-rule visual inspection steps.
 - Based on draw.io official best practices and iterative feedback on generated

@@ -32,6 +32,7 @@ see `style-guide.md`.
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
+| Cross-Functional Table | Actor × Phase process grid, two-axis flowcharts | §19 |
 
 ⚠️ = quality may degrade for hand-written XML; keep diagrams simple or split across pages
 
@@ -860,7 +861,7 @@ layout for mobile vs desktop.
 
 ---
 
-## Section 19 Cross-Functional Table (Actor x Phase Grid)
+## §19 Cross-Functional Table (Actor × Phase Grid)
 
 **When to use:** Cross-functional flowcharts showing process steps across
 TWO axes - actors (rows) and phases (columns). Distinct from swimlanes

@@ -10,7 +10,7 @@ Two engines, auto-routed by request type:
 
 ### Diagrams (draw.io)
 
-18 reusable layout templates:
+19 reusable layout templates:
 vertical stack, horizontal pipeline, center hub, side-by-side comparison,
 grid/table, flowchart, ERD, UML class, sequence, state machine, DFD,
 network topology, org chart/mind map, timeline/Gantt, Venn diagram,
