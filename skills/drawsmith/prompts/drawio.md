@@ -36,13 +36,6 @@ If no template matches: `TEMPLATE: none | DESIGN: from scratch, <flow direction>
 
 This confirmation proves you read the template. Do NOT skip it.
 
-### Diagram type - flowchart | architecture | pipeline | network | ERD | UML | swimlane | timeline | org-chart | comparison | venn | other
-3. **Actors / stages** - who or what (one word each, e.g. "User, API, DB, Cache")
-4. **Grouping** - swimlanes? containers? none?
-
-That's it. Do NOT produce node tables, edge tables, coordinate grids, or
-pre-generation gates. The router handles placement.
-
 ### Phase 2 — Generate XML
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
@@ -54,7 +47,7 @@ pre-generation gates. The router handles placement.
 - Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
-`references/drawio-layouts.md`.** It contains 19 templates (5 with Golden XML)
+`references/drawio-layouts.md`.** It contains 19 templates (6 with Golden XML)
 pre-verified coordinates:
 
 | Section | Pattern | When to use |
@@ -97,35 +90,44 @@ pass/fail for each item. Fix failures before delivering.
 
 0. **TEMPLATE FIRST.** Find and adapt the matching template in
    `drawio-layouts.md` before writing any XML. Copy its Golden XML
-   skeleton — change labels, keep coordinates. Templates have
-   pre-verified layout math. Designing from scratch when a template
-   fits wastes tokens and produces worse results.
+   skeleton - change labels, keep coordinates.
 
-2. **Pick the right shape.** Process=`rounded=1`, decision=`rhombus`,
-   start/end=`ellipse`, DB=`shape=cylinder3`. A decision drawn as a rounded
-   rect is a bug.
-3. **Grid placement.** x = col * 180 + 40, y = row * 120 + 40. Coords
-   MUST be multiples of 10. Exact placement prevents overlap by construction.
-4. **Flow direction first.** TB: source.y > target.y. LR: source.x < target.x.
+1. **Pick the right shape.** Process=`rounded=1`, decision=`rhombus`,
+   start/end=`ellipse`, DB=`shape=cylinder3`.
+
+2. **Grid placement.** x = col * 180 + 40, y = row * 120 + 40. Coords
+   MUST be multiples of 10.
+
+3. **Flow direction first.** TB: source.y > target.y. LR: source.x < target.x.
    Inverted stacks are the single most common diagram bug.
-5. **Declare edges, don't route.** Set `source` and `target` only. Use
+
+4. **Declare edges, don't route.** Set `source` and `target` only. Use
    `edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;` as base style.
-6. **Multi-connection nodes.** When 3+ edges connect to the same side,
+
+5. **Multi-connection nodes.** When 3+ edges connect to the same side,
    distribute exitY values evenly across [0,1] (N=3: 0.2, 0.5, 0.8).
-7. **Bidirectional pairs.** Offset exitY (0.35 forward, 0.65 reverse)
+
+6. **Bidirectional pairs.** Offset exitY (0.35 forward, 0.65 reverse)
    so push/pull arrows run as parallel tracks.
-8. **Shortest path.** Every edge takes the shortest orthogonal route.
+
+7. **Shortest path.** Every edge takes the shortest orthogonal route.
    Only add waypoints to avoid obstacles or distribute connections.
    Max 2 waypoints per edge.
-9. **Parent-child for containers.** Nodes inside a lane/group use
+
+8. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
-10. **Cross-container edges at root.** Edges between nodes in different
+
+9. **Cross-container edges at root.** Edges between nodes in different
    containers use `parent="1"`.
-12. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
-13. **One color per link type.** No color reuse across unrelated connections.
+
+10. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
+
+11. **One color per link type.** No color reuse across unrelated connections.
     Max 5-6 distinct colors per diagram.
-14. **Legend required.** Every color and line style must be explained.
-15. **Native shapes always.** Never approximate a decision with a rounded
+
+12. **Legend required.** Every color and line style must be explained.
+
+13. **Native shapes always.** Never approximate a decision with a rounded
     rectangle or a database with a plain rectangle.
 
 ## Constraints
@@ -154,22 +156,18 @@ pass/fail for each item. Fix failures before delivering.
 
 ## Self-Audit (before delivering)
 
-2. **Template first** — if a matching layout exists in `drawio-layouts.md`,
-   was it adapted instead of designing from scratch?
-3. **Flow direction** — every forward edge satisfies source.y > target.y (TB)
-   or source.x < target.x (LR)?
-4. **Grid placement** — are nodes on the col*180+40, row*120+40 grid with
-   coords multiples of 10?
-5. **Native shapes** — are semantically different concepts visually distinct?
-6. **Edges routed** — no "scenic detours" with 3+ unnecessary waypoints?
-7. **Multi-connection nodes** — distributed exitY values where needed?
-8. **Bidirectional pairs** — parallel tracks (exitY=0.35/0.65)?
-9. **Parent-child correct** — relative coords inside containers, parent="1"
-   for cross-container edges?
-10. **One color per link type** — no semantic color reuse?
-12. **Legend present** — every color and line style explained?
-13. **Single abstraction level** — overview or detail, not both?
-14. **No XML comments** — are <!-- --> absent?
-15. **I/O direction uniform** — same entry/exit sides per tier?
+1. **Template first** - did I copy the Golden XML skeleton from `drawio-layouts.md` before modifying anything?
+2. **Flow direction** - every forward edge satisfies source.y > target.y (TB) or source.x < target.x (LR)?
+3. **Grid placement** - are nodes on the col*180+40, row*120+40 grid with coords multiples of 10?
+4. **Native shapes** - are semantically different concepts visually distinct?
+5. **Edges routed** - no "scenic detours" with 3+ unnecessary waypoints?
+6. **Multi-connection nodes** - distributed exitY values where needed?
+7. **Bidirectional pairs** - parallel tracks (exitY=0.35/0.65)?
+8. **Parent-child correct** - relative coords inside containers, parent="1" for cross-container edges?
+9. **One color per link type** - no semantic color reuse?
+10. **Legend present** - every color and line style explained?
+11. **Single abstraction level** - overview or detail, not both?
+12. **No XML comments** - are <!-- --> absent?
+13. **I/O direction uniform** - same entry/exit sides per tier?
 14. Run the 15-item XML self-check from `drawio-guide.md`.
 

@@ -129,7 +129,7 @@ Users may override any default. Honor these requests:
 |------|---------|-----------|
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
 | `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 15-item self-check | Every draw.io XML diagram |
-| `references/drawio-layouts.md` | 18 reusable draw.io layout templates | Matching diagram patterns |
+| `references/drawio-layouts.md` | 19 reusable draw.io layout templates (6 with Golden XML) | Matching diagram patterns |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |
 | `references/matplotlib-templates.md` | 19 runnable chart code skeletons | Adapting a known chart type |
 

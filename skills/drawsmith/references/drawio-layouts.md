@@ -750,6 +750,40 @@ Vertical gap between levels: 120px. Horizontal spread: children spaced
 **To adapt:** change labels, add/remove levels, switch TB to LR by
 swapping x/y logic.
 
+**Golden XML example (3-level org chart, top-down tree):**
+
+```xml
+<mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="900" pageHeight="700" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <!-- Root (level 0) -->
+    <mxCell id="root" value="&lt;b&gt;CEO&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#37474F;strokeColor=#333333;fontColor=#FFFFFF;fontStyle=1;strokeWidth=2;fontFamily=Times New Roman;fontSize=13;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="330" y="40" width="240" height="60" as="geometry"/></mxCell>
+    <!-- Level 1: VPs -->
+    <mxCell id="vp1" value="&lt;b&gt;VP Engineering&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="50" y="180" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_r_vp1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5" edge="1" parent="1" source="root" target="vp1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="vp2" value="&lt;b&gt;VP Product&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="350" y="180" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_r_vp2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5" edge="1" parent="1" source="root" target="vp2"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="vp3" value="&lt;b&gt;VP Sales&lt;/b&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="650" y="180" width="200" height="60" as="geometry"/></mxCell>
+    <mxCell id="e_r_vp3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5" edge="1" parent="1" source="root" target="vp3"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Level 2: Directors under VP Eng -->
+    <mxCell id="dir1" value="Director&lt;br&gt;Frontend" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#999999;strokeWidth=1;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="10" y="330" width="130" height="50" as="geometry"/></mxCell>
+    <mxCell id="e_vp1_dir1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5" edge="1" parent="1" source="vp1" target="dir1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="dir2" value="Director&lt;br&gt;Backend" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#999999;strokeWidth=1;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="170" y="330" width="130" height="50" as="geometry"/></mxCell>
+    <mxCell id="e_vp1_dir2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5" edge="1" parent="1" source="vp1" target="dir2"><mxGeometry relative="1" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
+
+**Key patterns to copy:**
+- Root node: dark fill + white text + strokeWidth=2 for visual dominance
+- Level 1 (branch): IEEE blue fill, level 2 (leaf): white fill with grey border
+- Children under a parent: x = parent_x + offset_from_parent_center
+- Vertical gap: 140px between levels
+- Edge style: `endArrow=none` for hierarchy lines (not data flow)
+
+
+
+
 ---
 
 ## §14 Timeline / Gantt Chart
