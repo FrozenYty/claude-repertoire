@@ -4,7 +4,7 @@ Run after generating any .drawio file. Reports concrete pass/fail for
 defects that would render the diagram broken or visually unreadable:
 vertex overlap, broken edge refs, duplicate IDs, out-of-page elements,
 html=1 missing, bidirectional overlap, duplicate edges, invisible arrows,
-and exit-point collisions.
+exit-point collisions, and edge-through-shape warnings.
 
 For the full 15-item checklist, see references/drawio-guide.md.
 
@@ -287,6 +287,28 @@ def check(filepath):
             fail_count += 1
     if exit_collisions == 0:
         report.append("PASS: No exit-point collisions")
+
+    # 10. Edge passing through non-endpoint shape (warn: layout issue)
+    edge_shape_warns = 0
+    for e in edges:
+        src_id, tgt_id = e["source"], e["target"]
+        segs = edge_path_segments(e, vertices)
+        for (p1, p2) in segs:
+            for vid, v in vertices.items():
+                if vid in (src_id, tgt_id):
+                    continue
+                bx, by, bw, bh = v["x"], v["y"], v["w"], v["h"]
+                if (min(p1[0], p2[0]) < bx + bw and max(p1[0], p2[0]) > bx and
+                    min(p1[1], p2[1]) < by + bh and max(p1[1], p2[1]) > by):
+                    edge_shape_warns += 1
+                    report.append(f"WARN: Edge {e['id']} ({src_id}->{tgt_id}) passes through {vid}")
+                    break
+            else:
+                continue
+            break
+    if edge_shape_warns == 0:
+        report.append("PASS: No edges crossing through shapes")
+
 
     # Summary
     report.append("")
