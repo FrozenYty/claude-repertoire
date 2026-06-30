@@ -273,6 +273,10 @@ constant.
 
 ## §6 Flowchart
 
+> **Prefer Mermaid for flowcharts.** Mermaid's `flowchart` syntax is simpler,
+> auto-laid-out, and handles branching logic cleanly. Use hand-written XML
+> only when you need custom positioning or the flowchart is trivially simple.
+>
 > **Quality note:** Hand-written XML for this diagram type can produce
 > arrow spaghetti with complex topologies. The check-refine loop helps but
 > has a hard 3-iteration cap. Keep the diagram as simple as possible —
@@ -371,6 +375,10 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;e
 **When to use:** Object-oriented design papers, architecture
 modeling, inheritance/interface hierarchies.
 
+> **Prefer Mermaid for UML class diagrams.** Mermaid's  syntax
+> handles inheritance, composition, and visibility naturally. Use XML only
+> when you need custom positioning.
+
 **Canvas:** 800×700. TB layout. Classes as swimlane boxes with 3
 compartments (name / attributes / methods).
 
@@ -408,6 +416,10 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;s
 **When to use:** Protocol handshakes, API call chains, message-passing
 between actors/objects — any interaction where time flows top-to-bottom
 and participants are shown as vertical lifelines.
+
+> **Prefer Mermaid for sequence diagrams.** Mermaid's 
+> syntax handles lifelines, activation, and blocks (, , )
+> cleanly. Use XML only for very simple cases (<=3 participants).
 
 **Canvas:** 900×700. LR layout (actors placed horizontally).
 
@@ -460,6 +472,9 @@ DB           | 640  | 60  | 40
 
 **When to use:** State transition specifications, protocol state
 machines, embedded system modes, formal-method visualizations.
+
+> **Prefer Mermaid for state machines.** Mermaid's  syntax
+> handles compound states and junctions. Use XML only for custom positioning.
 
 **Canvas:** 800×650. Variable layout — states can be arranged
 horizontally (LR) or in a circle depending on transition count.
@@ -725,6 +740,10 @@ instead of four quadrants.
 
 ## §17 Swimlane Diagram
 
+> **Prefer Mermaid for cross-functional flows** when you don't need lane
+> structure - a Mermaid flowchart with subgraphs often suffices. Use XML
+> swimlanes when lane grouping is the primary visual structure.
+>
 > **Capability note:** Hand-written draw.io XML for swimlanes is inherently
 > error-prone — parent-child nesting, cross-lane edge routing, and lane
 > responsibility logic often produce spaghetti on first attempt. The
@@ -855,3 +874,94 @@ prototypes — any user-facing interface mockup before development.
 
 **To adapt:** change screen dimensions, add/remove UI elements, adjust
 layout for mobile vs desktop.
+
+---
+
+## Section 19 Cross-Functional Table (Actor x Phase Grid)
+
+**When to use:** Cross-functional flowcharts showing process steps across
+TWO axes - actors (rows) and phases (columns). Distinct from swimlanes
+(one axis only).
+
+**Canvas:** 900x320 per ~3 rows. Scale width for more phases.
+
+**Layout conventions:**
+- Outer container uses `shape=table;childLayout=tableLayout`
+- Rows: `shape=tableRow` children of the table
+- Cells: children of rows - one per (actor, phase) intersection
+- First row = phase headers; first cell of data rows = actor label
+- Process nodes go INSIDE cells at relative coords
+- Cross-cell edges use `parent="1"`
+
+**Shape vocabulary:**
+
+| Element | Style keywords |
+|---|---|
+| Table | `shape=table;childLayout=tableLayout;startSize=0;collapsible=0;fillColor=none;` |
+| Row | `shape=tableRow;horizontal=0;startSize=0;collapsible=0;` |
+| Header cell | `text;align=center;fontStyle=1;fillColor=#e8e8e8;` |
+| Actor label | `fillColor=#dae8fc;fontStyle=1;` |
+| Body cell | `fillColor=none;` (transparent, just a container) |
+| Process node | `rounded=1;whiteSpace=wrap;html=1;` |
+
+**Example (2 actors x 2 phases):**
+
+```xml
+<mxCell id="tbl" style="shape=table;childLayout=tableLayout;startSize=0;collapsible=0;fillColor=none;" vertex="1" parent="1">
+  <mxGeometry x="0" y="0" width="900" height="320" as="geometry"/>
+</mxCell>
+<mxCell id="r0" style="shape=tableRow;horizontal=0;startSize=0;collapsible=0;" vertex="1" parent="tbl">
+  <mxGeometry width="900" height="40" as="geometry"/>
+</mxCell>
+<mxCell id="h0" style="text;html=1;" vertex="1" parent="r0">
+  <mxGeometry width="140" height="40" as="geometry"/>
+</mxCell>
+<mxCell id="h1" value="Order" style="text;align=center;fontStyle=1;fillColor=#e8e8e8;" vertex="1" parent="r0">
+  <mxGeometry x="140" width="380" height="40" as="geometry"/>
+</mxCell>
+<mxCell id="h2" value="Fulfill" style="text;align=center;fontStyle=1;fillColor=#e8e8e8;" vertex="1" parent="r0">
+  <mxGeometry x="520" width="380" height="40" as="geometry"/>
+</mxCell>
+<mxCell id="r1" style="shape=tableRow;horizontal=0;startSize=0;collapsible=0;" vertex="1" parent="tbl">
+  <mxGeometry y="40" width="900" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="a1" value="Customer" style="fillColor=#dae8fc;fontStyle=1;" vertex="1" parent="r1">
+  <mxGeometry width="140" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="c11" style="fillColor=none;" vertex="1" parent="r1">
+  <mxGeometry x="140" width="380" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="n_place" value="Place Order" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="c11">
+  <mxGeometry x="120" y="40" width="140" height="60" as="geometry"/>
+</mxCell>
+<mxCell id="c12" style="fillColor=none;" vertex="1" parent="r1">
+  <mxGeometry x="520" width="380" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="r2" style="shape=tableRow;horizontal=0;startSize=0;collapsible=0;" vertex="1" parent="tbl">
+  <mxGeometry y="180" width="900" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="a2" value="System" style="fillColor=#d5e8d4;fontStyle=1;" vertex="1" parent="r2">
+  <mxGeometry width="140" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="c21" style="fillColor=none;" vertex="1" parent="r2">
+  <mxGeometry x="140" width="380" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="n_validate" value="Validate" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="c21">
+  <mxGeometry x="120" y="40" width="140" height="60" as="geometry"/>
+</mxCell>
+<mxCell id="c22" style="fillColor=none;" vertex="1" parent="r2">
+  <mxGeometry x="520" width="380" height="140" as="geometry"/>
+</mxCell>
+<mxCell id="n_ship" value="Ship" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="c22">
+  <mxGeometry x="120" y="40" width="140" height="60" as="geometry"/>
+</mxCell>
+<mxCell id="e1" edge="1" parent="1" source="n_place" target="n_validate" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;">
+  <mxGeometry relative="1" as="geometry"/>
+</mxCell>
+<mxCell id="e2" edge="1" parent="1" source="n_validate" target="n_ship" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;">
+  <mxGeometry relative="1" as="geometry"/>
+</mxCell>
+```
+
+**To adapt:** change actor labels, phase names, process node text. Keep the
+table/row/cell structure intact.

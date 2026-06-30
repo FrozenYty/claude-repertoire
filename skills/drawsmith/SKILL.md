@@ -33,18 +33,28 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 **Decision rules — evaluate in order:**
 
-1. **Is it a conceptual structure with discrete components connected by
+1. **Is it a flowchart, sequence diagram, ER diagram, Gantt chart, state
+   machine, mindmap, timeline, or class diagram?** -> Route to **draw.io
+   (Mermaid)**. These types auto-layout perfectly from simple text syntax.
+   -> Goto **Diagram Workflow (draw.io)** and use Mermaid syntax.
+
+2. **Is it a conceptual structure requiring custom positioning - architecture,
+   network topology, swimlane, cloud infrastructure, or Venn diagram?**
+   -> Route to **draw.io (XML)**. These need precise layout or domain-specific
+   icons. -> Goto **Diagram Workflow (draw.io)** and use XML.
+
+3. **Is it a conceptual structure with discrete components connected by
    arrows?** → Route to **draw.io**. Covers: architectures, pipelines,
    flowcharts, swimlanes, network topologies, ERDs, UML, state machines,
    timelines, org charts, Venn diagrams, 2x2 matrices. No numerical axes.
    → Goto **Diagram Workflow** below.
 
-2. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
+4. **Does it have numerical axes (X/Y bar, line, scatter, curve)?** →
    Route to **matplotlib**. Covers: bar charts, line curves, scatter
    plots, ROC/PR, heatmaps, violin/box, Pareto, etc. → Goto
    **Chart Workflow** below.
 
-3. **Still ambiguous?** **Ask the user to clarify.**
+5. **Still ambiguous?** **Ask the user to clarify.**
 
 | Feature | draw.io | matplotlib |
 |---------|---------|------------|
@@ -52,7 +62,7 @@ or "illustration", decide which engine to use BEFORE starting work.
 | Numerical axes (X/Y) | No | Yes |
 | Architecture / flowchart / topology | Yes | No |
 | Bar / line / scatter / heatmap | No | Yes |
-| Output format | `.drawio` | `.py` (produces `.png` + `.pdf`) |
+| Output format | `.drawio` / `.mmd` | `.py` (produces `.png` + `.pdf`) |
 
 ---
 
@@ -68,6 +78,10 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 ## Diagram Workflow (draw.io)
 
+0. **Pick format** - Mermaid for flowcharts, sequences, ER, Gantt, state
+   machines, mindmaps, timelines, class diagrams. XML for architecture,
+   network topology, swimlanes, cloud infrastructure, Venn diagrams.
+   Mermaid is simpler and auto-laid-out - prefer it when the type matches.
 1. **Check templates** — if the request matches a known layout (§1-§18
    in `references/drawio-layouts.md`), adapt it. Skip Phase 1 planning
    when a template fits — the layout math is already done.
@@ -124,8 +138,9 @@ Users may override any default. Honor these requests:
 | File | Content | Read when |
 |------|---------|-----------|
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
-| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 24-item self-check | Every draw.io diagram |
-| `references/drawio-layouts.md` | 18 reusable draw.io layout templates | Matching diagram patterns |
+| `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 10-item self-check | Every draw.io XML diagram |
+| `references/drawio-mermaid.md` | Mermaid syntax reference (28 diagram types) | Flowcharts, sequences, ER, Gantt, mindmaps, etc. |
+| `references/drawio-layouts.md` | 18 reusable draw.io XML layout templates | Matching diagram patterns (XML only) |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |
 | `references/matplotlib-templates.md` | 19 runnable chart code skeletons | Adapting a known chart type |
 
