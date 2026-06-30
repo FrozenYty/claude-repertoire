@@ -757,22 +757,22 @@ Key points:
 
 | Element | Style | When |
 |---|---|---|
-| Lane |  | One per actor |
-| Start |  | Leftmost in first lane |
-| End |  | One per terminal |
-| Process |  | White fill, stroke=owning lane color |
-| Decision |  | 1 input, 2 outputs |
+| Lane | `swimlane;startSize=30;horizontal=0;container=1;pointerEvents=0;fillColor=#F5F5F5;strokeColor=#999999;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1` | One per actor |
+| Start | `ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter` | Leftmost in first lane |
+| End | `ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=ellipsePerimeter` | One per terminal |
+| Process | `rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1` | White fill, stroke=owning lane color |
+| Decision | `rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=rhombusPerimeter` | 1 input, 2 outputs |
 
 ### Lane color palette (official draw.io pastels)
 
 | Role | Lane fill | Lane stroke | Node stroke |
 |------|-----------|-------------|-------------|
-| Customer/Client |  |  |  |
-| Internal system |  |  |  |
-| Payment/Finance |  |  |  |
-| Warehouse/Ops |  |  |  |
-| External partner |  |  |  |
-| Generic |  |  |  |
+| Customer/Client | `#FCE4EC` | `#B85450` | `#B85450` |
+| Internal system | `#E3F2FD` | `#6C8EBF` | `#6C8EBF` |
+| Payment/Finance | `#F3E5F5` | `#9673A6` | `#9673A6` |
+| Warehouse/Ops | `#E8F5E9` | `#82B366` | `#82B366` |
+| External partner | `#FFF3E0` | `#D79B00` | `#D79B00` |
+| Generic | `#F5F5F5` | `#999999` | `#999999` |
 
 ### Flow direction rules
 

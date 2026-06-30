@@ -163,7 +163,18 @@ These are non-negotiable unless marked "recommended."
    `style-guide.md`. Never use matplotlib default colors or `jet`/
    `rainbow` colormaps. Max 5-6 distinct colors per figure.
 
+### Best Practices
+
 7. **RECOMMENDED — Professional resolution.** Output >=600 dpi PNG.
    For vector output (PDF/SVG), set `pdf.fonttype = 42` to embed fonts
    for cross-platform consistency. These are best practices, not
    hard requirements — the user's needs may vary.
+
+---
+
+## Template Variables
+
+Prompt files under  use  placeholders
+(e.g., , , ).
+These are filled at runtime by Claude Code when the skill is invoked —
+the LLM sees the user's actual input substituted in place of each variable.

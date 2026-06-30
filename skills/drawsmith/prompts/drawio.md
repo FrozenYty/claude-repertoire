@@ -46,11 +46,11 @@ Fix the plan. Only proceed to Phase 2 when all checks pass.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (24 non-negotiable: geometry, IDs, grid alignment, no overlap)
+- Hard rules (22 non-negotiable: geometry, IDs, grid alignment, no overlap)
 - Arrow routing (orthogonal, residual, feedback loops)
 - Container layout (labels INSIDE, >=10px padding, >=30px section gaps)
 - Common Pitfalls (14 real failures and their fixes)
-- Self-check checklist (20 items)
+- Self-check checklist (24 items)
 
 **If the request matches a known layout pattern, read
 `references/drawio-layouts.md`.** It contains 18 canonical templates with
@@ -87,7 +87,7 @@ line weights, spacing, and user-customizable DPI/size options.
 
 ### Phase 3 — Self-check
 
-Run the 21-item checklist from `drawio-guide.md` Self-Check section. Report
+Run the 24-item checklist from `drawio-guide.md` Self-Check section. Report
 pass/fail for each item. Fix failures before delivering.
 
 ---

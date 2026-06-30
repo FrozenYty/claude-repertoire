@@ -4,6 +4,10 @@ Checks generated Python plotting code for common anti-patterns before
 the script is run. Catches legend overlap, label crowding, missing
 layout config, and other issues that only become visible at render time.
 
+This script checks the AUTOMATABLE subset of the matplotlib-guide.md self-check
+(legend placement, font sizing, colormap safety, layout engine conflicts, API
+anti-patterns). For the full 13-item checklist, see references/matplotlib-guide.md.
+
 Usage: python matplotlib-check.py <script.py>
 """
 

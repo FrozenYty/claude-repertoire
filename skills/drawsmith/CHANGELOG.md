@@ -19,7 +19,7 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
   density-based gap table, I/O convention, component alignment, tier labels.
 - **4 new Common Pitfalls (10-13)**: scenic detour edges, color reuse, inverted
   space allocation, decorative containers with no legend.
-- Self-check expanded from 15 to 20 items.
+- Self-check expanded from 15 to 20 items (now 24 items after subsequent revision).
 - **drawio.md prompt rewritten**: 12 Key Rules enforced during generation (not
   just post-hoc), 11-item Self-Audit with per-rule visual inspection steps.
 - Based on draw.io official best practices and iterative feedback on generated

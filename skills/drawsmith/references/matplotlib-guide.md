@@ -278,7 +278,7 @@ ax.scatter(x, y, s=1, rasterized=True)
 fig.savefig('output.pdf', dpi=300)
 ```
 
-## Self-check (before delivering)## Self-check (before delivering)
+## Self-check (before delivering)
 
 ```
  1. fonttype 42 set (recommended):              pass/fail

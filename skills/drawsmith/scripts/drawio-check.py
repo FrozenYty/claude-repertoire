@@ -3,6 +3,10 @@
 Run after generating any .drawio file. Reports concrete pass/fail for
 edge crossings, bounding box overlap, color reuse, and perimeter gaps.
 
+This script checks the AUTOMATABLE subset of the drawio-guide.md self-check
+(overlap detection, edge crossings, page bounds, color reuse, multi-connection
+distribution). For the full 24-item checklist, see references/drawio-guide.md.
+
 Usage: python diagram-check.py <file.drawio>
 """
 
