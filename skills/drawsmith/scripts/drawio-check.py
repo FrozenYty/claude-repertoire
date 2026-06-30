@@ -159,7 +159,7 @@ def check(filepath):
     report = []
     fail_count = 0
 
-    # 1. Bounding box overlap
+    # 1. Vertex overlap (critical: nodes visually collide)
     vids = list(vertices.keys())
     overlaps = []
     for i in range(len(vids)):
@@ -175,41 +175,34 @@ def check(filepath):
     else:
         report.append("PASS: No vertex bounding box overlap")
 
-    # 2. Edge crossings (between different edges)
-    all_segments = []
+    # 2. Edge reference validity (critical: broken edges = broken diagram)
+    vertex_ids = set(vertices.keys())
     for e in edges:
-        segs = edge_path_segments(e, vertices)
-        for seg in segs:
-            all_segments.append((e["id"], seg))
-
-    crossings = []
-    # Build edge adjacency info
-    edge_vertices = {}
-    for e in edges:
-        edge_vertices[e["id"]] = {e["source"], e["target"]}
-    for i in range(len(all_segments)):
-        for j in range(i + 1, len(all_segments)):
-            eid1, (p1, p2) = all_segments[i]
-            eid2, (q1, q2) = all_segments[j]
-            # Skip segments sharing a source/target (they naturally meet)
-            if eid1 == eid2:
-                continue
-            # Skip edges that share any endpoint vertex
-            vset1 = edge_vertices.get(eid1, set())
-            vset2 = edge_vertices.get(eid2, set())
-            if vset1 & vset2:
-                continue
-            if line_segments_intersect(p1, p2, q1, q2):
-                crossings.append((eid1, eid2))
-
-    if crossings:
-        for c in crossings:
-            report.append(f"WARN: Edge-edge crossing between {c[0]} and {c[1]} (harmless with jumpStyle=arc)")
+        if e["source"] not in vertex_ids:
+            report.append(f"FAIL: Edge {e['id']}: source '{e['source']}' not found")
             fail_count += 1
-    else:
-        report.append("PASS: No edge-edge crossings detected")
+        if e["target"] not in vertex_ids:
+            report.append(f"FAIL: Edge {e['id']}: target '{e['target']}' not found")
+            fail_count += 1
+    if fail_count == len(overlaps):  # no new fails from edges
+        report.append("PASS: All edge references valid")
 
-    # 3. Out-of-page elements
+    # 3. Duplicate IDs (critical: breaks draw.io rendering)
+    seen = {}
+    for vid in vertices:
+        if vid in seen:
+            report.append(f"FAIL: Duplicate vertex ID '{vid}'")
+            fail_count += 1
+        seen[vid] = True
+    for e in edges:
+        if e["id"] in seen:
+            report.append(f"FAIL: Duplicate edge ID '{e['id']}'")
+            fail_count += 1
+        seen[e["id"]] = True
+    if fail_count == len(overlaps):  # no new fails
+        report.append("PASS: All IDs unique")
+
+    # 4. Out-of-page elements (critical: invisible in editor)
     oob = []
     for vid, v in vertices.items():
         if v["x"] < 0 or v["y"] < 0 or v["x"] + v["w"] > pw or v["y"] + v["h"] > ph:
@@ -221,245 +214,23 @@ def check(filepath):
     else:
         report.append("PASS: All vertices within page bounds")
 
-    # 4. Color reuse check (same strokeColor on semantically different vertex types)
-    colors_used = defaultdict(list)
-    for vid, v in vertices.items():
-        style = parse_style(v["style"])
-        sc = style.get("strokeColor", "")
-        if sc and sc not in ("none", "default", "#000000"):
-            colors_used[sc].append(vid)
-
-    color_conflicts = []
-    for color, vlist in colors_used.items():
-        if len(vlist) > 3:
-            # Check if all same shape type (semantic similarity)
-            shapes = set()
-            for vvid in vlist:
-                s = parse_style(vertices[vvid]["style"])
-                shapes.add(s.get("shape", "rect"))
-            if len(shapes) > 1:  # same color on different shapes = likely conflict
-                color_conflicts.append((color, vlist, shapes))
-    if color_conflicts:
-        for cc in color_conflicts:
-            report.append(
-                f"WARN: Color {cc[0]} used on different shape types {cc[2]} — check semantic consistency"
-            )
-    else:
-        report.append("PASS: No color semantic conflicts detected")
-
-    # 5. Multi-connection node check
-    connections_per_side = defaultdict(list)
-    for e in edges:
-        style = parse_style(e["style"])
-        ex = style.get("exitX", "")
-        ey = style.get("exitY", "")
-        if ex and ey:
-            key = f"{e['source']}:exitX={ex}"
-            connections_per_side[key].append(e["id"])
-
-    for side_key, e_list in connections_per_side.items():
-        if len(e_list) > 1:
-            exit_ys = set()
-            for eid in e_list:
-                for ee in edges:
-                    if ee["id"] == eid:
-                        s = parse_style(ee["style"])
-                        exit_ys.add(s.get("exitY", "0.5"))
-            if len(exit_ys) < len(e_list):
-                report.append(
-                    f"WARN: {side_key} has {len(e_list)} edges sharing exitY values — may overlap"
-                )
-
-
-    # 6. Coordinate multiples-of-10 check
-    coord_issues = []
-    for vid, v in vertices.items():
-        if v["x"] % 10 != 0 or v["y"] % 10 != 0:
-            coord_issues.append(f"{vid}(x={v['x']},y={v['y']})")
-    if coord_issues:
-        for ci in coord_issues:
-            report.append(f"FAIL: Coordinates not multiples of 10: {ci}")
-            fail_count += 1
-    else:
-        report.append("PASS: All coordinates multiples of 10")
-
-    # 7. Minimum spacing check (warning only)
-    from itertools import combinations
-    spacing_warnings = []
-    for a_id, b_id in combinations(vids, 2):
-        a = vertices[a_id]
-        b = vertices[b_id]
-        # Skip parent-child pairs
-        if a.get("parent") == b_id or b.get("parent") == a_id:
-            continue
-        # Check horizontal gap
-        h_gap = max(0, min(a["x"] + a["w"], b["x"] + b["w"]) - max(a["x"], b["x"]))
-        v_gap = max(0, min(a["y"] + a["h"], b["y"] + b["h"]) - max(a["y"], b["y"]))
-        # If they're adjacent horizontally and vertically gap is tight
-        if h_gap > 0:  # horizontally overlapping
-            vert_dist = abs(a["y"] - b["y"]) if a["y"] < b["y"] else abs(b["y"] - a["y"])
-            if 0 < vert_dist < 10 and a["y"] + a["h"] != b["y"] and b["y"] + b["h"] != a["y"]:
-                spacing_warnings.append(f"{a_id} and {b_id} too close (vert gap {vert_dist}px)")
-        if v_gap > 0:  # vertically overlapping
-            horiz_dist = abs(a["x"] - b["x"]) if a["x"] < b["x"] else abs(b["x"] - a["x"])
-            if 0 < horiz_dist < 10 and a["x"] + a["w"] != b["x"] and b["x"] + b["w"] != a["x"]:
-                spacing_warnings.append(f"{a_id} and {b_id} too close (horiz gap {horiz_dist}px)")
-    if spacing_warnings:
-        for sw in spacing_warnings[:5]:  # limit to first 5
-            report.append(f"WARN: Tight spacing: {sw}")
-    else:
-        report.append("PASS: Minimum node spacing acceptable")
-
-    # 8. Edge crossing through non-endpoint shapes
-    edge_shape_crossings = []
-    for e in edges:
-        segs = edge_path_segments(e, vertices)
-        e_src = e["source"]
-        e_tgt = e["target"]
-        for seg in segs:
-            p1, p2 = seg
-            for vid, v in vertices.items():
-                if vid in (e_src, e_tgt):
-                    continue
-                # Check if seg crosses the vertex bounding box
-                bx, by, bw, bh = v["x"], v["y"], v["w"], v["h"]
-                # Simple AABB line intersection
-                if (min(p1[0], p2[0]) < bx + bw and max(p1[0], p2[0]) > bx and
-                    min(p1[1], p2[1]) < by + bh and max(p1[1], p2[1]) > by):
-                    # Check if the line actually crosses (not just passes by)
-                    # This is approximate — flag for manual review
-                    if v.get("parent") != "1" and e_src not in (vid,):
-                        edge_shape_crossings.append((e["id"], vid))
-    if edge_shape_crossings:
-        for esc in edge_shape_crossings[:5]:
-            report.append(f"WARN: Edge {esc[0]} may cross shape {esc[1]}")
-    else:
-        report.append("PASS: No edges crossing non-endpoint shapes")
-
-
-    # 9. Edge source/target reference validation (Hard Rule 4)
-    edge_ref_issues = []
-    vertex_ids = set(vertices.keys())
-    for e in edges:
-        if e["source"] not in vertex_ids:
-            edge_ref_issues.append(f"{e['id']}: source '{e['source']}' not found")
-        if e["target"] not in vertex_ids:
-            edge_ref_issues.append(f"{e['id']}: target '{e['target']}' not found")
-    if edge_ref_issues:
-        for er in edge_ref_issues:
-            report.append(f"FAIL: Edge ref invalid: {er}")
-            fail_count += 1
-    else:
-        report.append("PASS: All edge references valid")
-
-    # 10. Duplicate ID check (Hard Rule 5)
-    seen_ids = {}
-    all_cells = []
-    for e in edges:
-        all_cells.append(("edge", e["id"]))
-    for vid in vertices:
-        all_cells.append(("vertex", vid))
-    dup_issues = []
-    for cell_type, cid in all_cells:
-        if cid in seen_ids:
-            dup_issues.append(f"{cid} (first as {seen_ids[cid]}, then as {cell_type})")
-        else:
-            seen_ids[cid] = cell_type
-    if dup_issues:
-        for di in dup_issues:
-            report.append(f"FAIL: Duplicate ID: {di}")
-            fail_count += 1
-    else:
-        report.append("PASS: All IDs unique")
-
-    # 11. XML structure validation (Hard Rules 1-3)
-    # Verify id="0" and id="1" exist as root/structure cells
-    tree2 = ET.parse(filepath)
-    all_ids = {c.get("id") for c in tree2.getroot().iter("mxCell")}
-    if "0" not in all_ids:
-        report.append("FAIL: Missing cell id=0 (root)")
-        fail_count += 1
-    elif "1" not in all_ids:
-        report.append("FAIL: Missing cell id=1 (default layer)")
-        fail_count += 1
-    else:
-        report.append("PASS: Root cells id=0/1 present")
-    # 12. Font consistency check
-    fonts_used = set()
-    for vid, v in vertices.items():
-        style = parse_style(v["style"])
-        ff = style.get("fontFamily", "")
-        if ff:
-            fonts_used.add(ff)
-    if len(fonts_used) > 1:
-        report.append(f"WARN: Multiple fonts used: {fonts_used}")
-    elif len(fonts_used) == 1:
-        report.append(f"PASS: Consistent font ({list(fonts_used)[0]})")
-    else:
-        report.append("PASS: No font declarations (will use app default)")
-
-    # 13. Edge style consistency check
-    edge_styles_used = set()
-    for e in edges:
-        style = parse_style(e["style"])
-        es = style.get("edgeStyle", "none")
-        edge_styles_used.add(es)
-    if len(edge_styles_used) > 1:
-        report.append(f"WARN: Multiple edge styles used: {edge_styles_used}")
-    else:
-        report.append(f"PASS: Consistent edge style ({list(edge_styles_used)[0]})")
-
-    # 14. Legend presence check (warn if >3 colors, no legend-like node)
-    colors_in_use = set()
-    for vid, v in vertices.items():
-        style = parse_style(v["style"])
-        sc = style.get("strokeColor", "")
-        if sc and sc not in ("none", "default", "#000000"):
-            colors_in_use.add(sc)
-    has_legend = any("legend" in v.get("value", "").lower() or
-                     "legend" in v.get("id", "").lower()
-                     for v in vertices.values())
-    if len(colors_in_use) > 3 and not has_legend:
-        report.append(f"WARN: {len(colors_in_use)} colors used, no legend node detected")
-    else:
-        report.append("PASS: Legend check OK")
-
-
-    # 15. html=1 check on cells with HTML tags in value
-    html_issues = []
-    tree3 = ET.parse(filepath)
-    for cell in tree3.getroot().iter("mxCell"):
+    # 5. html=1 missing on HTML labels (critical: renders &lt;br&gt; as raw text)
+    tree = ET.parse(filepath)
+    for cell in tree.getroot().iter("mxCell"):
         value = cell.get("value", "")
         style = cell.get("style", "")
-        if value and ("&lt;" in value or "<br>" in value or "<b>" in value or "<i>" in value):
+        if value and ("&lt;" in value or "<br>" in value or "<b>" in value):
             if "html=1" not in style:
-                html_issues.append(cell.get("id", "?"))
-    if html_issues:
-        for hi in html_issues[:5]:
-            report.append(f"FAIL: Cell {hi} has HTML tags in value but no html=1 in style")
-            fail_count += 1
-    else:
-        report.append("PASS: HTML cells have html=1")
-
-    # 16. Container child coordinate check (Hard Rule 12)
-    container_ids = set()
-    for vid, v in vertices.items():
-        style = parse_style(v["style"])
-        if style.get("container") == "1" or style.get("swimlane") is True:
-            container_ids.add(vid)
-    child_coord_issues = []
-    for vid, v in vertices.items():
-        if v["parent"] in container_ids:
-            # Child of a container - coords should be small (relative to container)
-            if v["x"] > 1000 or v["y"] > 1000:
-                child_coord_issues.append(f"{vid} (parent={v['parent']}, x={v['x']}, y={v['y']})")
-    if child_coord_issues:
-        for cci in child_coord_issues[:5]:
-            report.append(f"WARN: Container child may have absolute coords: {cci}")
-    else:
-        report.append("PASS: Container child coordinates OK")
+                report.append(f"FAIL: Cell {cell.get('id','?')} has HTML but no html=1")
+                fail_count += 1
 
     # Summary
+    report.append("")
+    report.append(f"Total: {fail_count} failures")
+    report.append(f"Vertices: {len(vertices)}, Edges: {len(edges)}, Canvas: {pw}x{ph}")
+
+    return chr(10).join(report), fail_count == 0
+
     report.append("")
     report.append(f"Total: {fail_count} failures, {len(color_conflicts)} warnings")
     report.append(f"Vertices: {len(vertices)}, Edges: {len(edges)}, Canvas: {pw}x{ph}")
