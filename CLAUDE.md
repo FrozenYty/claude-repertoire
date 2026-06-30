@@ -6,17 +6,19 @@ directory under `skills/` with its own `SKILL.md`, `README.md`,
 
 ## Project Location
 
-This repo is maintained at `D:\MYPROJS\CLAUDE_CODE_FILES\claude-repertoire`.
-Skills are deployed via symlinks from `~/.claude/skills/`:
+This repo is the single source of truth for all skills. Skills are deployed
+by symlinking from `~/.claude/skills/`:
 
 ```bash
-ln -s "$PWD"/claude-repertoire/skills/drawsmith ~/.claude/skills/drawsmith
+ln -s "$PWD"/skills/<name> ~/.claude/skills/<name>
 ```
 
-When editing a skill, modify the **repo copy** (under this directory), not
-the symlinked path. Changes to files under `~/.claude/skills/` affect the
-repo copy automatically since they point to the same inode — but always
-verify you're working in the repo directory before committing.
+When editing a skill, modify files in **this repo** — not the symlinked copy.
+Changes propagate automatically since both paths point to the same files.
+
+If symlinks aren't available (e.g., Windows without Developer Mode), copy
+the skill directories instead and keep the repo copy as the authoritative
+version.
 
 ## Skill Structure
 
@@ -31,24 +33,22 @@ skills/<skill-name>/
 └── scripts/          # Validation / utility scripts
 ```
 
-## Current Skills
+## Skills
 
-| Skill | Purpose |
-|-------|---------|
-| `drawsmith` | Professional diagram + chart generation (draw.io + matplotlib) |
-| `papersmith` | Academic paper writing with integrated diagram support |
-| `brain-admin` | Claude Code instruction system management |
+See the `skills/` directory for the current list. Each subdirectory is one
+standalone skill — zero runtime dependencies between them.
 
-## Commit Conventions (MANDATORY)
+## Commit Conventions (MANDATORY — authoritative)
 
-Every commit must follow this format:
+This section is the definitive reference. `CONTRIBUTING.md` mirrors these
+rules but defers to this file if they ever disagree.
 
 ```
 <type>[(scope)]: <short description>
 
 <optional body — why, not what>
 
-Author: FrozenYty
+Author: <name>
 ```
 
 - **Subject:** 72 chars max, lowercase after colon, no trailing period
@@ -61,12 +61,10 @@ Author: FrozenYty
 
 ## Workflow
 
-1. **Edit in repo, not in ~/.claude.** Changes under
-   `D:\MYPROJS\CLAUDE_CODE_FILES\claude-repertoire\skills\<name>\`
+1. **Edit in this repo**, not in `~/.claude/skills/`.
 2. **Test with a real Claude Code session** before committing.
 3. **Update CHANGELOG.md** in the affected skill(s).
-4. **Commit and push directly to `main`** — no PR ceremony needed for this
-   personal repo. Delete feature branches after merge.
+4. **Commit and push directly to `main`**. Delete feature branches after merge.
 
 ## Language & Style
 
@@ -78,7 +76,7 @@ Author: FrozenYty
 
 ## See Also
 
-- `~/.claude/CLAUDE.md` — user-level behavioral guidelines (chat in Chinese,
-  write in English, simplicity first, surgical changes)
-- `D:\MYPROJS\.claude\CLAUDE.md` — workspace-level overrides (conda env,
-  output directory, GitHub over SSH)
+- User-level `CLAUDE.md` — behavioral guidelines shared across all projects
+  (chat language, code style, simplicity-first, surgical changes)
+- Workspace-level `CLAUDE.md` — environment overrides (conda env, output
+  directory, GitHub transport)
