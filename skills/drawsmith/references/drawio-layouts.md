@@ -33,7 +33,7 @@ see `style-guide.md`.
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
 
-⚠️ = quality may degrade for hand-written XML; consider draw.io Mermaid import for complex cases
+⚠️ = quality may degrade for hand-written XML; keep diagrams simple or split across pages
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction
@@ -273,10 +273,6 @@ constant.
 
 ## §6 Flowchart
 
-> **Prefer Mermaid for flowcharts.** Mermaid's `flowchart` syntax is simpler,
-> auto-laid-out, and handles branching logic cleanly. Use hand-written XML
-> only when you need custom positioning or the flowchart is trivially simple.
->
 > **Quality note:** Hand-written XML for this diagram type can produce
 > arrow spaghetti with complex topologies. The check-refine loop helps but
 > has a hard 3-iteration cap. Keep the diagram as simple as possible —
@@ -375,9 +371,6 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;e
 **When to use:** Object-oriented design papers, architecture
 modeling, inheritance/interface hierarchies.
 
-> **Prefer Mermaid for UML class diagrams.** Mermaid's  syntax
-> handles inheritance, composition, and visibility naturally. Use XML only
-> when you need custom positioning.
 
 **Canvas:** 800×700. TB layout. Classes as swimlane boxes with 3
 compartments (name / attributes / methods).
@@ -417,9 +410,6 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;s
 between actors/objects — any interaction where time flows top-to-bottom
 and participants are shown as vertical lifelines.
 
-> **Prefer Mermaid for sequence diagrams.** Mermaid's 
-> syntax handles lifelines, activation, and blocks (, , )
-> cleanly. Use XML only for very simple cases (<=3 participants).
 
 **Canvas:** 900×700. LR layout (actors placed horizontally).
 
@@ -473,8 +463,6 @@ DB           | 640  | 60  | 40
 **When to use:** State transition specifications, protocol state
 machines, embedded system modes, formal-method visualizations.
 
-> **Prefer Mermaid for state machines.** Mermaid's  syntax
-> handles compound states and junctions. Use XML only for custom positioning.
 
 **Canvas:** 800×650. Variable layout — states can be arranged
 horizontally (LR) or in a circle depending on transition count.
@@ -740,16 +728,11 @@ instead of four quadrants.
 
 ## §17 Swimlane Diagram
 
-> **Prefer Mermaid for cross-functional flows** when you don't need lane
-> structure - a Mermaid flowchart with subgraphs often suffices. Use XML
-> swimlanes when lane grouping is the primary visual structure.
->
 > **Capability note:** Hand-written draw.io XML for swimlanes is inherently
 > error-prone — parent-child nesting, cross-lane edge routing, and lane
 > responsibility logic often produce spaghetti on first attempt. The
-> check-refine loop helps but has a hard 3-iteration cap. For production
-> swimlane diagrams, consider using draw.io's built-in **Arrange → Insert
-> → Advanced → Mermaid** import instead, which auto-layouts perfectly.
+> check-refine loop helps but has a hard 3-iteration cap. Keep diagrams
+> simple — split complex cases across multiple pages.
 
 **When to use:** Cross-functional process flows, responsibility matrices,
 RACI charts — any process where tasks execute across multiple actors,

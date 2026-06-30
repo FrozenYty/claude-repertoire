@@ -17,18 +17,27 @@ hand-written XML). Deliver the best output you can within 3 fix iterations.
 ## MCP Detection (READ FIRST)
 
 Before starting, check if the `create_diagram` or `search_shapes` MCP tools
-are available in your tool list.
+are available. If yes, use them — they provide auto-routing and shape search.
 
-**MCP available:** preferred path.
-- Use `search_shapes` to find exact style strings for cloud/network/industry icons.
-- Declare `source`/`target` on edges only. Use `routing: "libavoid"` or
-  `postLayout: "elk"` on `create_diagram`. No waypoints needed.
-- Place nodes on rough grid; the router handles alignment.
+**MCP available (preferred):**
+- `search_shapes(query)` — find exact style strings for cloud/network/industry
+  icons. Call before generating XML for any diagram needing domain-specific shapes.
+- `create_diagram(xml, routing: "libavoid")` — renders the diagram with
+  obstacle-avoiding orthogonal edge routing. Just declare `source`/`target`
+  on edges; no waypoints needed.
+- `create_diagram(xml, postLayout: "elk")` — full hierarchical re-layout
+  for flowcharts and directional diagrams.
+- Place nodes on rough grid; the router handles fine alignment.
 
-**MCP unavailable:** fallback path.
-- Place nodes on exact grid (x = col*180+40, y = row*120+40, coords multiples of 10).
-- Hand-route edges where needed (exitY distribution, waypoints for obstacle avoidance).
-- Follow all manual routing rules in `drawio-guide.md`.
+**MCP unavailable (fallback):**
+- Place nodes on exact grid (x = col*180+40, y = row*120+40, coords
+  multiples of 10). Exact placement prevents overlap by construction.
+- Hand-route edges where needed: exitY distribution for multi-connection
+  nodes, waypoints for obstacle avoidance.
+- Follow all Tier 2 manual routing rules in `drawio-guide.md`.
+
+Always output a `.drawio` XML file. Prefer the MCP path when available;
+fall back to manual routing when it is not.
 
 ---
 
@@ -88,7 +97,7 @@ line weights, spacing, and user-customizable DPI/size options.
 
 ### Phase 3 — Self-check
 
-Run the 10-item checklist from `drawio-guide.md` Self-Check section. Report
+Run the 15-item checklist from `drawio-guide.md` Self-Check section. Report
 pass/fail for each item. Fix failures before delivering.
 
 ---
