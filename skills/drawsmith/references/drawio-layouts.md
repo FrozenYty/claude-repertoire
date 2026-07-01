@@ -30,6 +30,11 @@ see `style-guide.md`.
 | Sequence Diagram | Protocol interactions, API call flows, message passing | §9 |
 | State Machine Diagram | State transitions, formal methods, protocol specifications | §10 |
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
+| Network Topology | LAN/WAN, router/switch, subnet boundaries | §12 |
+| Org Chart / Mind Map | Hierarchies, file trees, concept maps | §13 |
+| Timeline / Gantt Chart | Project roadmaps, milestone overviews | §14 |
+| Venn Diagram / Set Relations | Set intersection, overlapping categories | §15 |
+| Conceptual Coordinate | 2x2 matrix, BCG, maturity curves | §16 |
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
 | Cross-Functional Table | Actor x Phase process grid, two-axis flowcharts | §19 |
@@ -163,7 +168,6 @@ labels to match your pipeline's artifacts. Keep `x` spacing uniform:
 
 **Key patterns:** same y/h per stage, x=col*210+30, left-to-right flow.
 
-spaced stages.
 
 
 
@@ -207,8 +211,7 @@ Edges:
 All edges are direct `exitX=0.5;exitY=1` or `exitX=1;exitY=0.5` etc.
 No waypoints needed because satellites are axis-aligned with the hub.
 
-**To adapt:** change hub and satellite labels, add corner satellites
-at (40, 60), (560, 60), (560
+**To adapt:** change hub and satellite labels, add corner satellites at (40, 60), (560, 60), (560, 460), (40, 460) for an 8-node star.
 
 **Golden XML example (hub + 4 satellites, star topology):**
 
@@ -231,7 +234,6 @@ at (40, 60), (560, 60), (560
 
 **Key patterns:** hub centered with strokeWidth=2, 4 axis-aligned satellites, no waypoints.
 
-, 460), (40, 460) for an 8-node star.
 
 
 
@@ -998,8 +1000,7 @@ entities on the edges, data stores at the bottom.
   (e.g. `value="Customer Data"`, `value="Validation Result"`).
 - Processes form the central hub — position them evenly across the canvas.
   Off-center external entities or stores should balance the layout.
-  Processes at same y share same height for clean horizontal alignment. — data flows IN from entities,
-  is transformed by processes, and flows OUT to stores or entities.
+  Processes at same y share same height for clean horizontal alignment. Data flows IN from entities, is transformed by processes, and flows OUT to stores or entities.
 - Spacing: 200-300px between processes.
 
 **Edge style (data flow):**
@@ -1464,6 +1465,49 @@ Before writing XML:
 **To adapt:** change lane labels, node text, decision logic. Keep the
 swimlane shape, parent-child nesting, and flow direction rules intact.
 ## §18 Wireframe / Mockup
+`
+
+
+
+**When to use:** App screens, website layouts, dashboard designs, UI
+prototypes — any user-facing interface mockup before development.
+
+**Canvas:** 600×900 portrait (mobile) or 1024×768 landscape (desktop).
+
+**Layout conventions:**
+- Outer frame = device/screen boundary
+- Top bar: navigation / header (h=50-60px)
+- Content area: main body, can be subdivided
+- Bottom bar: tab bar / footer (h=50-60px)
+- Sidebar (desktop): left column w=200-250px
+- Placeholder rectangles for images, text blocks, buttons
+
+**Shape vocabulary:**
+
+| Element | Style keywords |
+|---|---|
+| Screen frame | `rounded=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#333333;strokeWidth=2.5` |
+| Header bar | `rounded=0;fillColor=#37474F;strokeColor=#333333;strokeWidth=1` — dark bar |
+| Content area | `rounded=1;arcSize=4;fillColor=#F5F5F5;strokeColor=#E0E0E0;strokeWidth=1` |
+| Button | `rounded=1;arcSize=20;fillColor=#6C8EBF;strokeColor=#6C8EBF;fontColor=#FFFFFF` |
+| Image placeholder | `rounded=1;arcSize=6;fillColor=#E0E0E0;strokeColor=#BDBDBD;strokeWidth=1;dashed=1` — with "×" or "img" label |
+| Text block | `rounded=0;fillColor=#E0E0E0;strokeColor=none` — thin horizontal bars of varying widths |
+| Tab bar | `rounded=0;fillColor=#FFFFFF;strokeColor=#E0E0E0;strokeWidth=1` — bottom strip with icon placeholders |
+| Card | `rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#E0E0E0;strokeWidth=1;shadow=1` |
+
+**Layout conventions:**
+- Screen frame centered on canvas
+- Internal elements use parent-child containment (relative coords)
+- All text in sans-serif (Arial/Helvetica), 10-14px
+- Use grey rectangles of varying widths to simulate text lines
+- Images: dashed-border rectangles with centered "img" label
+
+**To adapt:** change screen dimensions, add/remove UI elements, adjust
+layout for mobile vs desktop.
+
+---
+
+## §18 Wireframe / Mockup
 
 **Golden XML example:**
 
@@ -1615,48 +1659,7 @@ swimlane shape, parent-child nesting, and flow direction rules intact.
         </mxCell>
       </root>
     </mxGraphModel>
-```
-
-
-
-**When to use:** App screens, website layouts, dashboard designs, UI
-prototypes — any user-facing interface mockup before development.
-
-**Canvas:** 600×900 portrait (mobile) or 1024×768 landscape (desktop).
-
-**Layout conventions:**
-- Outer frame = device/screen boundary
-- Top bar: navigation / header (h=50-60px)
-- Content area: main body, can be subdivided
-- Bottom bar: tab bar / footer (h=50-60px)
-- Sidebar (desktop): left column w=200-250px
-- Placeholder rectangles for images, text blocks, buttons
-
-**Shape vocabulary:**
-
-| Element | Style keywords |
-|---|---|
-| Screen frame | `rounded=1;arcSize=12;fillColor=#FFFFFF;strokeColor=#333333;strokeWidth=2.5` |
-| Header bar | `rounded=0;fillColor=#37474F;strokeColor=#333333;strokeWidth=1` — dark bar |
-| Content area | `rounded=1;arcSize=4;fillColor=#F5F5F5;strokeColor=#E0E0E0;strokeWidth=1` |
-| Button | `rounded=1;arcSize=20;fillColor=#6C8EBF;strokeColor=#6C8EBF;fontColor=#FFFFFF` |
-| Image placeholder | `rounded=1;arcSize=6;fillColor=#E0E0E0;strokeColor=#BDBDBD;strokeWidth=1;dashed=1` — with "×" or "img" label |
-| Text block | `rounded=0;fillColor=#E0E0E0;strokeColor=none` — thin horizontal bars of varying widths |
-| Tab bar | `rounded=0;fillColor=#FFFFFF;strokeColor=#E0E0E0;strokeWidth=1` — bottom strip with icon placeholders |
-| Card | `rounded=1;arcSize=8;fillColor=#FFFFFF;strokeColor=#E0E0E0;strokeWidth=1;shadow=1` |
-
-**Layout conventions:**
-- Screen frame centered on canvas
-- Internal elements use parent-child containment (relative coords)
-- All text in sans-serif (Arial/Helvetica), 10-14px
-- Use grey rectangles of varying widths to simulate text lines
-- Images: dashed-border rectangles with centered "img" label
-
-**To adapt:** change screen dimensions, add/remove UI elements, adjust
-layout for mobile vs desktop.
-
----
-
+``
 ## §19 Cross-Functional Table (Actor × Phase Grid)
 
 **When to use:** Cross-functional flowcharts showing process steps across
