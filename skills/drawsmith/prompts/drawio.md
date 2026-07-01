@@ -131,7 +131,8 @@ edges in these THREE cases:
    crosses between node columns (e.g., decision Yes branch going right, loopback
    going left), add 2 waypoints to create a clean orthogonal route through the
    corridor BETWEEN columns. Waypoint x = midpoint between source and target
-   columns. Simple same-region edges need exitX/exitY only — no waypoints.
+   columns. Simple same-region edges need exitX/exitY only — no waypoints. This pattern
+   applies universally: org chart hierarchy, network switch->subnet, ERD FK relations.
 
 8. **Minimum arrow length.** Adjacent nodes MUST have >= 30px gap between
    bottom of source and top of target. Arrows shorter than this are invisible.

@@ -761,6 +761,10 @@ hierarchies, cloud infrastructure, subnet boundaries.
 - Vertical gap between tiers: 100-120px
 
 **To adapt:** change device labels, subnet names, and connection counts.
+
+**Routing pattern:** off-center switch->subnet connections use a horizontal bus
+at `y = (switch.bottom + subnet.top) / 2`. Same corridor pattern as org chart.
+Example: switch at x=450, web at x=600 -> bus at y=380, waypoints (450,380)->(600,380).
 Add/remove firewall, load balancer, or IDS/IPS blocks as needed.
 
 ---
