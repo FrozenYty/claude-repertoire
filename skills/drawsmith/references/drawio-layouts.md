@@ -82,7 +82,26 @@ Shift all `y` values by the same offset to move the stack up or down.
 
 **Golden XML example (6-layer stack, bottom-up data flow):**
 
-
+```xml
+<mxGraphModel dx="1200" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="600" pageHeight="750" math="0" shadow="0">
+  <root>
+    <mxCell id="0"/><mxCell id="1" parent="0"/>
+    <mxCell id="layer_in" value="Input Data" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="620" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_in" target="layer_1"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_1" value="Layer 1: Physical" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="540" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_1" target="layer_2"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_2" value="Layer 2: Data Link" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="460" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_2" target="layer_3"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_3" value="Layer 3: Network" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="380" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_3" target="layer_4"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_4" value="Layer 4: Transport" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="300" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_4" target="layer_5"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_5" value="Layer 5: Session" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="220" width="320" height="50" as="geometry"/></mxCell>
+    <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="layer_5" target="layer_out"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <mxCell id="layer_out" value="Output / Application" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="140" y="140" width="320" height="50" as="geometry"/></mxCell>
+  </root>
+</mxGraphModel>
+```
 
 **Key patterns:** same x/w (centered column), y=row*80+140, bottom-to-top flow.
 
