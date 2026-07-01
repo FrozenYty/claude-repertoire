@@ -149,28 +149,33 @@ These are non-negotiable unless marked "recommended."
    LR pipelines: data left-to-right (`source.x < target.x`). Inverted
    stacks are the single most common diagram bug.
 
-3. **IRON RULE — Error bars disclosed.** If a chart shows error bars,
+3. **IRON RULE — Text vertical centering.** Every content node MUST
+   use `verticalAlign=middle`. Container section labels are the ONE
+   exception (they use `verticalAlign=top` for top-left placement).
+   Misaligned text is the most common visual defect across ALL diagram types.
+
+4. **IRON RULE — Error bars disclosed.** If a chart shows error bars,
    confidence bands, or significance markers, the output must state
    what they represent (+/-1 SD, 95% CI, etc.) and over how many runs/
    seeds. Never show error bars silently.
 
-4. **IRON RULE — Template first.** Before writing ANY XML, find the
+5. **IRON RULE — Template first.** Before writing ANY XML, find the
    matching template in `drawio-layouts.md`. Copy its Golden XML skeleton.
    Change labels, keep coordinates. Designing from scratch when a template
    fits is a HARD ERROR. Same for charts: adapt from `matplotlib-templates.md`;
    don't guess rcParams or parameters.
 
-5. **IRON RULE — Full-width Chinese punctuation.** Any Chinese text
+6. **IRON RULE — Full-width Chinese punctuation.** Any Chinese text
    output must use `""` (U+201C/U+201D) for quotation marks and `，。；：`
    for punctuation. ASCII `"` adjacent to Chinese text is a hard error.
 
-6. **IRON RULE — Respect the palette.** Use color palettes from
+7. **IRON RULE — Respect the palette.** Use color palettes from
    `style-guide.md`. Never use matplotlib default colors or `jet`/
    `rainbow` colormaps. Max 5-6 distinct colors per figure.
 
 ### Best Practices
 
-7. **RECOMMENDED — Professional resolution.** Output >=600 dpi PNG.
+8. **RECOMMENDED — Professional resolution.** Output >=600 dpi PNG.
    For vector output (PDF/SVG), set `pdf.fonttype = 42` to embed fonts
    for cross-platform consistency. These are best practices, not
    hard requirements — the user's needs may vary.

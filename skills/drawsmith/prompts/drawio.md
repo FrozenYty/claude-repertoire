@@ -118,12 +118,10 @@ edges in these THREE cases:
    - Right-side box: exit right, go up, go left above node, curve back (4 waypoints)
    Both use `curved=1`. The label sits OUTSIDE the loop arc, not inside.
 
-5. **Bidirectional edges — offset the tracks.** When A->B and B->A both exist,
-   they MUST use different exitY values so they run as parallel tracks:
-   ```
-   Forward:  exitX=1; exitY=0.35; entryX=0; entryY=0.35
-   Reverse:  exitX=0; exitY=0.65; entryX=1; entryY=0.65; dashed=1
-   ```
+5. **Bidirectional edges — offset the tracks (recommended).** When A->B and B->A
+   both exist, use different exitY values so they run as parallel tracks instead of
+   overlapping. Common offsets: request/response (0.25/0.75), push/pull (0.35/0.65).
+   Pick two distinct values — exact numbers depend on available space.
 
 6. **Multi-connection nodes — distribute exit points.** When 3+ edges leave
    the same node side, distribute exitY evenly: N=3 -> 0.2, 0.5, 0.8.
@@ -142,9 +140,11 @@ edges in these THREE cases:
 
 ### Containers
 
-9. **All text vertically centered.** Every node MUST have `verticalAlign=middle`.
-   `verticalAlign=top` causes the most common text alignment defect in ERDs,
-   class diagrams, and table rows. Horizontal alignment can vary by context.
+9. **All content text vertically centered.** Every CONTENT node MUST have
+   `verticalAlign=middle`. Container section labels are the ONE exception —
+   they use `verticalAlign=top` for top-left placement inside containers.
+   For everything else (process boxes, table cells, state labels, ERD rows):
+   `verticalAlign=middle`.
 
 10. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
@@ -191,7 +191,7 @@ edges in these THREE cases:
 4. **Native shapes** - are semantically different concepts visually distinct?
 5. **Edges routed** - no "scenic detours" with 3+ unnecessary waypoints?
 6. **Multi-connection nodes** - distributed exitY values where needed?
-7. **Bidirectional pairs** - parallel tracks (exitY=0.35/0.65)?
+7. **Bidirectional pairs** - different exitY values on each direction?
 8. **Parent-child correct** - relative coords inside containers, parent="1" for cross-container edges?
 9. **One color per link type** - no semantic color reuse?
 10. **Legend present** - every color and line style explained?

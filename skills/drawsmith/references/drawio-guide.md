@@ -332,7 +332,7 @@ above. Use this pattern instead:
 ```
 
 Label `x` = container.x + 10, `y` = container.y + 6, `align=left`,
-`verticalAlign=top`, height 16-18px. Label is fully inside container.
+`verticalAlign=top`, height 16-18px. Label is fully inside container. Container labels are the ONE exception to `verticalAlign=middle` — they use `verticalAlign=top` for top-left placement. All content nodes use `verticalAlign=middle`.
 
 **2. Container padding ≥10px on all sides.** First module's `y` =
 container.y + 10 (or +28 if a top-left label takes the first 18px row).
