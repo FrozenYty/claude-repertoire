@@ -142,10 +142,9 @@ edges in these THREE cases:
 
 ### Containers
 
-9. **Text labels inside table rows (ERD/UML).** Labels in swimlane-based
-   table rows need `align=left;spacingLeft=8` and y-position matching the row's y.
-   Misaligned text inside table rows is the most common visual defect in ERDs and
-   class diagrams.
+9. **All text vertically centered.** Every node MUST have `verticalAlign=middle`.
+   `verticalAlign=top` causes the most common text alignment defect in ERDs,
+   class diagrams, and table rows. Horizontal alignment can vary by context.
 
 10. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
