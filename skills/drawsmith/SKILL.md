@@ -121,7 +121,7 @@ Users may override any default. Honor these requests:
 | Color palette | Name from style-guide §1 | Name from style-guide §1 | Nature (2025) |
 | Font | `fontFamily` in XML | Font family string | Times New Roman |
 | Output format | `.drawio` | `.png` + `.pdf` (or one) | Both |
-| Title | n/a | yes / no (embedded in image) | no (caption in document) |
+| Title | n/a | yes / no (embedded in image) | yes (self-documenting) |
 
 ---
 

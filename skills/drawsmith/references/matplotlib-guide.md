@@ -126,6 +126,15 @@ For colorblind-safe options, see `style-guide.md` §1.3.
 State which one in the figure caption: "Error bars indicate ±1 SD over 5
 seeds." Don't use error bars without disclosing what they represent.
 
+**Title convention:** Always add a title via `ax.set_title()`. It makes
+the chart self-documenting and more readable in isolation. Use sentence case.
+Exception: omit only when the user explicitly requests no title.
+
+**Axis breathing room:** When data touches the axis boundary, extend the
+axis ~5% beyond the data max for visual clarity. Example: ROC curve
+`[0,1]` range → `set_ylim(0, 1.05)`. Not a fixed value — extend just
+enough to visually separate the curve from the frame edge.
+
 **Significance markers (only when statistically tested):**
 - `ns` (not significant)
 - `*` p < 0.05

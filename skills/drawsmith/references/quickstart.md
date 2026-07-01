@@ -87,9 +87,11 @@ plt.rcParams.update({
 ### Non-Negotiable Rules
 
 1. IEEE/Nature palette — never matplotlib defaults or `jet`/`rainbow`.
-2. No title (captions go in the document).
+2. Always add a title — it makes the chart self-documenting.
 3. `frameon=False` on legends. `spines[['top','right']].set_visible(False)`.
 4. Error bars/bands MUST state what they represent in output text.
+5. Axes extend ~5% beyond data range when data touches the boundary
+   (e.g., ROC at [0,1] -> `set_ylim(0, 1.05)`). Gives breathing room.
 
 ### Common Patterns
 
