@@ -542,6 +542,9 @@ compartments (name / attributes / methods).
   attributes + 3-4 methods).
 - Gap between classes: 200px TB, 280px LR.
 - Superclasses above subclasses (inheritance arrows point UP).
+- **Off-center subclasses use mid-column waypoints** for clean routing
+  (e.g., WeChatPay at x=560, Payment at x=300 -> waypoint at x=410 midway).
+  Same corridor principle as flowchart and org chart.
 - Composition/aggregation edges connect the containing class to the
   contained class with the diamond at the container end.
 
@@ -704,7 +707,9 @@ entities on the edges, data stores at the bottom.
 - Data stores at the bottom center.
 - Data flow edges are labeled with the data being moved
   (e.g. `value="Customer Data"`, `value="Validation Result"`).
-- Processes form the central hub — data flows IN from entities,
+- Processes form the central hub — position them evenly across the canvas.
+  Off-center external entities or stores should balance the layout.
+  Processes at same y share same height for clean horizontal alignment. — data flows IN from entities,
   is transformed by processes, and flows OUT to stores or entities.
 - Spacing: 200-300px between processes.
 

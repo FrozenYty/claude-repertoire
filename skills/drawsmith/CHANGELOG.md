@@ -10,6 +10,13 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ## [0.5.0] - 2026-07-02
 
+### Changed — Batch 3 patterns encoded
+
+- **Section 8 UML Class**: off-center inheritance arrows use mid-column waypoints
+  (same corridor principle — WeChatPay→Payment routes through x=410 midpoint).
+- **Section 11 DFD**: process and data store positioning guidelines for balanced layout.
+- **Section 17 Swimlane**: cross-lane edges confirmed using corridor routing.
+
 ### Changed — Golden XML refined from user ground-truth (Batch 1)
 
 - **Section 6 Flowchart**: branch edges now use waypoints through mid-column
