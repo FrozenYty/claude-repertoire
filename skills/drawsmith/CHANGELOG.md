@@ -8,6 +8,26 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.6.1] - 2026-07-03
+
+### Changed - Final polish
+
+- Removed all 6 deprecated warning markers from drawio-layouts.md.
+- New `references/quickstart.md` (70-line cheat sheet) added to Reference Index.
+- Key Rule 7 softened: waypoint count is a design principle, not a hard target.
+- Matplotlib cross-references audited: all valid, 19 template sections confirmed.
+
+## [0.6.0] - 2026-07-03
+
+### Changed - Anti-overfitting audit + user pattern encoding
+
+- Key Rules purged of hardcoded values (bidirectional offsets now descriptive).
+- New Iron Rule 3: `verticalAlign=middle` on all content nodes.
+- Description strengthened with 3 new trigger verbs and implicit activation clause.
+- Section 19 (crossfunc) marked as needs-redesign.
+- Guide container label exception clarified.
+- Batch 1 Golden XML waypoints cleaned (simple connections: 0 waypoints).
+
 ## [0.5.2] - 2026-07-03
 
 ### Changed - Waypoint minimization from user ground-truth
