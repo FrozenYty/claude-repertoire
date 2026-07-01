@@ -1,6 +1,6 @@
 ---
 name: drawsmith
-version: 0.5.1
+version: 0.5.2
 description: >
   Professional diagram and chart generation using draw.io and matplotlib.
   Use when the user asks to draw, plot, visualize, diagram, chart, or

@@ -100,6 +100,8 @@ pass/fail for each item. Fix failures before delivering.
 
 2. **Grid placement.** x = col * 180 + 40, y = row * 120 + 40. Coords
    MUST be multiples of 10. Exact placement prevents overlap.
+   For matrix/table grids (Section 5): cells touch with 0px gaps — they share
+   borders. Use `strokeWidth=0.5` and tight x/y alignment. Sparse grids look broken.
 
 3. **Flow direction first.** TB: source.y > target.y. LR: source.x < target.x.
    Inverted stacks are the single most common diagram bug.
@@ -127,29 +129,35 @@ edges in these THREE cases:
    the same node side, distribute exitY evenly: N=3 -> 0.2, 0.5, 0.8.
    Same-side exits with identical exitY produce invisible overlap.
 
-7. **Cross-panel edges — route through mid-column corridors.** When an edge
-   crosses between node columns (e.g., decision Yes branch going right, loopback
-   going left), add 2 waypoints to create a clean orthogonal route through the
-   corridor BETWEEN columns. Waypoint x = midpoint between source and target
-   columns. Simple same-region edges need exitX/exitY only — no waypoints. This pattern
-   applies universally: org chart hierarchy, network switch->subnet, ERD FK relations.
+7. **Waypoints — ONLY to avoid obstacles, never for decoration.**
+   The default rule is: source/target + exitX/exitY ONLY. No waypoints.
+   Add waypoints ONLY when an edge would cross through a non-source/target node.
+   Each unnecessary waypoint makes the diagram harder to read and wastes tokens.
+   When you DO need waypoints: 1-2 max, through clear space outside all node bboxes.
+   Examples of edges that should NOT have waypoints: direct vertical/horizontal
+   connections, switch→subnet links (exitX/exitY suffices), DFD flows.
 
 8. **Minimum arrow length.** Adjacent nodes MUST have >= 30px gap between
    bottom of source and top of target. Arrows shorter than this are invisible.
 
 ### Containers
 
-9. **Parent-child for containers.** Nodes inside a lane/group use
+9. **Text labels inside table rows (ERD/UML).** Labels in swimlane-based
+   table rows need `align=left;spacingLeft=8` and y-position matching the row's y.
+   Misaligned text inside table rows is the most common visual defect in ERDs and
+   class diagrams.
+
+10. **Parent-child for containers.** Nodes inside a lane/group use
    `parent="container_id"` with relative coords.
-10. **Cross-container edges at root.** Edges between nodes in different
+11. **Cross-container edges at root.** Edges between nodes in different
     containers use `parent="1"`.
 
 ### Semantics
 
-11. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
-12. **One color per link type.** No color reuse. Max 5-6 distinct colors.
-13. **Legend required.** Every color and line style must be explained.
-14. **Native shapes always.** No plain rectangles for semantically
+12. **One abstraction level.** Overview (<=7 nodes) OR detail, not both.
+13. **One color per link type.** No color reuse. Max 5-6 distinct colors.
+14. **Legend required.** Every color and line style must be explained.
+15. **Native shapes always.** No plain rectangles for semantically
     different concepts.
 
 ## Constraints

@@ -8,6 +8,21 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.5.2] - 2026-07-03
+
+### Changed - Waypoint minimization from user ground-truth
+
+- **Waypoint rule tightened**: ONLY add waypoints to avoid obstacles, never for
+  decoration. User reduced waypoint counts: statemachine 27->13 (-14),
+  network 8->0, dfd 6->0. Default is source/target + exitX/exitY only.
+- **Grid tightness**: matrix cells touch with 0px gaps (shared borders).
+- **ERD text alignment**: labels in table rows need align=left;spacingLeft=8.
+
+### Cross-Functional Table (Section 19)
+
+- Section 19 marked as needs-redesign (tableLayout approach insufficient).
+  To be replaced with simpler actor x phase template.
+
 ## [0.5.1] - 2026-07-03
 
 ### Added - Cloud + BPMN templates (user-verified)
