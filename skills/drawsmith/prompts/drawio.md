@@ -130,10 +130,11 @@ edges in these THREE cases:
    the same node side, distribute exitY evenly: N=3 -> 0.2, 0.5, 0.8.
    Same-side exits with identical exitY produce invisible overlap.
 
-7. **Cross-panel edges — route AROUND obstacles.** When an edge must cross
-   the diagram (e.g., error->idle reset), add waypoints to route it through
-   clear space. Never let a straight line cut through a node. See §10
-   Golden XML for an example.
+7. **Cross-panel edges — route through mid-column corridors.** When an edge
+   crosses between node columns (e.g., decision Yes branch going right, loopback
+   going left), add 2 waypoints to create a clean orthogonal route through the
+   corridor BETWEEN columns. Waypoint x = midpoint between source and target
+   columns. Simple same-region edges need exitX/exitY only — no waypoints.
 
 8. **Minimum arrow length.** Adjacent nodes MUST have >= 30px gap between
    bottom of source and top of target. Arrows shorter than this are invisible.

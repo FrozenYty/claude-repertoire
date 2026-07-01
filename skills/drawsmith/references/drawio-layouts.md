@@ -414,10 +414,24 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;e
     <mxCell id="e_p1_dec" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="p1" target="dec"><mxGeometry relative="1" as="geometry"/></mxCell>
     <!-- Decision: Valid? -->
     <mxCell id="dec" value="Valid?" style="rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1;perimeter=rhombusPerimeter;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="250" y="300" width="150" height="80" as="geometry"/></mxCell>
-    <!-- Yes branch (right side) -->
-    <mxCell id="e_dec_yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="dec" target="p2" value="Yes"><mxGeometry relative="1" as="geometry"/></mxCell>
-    <!-- No branch (left side) -->
-    <mxCell id="e_dec_no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="dec" target="p3" value="No"><mxGeometry relative="1" as="geometry"/></mxCell>
+    <!-- Yes branch (right side) — waypoints through mid-column corridor -->
+    <mxCell id="e_dec_yes" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5" edge="1" parent="1" source="dec" target="p2" value="Yes">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="440" y="340"/>
+          <mxPoint x="440" y="490"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <!-- No branch (left side) — waypoints through mid-column corridor -->
+    <mxCell id="e_dec_no" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0;exitY=0.5;entryX=0.5;entryY=0" edge="1" parent="1" source="dec" target="p3" value="No">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="210" y="340"/>
+          <mxPoint x="210" y="490"/>
+        </Array>
+      </mxGeometry>
+    </mxCell>
     <!-- Process: Process Data (Yes path) -->
     <mxCell id="p2" value="Process Data" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1"><mxGeometry x="460" y="460" width="200" height="60" as="geometry"/></mxCell>
     <!-- Process: Fix & Retry (No path) -->
@@ -438,6 +452,10 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;e
 - Spine nodes (start/p1/dec/out/end) centered at x=225-275
 - Decision rhombus at center, Yes branch goes RIGHT, No branch goes LEFT
 - Both branches rejoin at the output node
+- **Branch edges MUST use waypoints** through mid-column corridors, NOT direct diagonals.
+  Use `exitX=1;exitY=0.5` + waypoints for right branches, `exitX=0;exitY=0.5` for left.
+  Waypoint x = (spine_x + branch_x) / 2, creating a clean orthogonal route.
+- Simple same-region edges (no column crossing) use exitX/exitY only, no waypoints needed
 - Edge labels "Yes"/"No" set via `value` attribute on edge
 - `perimeter=rhombusPerimeter` and `perimeter=ellipsePerimeter` required for non-rect shapes
 

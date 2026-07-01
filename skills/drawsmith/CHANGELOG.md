@@ -8,6 +8,16 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.5.0] - 2026-07-02
+
+### Changed — Golden XML refined from user ground-truth
+
+- **Section 6 Flowchart**: branch edges now use waypoints through mid-column
+  corridors (not direct diagonals). User manually debugged: waypoints at
+  midpoint x between spine and branch columns create clean orthogonal routing.
+- **Key Rule 7 refined**: distinguish cross-panel edges (need waypoints) from
+  same-region edges (exitX/exitY only).
+
 ## [0.4.0] - 2026-07-01
 
 ### Added -- Specific architecture templates (from papersmith)
