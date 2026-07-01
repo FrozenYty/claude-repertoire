@@ -875,6 +875,8 @@ milestone overviews — any time-ordered sequence of events.
 | Dependency arrow | `endArrow=classic;strokeColor=#999;strokeWidth=1;dashed=1` |
 
 Stagger y positions to avoid label collisions for overlapping phases.
+- **Spacing**: events spaced 180-220px apart horizontally (not tightly packed).
+  Wider spacing prevents label overlap and improves readability.
 
 **To adapt:** change time span, event labels, and y staggering pattern.
 

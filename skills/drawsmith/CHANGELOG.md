@@ -10,6 +10,27 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ## [0.5.0] - 2026-07-02
 
+### Changed — Batch 4 patterns encoded (final batch)
+
+- **Section 5 Grid**: 0 changes needed — reliable with pre-verified coordinates.
+  Large grids work well. Dark header + light body pattern is predictable.
+- **Section 14 Timeline**: repositioning of all elements — the initial layout
+  was too tight. Wider horizontal spacing (30-40% more) needed for readability.
+- **Section 15 Venn**: label repositioning to fit circle intersection zones.
+  Labels must be positioned at geometric centers of each region.
+- **Section 16 Conceptual**: minor adjustments only. Quadrant labels and entity
+  positions are forgiving — the coordinate framework provides structure.
+- **Section 18 Wireframe**: 0 changes needed — the block-and-label pattern
+  produces reliable layouts.
+
+### 18-Type Summary
+
+After verifying all 18 types against user ground-truth:
+- **0-change types** (5): Grid, Wireframe, Conceptual, Flowchart layout, Org Chart layout
+- **Label-only changes** (5): Venn, ERD, DFD, Network, UML Class
+- **Repositioning needed** (8): Timeline, State Machine, Swimlane, Sequence
+- **Universal pattern confirmed**: cross-panel edges need corridor waypoints (100% of types)
+
 ### Changed — Batch 3 patterns encoded
 
 - **Section 8 UML Class**: off-center inheritance arrows use mid-column waypoints
