@@ -8,6 +8,14 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.5.1] - 2026-07-03
+
+### Added - Cloud + BPMN templates (user-verified)
+
+- Section 20 Cloud: AWS 3-tier (VPC/subnets/ALB/EC2/RDS)
+- Section 21 BPMN: 3-lane purchase approval with gateway
+- Template count: 19 -> 21 (8 with complete XML)
+
 ## [0.5.0] - 2026-07-02
 
 ### Changed — Batch 4 patterns encoded (final batch)

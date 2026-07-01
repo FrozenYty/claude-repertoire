@@ -32,7 +32,9 @@ see `style-guide.md`.
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
 | Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
-| Cross-Functional Table | Actor × Phase process grid, two-axis flowcharts | §19 |
+| Cross-Functional Table | Actor x Phase process grid, two-axis flowcharts | §19 |
+| Cloud Architecture | AWS/Azure/GCP 3-tier, VPC/subnet, IaaS | §20 |
+| BPMN Process | Cross-functional business process with lanes | §21 |
 
 ⚠️ = quality may degrade for hand-written XML; keep diagrams simple or split across pages
 
@@ -1212,3 +1214,234 @@ table/row/cell structure intact.
 
 
 ---
+
+
+---
+
+## §20 Cloud Architecture (3-Tier)
+
+**When to use:** AWS/Azure/GCP infrastructure diagrams - VPC, subnets,
+load balancers, compute instances, managed databases.
+
+**Canvas:** 1000x700. Nested containers: VPC > Subnet > Resources.
+
+**Layout conventions:**
+- VPC: outermost dashed container (strokeWidth=2)
+- Subnets: nested dashed containers inside VPC, distinct fill colors
+- Public subnet (green tint): ALB, NAT Gateway
+- Private subnet (yellow tint): EC2, containers
+- Data subnet (red tint): RDS, ElastiCache
+- Users/Internet box outside VPC at top
+- Legend: thick line = internet, thin dashed = internal
+
+**Golden XML example (AWS 3-tier, VPC + 3 subnets):**
+
+```xml
+<mxGraphModel dx="1413" dy="974" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1000" pageHeight="700" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="vpc" parent="1" style="rounded=1;arcSize=6;fillColor=#F5F5F5;strokeColor=#BDBDBD;strokeWidth=2;html=1;dashed=1;dashPattern=10 4" value="" vertex="1">
+          <mxGeometry height="580" width="920" x="40" y="80" as="geometry" />
+        </mxCell>
+        <mxCell id="vpc_lbl" parent="1" style="text;html=1;strokeColor=none;fontSize=11;fontFamily=Times New Roman;fontStyle=2;fontColor=#666666;align=left;verticalAlign=top" value="VPC (10.0.0.0/16)" vertex="1">
+          <mxGeometry height="16" width="200" x="50" y="86" as="geometry" />
+        </mxCell>
+        <mxCell id="pub_sub" parent="1" style="rounded=1;arcSize=4;fillColor=#E8F5E9;strokeColor=#82B366;strokeWidth=1.5;html=1;dashed=1;dashPattern=6 3" value="" vertex="1">
+          <mxGeometry height="160" width="860" x="70" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="pub_lbl" parent="1" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666;align=left;verticalAlign=top" value="Public Subnet (10.0.1.0/24)" vertex="1">
+          <mxGeometry height="14" width="180" x="80" y="136" as="geometry" />
+        </mxCell>
+        <mxCell id="alb" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;ALB&lt;/b&gt;&lt;br&gt;Application Load Balancer" vertex="1">
+          <mxGeometry height="70" width="200" x="400" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="priv_sub" parent="1" style="rounded=1;arcSize=4;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;html=1;dashed=1;dashPattern=6 3" value="" vertex="1">
+          <mxGeometry height="160" width="860" x="70" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="priv_lbl" parent="1" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666;align=left;verticalAlign=top" value="Private Subnet (10.0.2.0/24)" vertex="1">
+          <mxGeometry height="14" width="180" x="80" y="326" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_1" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;EC2&lt;/b&gt;&lt;br&gt;Web Server 1" vertex="1">
+          <mxGeometry height="80" width="160" x="180" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_2" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;EC2&lt;/b&gt;&lt;br&gt;Web Server 2" vertex="1">
+          <mxGeometry height="80" width="160" x="420" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="ec2_3" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;EC2&lt;/b&gt;&lt;br&gt;App Server" vertex="1">
+          <mxGeometry height="80" width="160" x="660" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="e_alb_1" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#666666;strokeWidth=1.5;exitX=0.5;exitY=0.25;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="ec2_1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="199.97" as="sourcePoint" />
+            <mxPoint x="240" y="429.97000000000014" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_alb_2" edge="1" parent="1" source="alb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#666666;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="ec2_2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="490" y="252" as="sourcePoint" />
+            <mxPoint x="430" y="447.0000000000001" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_alb_3" edge="1" parent="1" source="alb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#666666;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0.5;entryY=0;exitDx=0;exitDy=0;entryDx=0;entryDy=0;" target="ec2_3">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="620" y="199.97" as="sourcePoint" />
+            <mxPoint x="860" y="359.97000000000014" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="data_sub" parent="1" style="rounded=1;arcSize=4;fillColor=#FCE4EC;strokeColor=#B85450;strokeWidth=1.5;html=1;dashed=1;dashPattern=6 3" value="" vertex="1">
+          <mxGeometry height="130" width="860" x="70" y="510" as="geometry" />
+        </mxCell>
+        <mxCell id="data_lbl" parent="1" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666;align=left;verticalAlign=top" value="Data Subnet (10.0.3.0/24)" vertex="1">
+          <mxGeometry height="14" width="180" x="80" y="516" as="geometry" />
+        </mxCell>
+        <mxCell id="rds" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;RDS&lt;/b&gt;&lt;br&gt;Primary" vertex="1">
+          <mxGeometry height="70" width="120" x="200" y="545" as="geometry" />
+        </mxCell>
+        <mxCell id="rds_ro" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="&lt;b&gt;RDS&lt;/b&gt;&lt;br&gt;Read Replica" vertex="1">
+          <mxGeometry height="70" width="120" x="440" y="545" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ec2_rds" edge="1" parent="1" source="ec2_1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#666666;strokeWidth=1.5;dashed=1" target="rds">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="users" parent="1" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#666666;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="Users" vertex="1">
+          <mxGeometry height="40" width="160" x="420" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="e_users_alb" edge="1" parent="1" source="users" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=2" target="alb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="leg" parent="1" style="rounded=1;arcSize=6;fillColor=#FFFFFF;strokeColor=#999;strokeWidth=1;html=1" value="" vertex="1">
+          <mxGeometry height="60" width="180" x="780" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_t" parent="1" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;align=left" value="&lt;b&gt;Legend&lt;/b&gt;" vertex="1">
+          <mxGeometry height="14" width="50" x="790" y="12" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_l1" edge="1" parent="1" style="endArrow=classic;strokeColor=#333333;strokeWidth=2;html=1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="795" y="35" as="sourcePoint" />
+            <mxPoint x="825" y="35" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_l1t" parent="1" style="text;html=1;strokeColor=none;fontSize=8;fontFamily=Times New Roman" value="Internet" vertex="1">
+          <mxGeometry height="14" width="50" x="830" y="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_l2" edge="1" parent="1" style="endArrow=classic;strokeColor=#666666;strokeWidth=1.5;dashed=1;html=1" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="795" y="50" as="sourcePoint" />
+            <mxPoint x="825" y="50" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg_l2t" parent="1" style="text;html=1;strokeColor=none;fontSize=8;fontFamily=Times New Roman" value="Internal" vertex="1">
+          <mxGeometry height="14" width="50" x="830" y="43" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+```
+
+**Key patterns:**
+- VPC outermost at x=40, 920px wide
+- Subnets: 160px height, 40px gaps
+- ALB->EC2 multi-connection: exitY 0.25/0.5/0.75
+- Internet=thick solid, internal=thin dashed
+
+**To adapt:** change subnet CIDRs, EC2/RDS count, add NAT/ElastiCache.
+
+
+---
+
+## §21 BPMN Process (Swimlane)
+
+**When to use:** Cross-functional business process flows - purchase approvals,
+hiring pipelines, order fulfillment. Multi-actor workflows with gateways.
+
+**Canvas:** 1200x550. Lanes run horizontally; flow left-to-right within lanes,
+top-to-bottom between lanes.
+
+**Layout conventions:**
+- Each lane = one actor. Equal height (150px).
+- Nodes within lane: x = 120 + col*180, y = 45-55
+- Cross-lane edges: parent="1", orthogonal routing
+- Gateway at x after last task in deciding lane
+- Yes branch goes down to next lane. No branch stays in same lane
+
+**Golden XML example (Purchase Order Approval, 3 lanes):**
+
+```xml
+<mxGraphModel dx="1848" dy="1274" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="550" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="lane_emp" parent="1" style="swimlane;startSize=30;horizontal=0;container=1;pointerEvents=0;fillColor=#FCE4EC;strokeColor=#B85450;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1" value="Employee" vertex="1">
+          <mxGeometry height="150" width="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="start" parent="lane_emp" style="ellipse;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1.5" value="" vertex="1">
+          <mxGeometry height="36" width="36" x="119" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="t1" parent="lane_emp" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="Submit Purchase&lt;br&gt;Request" vertex="1">
+          <mxGeometry height="60" width="140" x="210" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="e_start_t1" edge="1" parent="1" source="start" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" target="t1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_mgr" parent="1" style="swimlane;startSize=30;horizontal=0;container=1;pointerEvents=0;fillColor=#E3F2FD;strokeColor=#6C8EBF;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1" value="Manager" vertex="1">
+          <mxGeometry height="150" width="1200" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t2" parent="lane_mgr" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="Review Request" vertex="1">
+          <mxGeometry height="60" width="140" x="400" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="gw1" parent="lane_mgr" style="rhombus;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1.5;perimeter=rhombusPerimeter;html=1" value="" vertex="1">
+          <mxGeometry height="50" width="50" x="590" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t4" parent="lane_mgr" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#6C8EBF;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="Notify Employee" vertex="1">
+          <mxGeometry height="60" width="140" x="719" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="end_no" parent="lane_mgr" style="ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2;perimeter=ellipsePerimeter" value="" vertex="1">
+          <mxGeometry height="36" width="36" x="920" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gw1_no" edge="1" parent="lane_mgr" source="gw1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#B85450;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="t4" value="Rejected">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="300" y="234.50000000000023" as="sourcePoint" />
+            <mxPoint x="445" y="214.5" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_t1_t2" edge="1" parent="1" source="t1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" target="t2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t2_gw1" edge="1" parent="1" source="t2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" target="gw1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="lane_fin" parent="1" style="swimlane;startSize=30;horizontal=0;container=1;pointerEvents=0;fillColor=#E8F5E9;strokeColor=#82B366;fontFamily=Times New Roman;fontStyle=1;fontSize=12;fontColor=#333333;whiteSpace=wrap;html=1" value="Finance" vertex="1">
+          <mxGeometry height="150" width="1200" y="300" as="geometry" />
+        </mxCell>
+        <mxCell id="t3" parent="lane_fin" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#82B366;strokeWidth=1.5;fontFamily=Times New Roman;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" value="Process Payment" vertex="1">
+          <mxGeometry height="60" width="140" x="720" y="45" as="geometry" />
+        </mxCell>
+        <mxCell id="end_ok" parent="lane_fin" style="ellipse;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2;perimeter=ellipsePerimeter" value="" vertex="1">
+          <mxGeometry height="36" width="36" x="920" y="57" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t3_end" edge="1" parent="1" source="t3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" target="end_ok">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_t4_end" edge="1" parent="1" source="t4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#B85450;strokeWidth=1.5" target="end_no">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gw1_yes" edge="1" parent="1" source="gw1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" target="t3" value="Approved">
+          <mxGeometry relative="1" x="-0.7391" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="520" y="370.0000000000001" as="sourcePoint" />
+            <mxPoint x="670" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+```
+
+**Key patterns:**
+- Lanes at y=0, 150, 300, equal height
+- Lane colors from style-guide §10 (Customer/Internal/Finance)
+- Tasks: white fill + lane-specific stroke
+- Gateway "Approved" = exitX=1 downward, "Rejected" = exitY=1 rightward
+- All edges parent="1" (cross-lane)
+- End events: filled red ellipse with perimeter
+
+**To adapt:** change lane names, task labels, decision logic.
