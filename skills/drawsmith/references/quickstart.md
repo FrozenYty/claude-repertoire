@@ -90,8 +90,8 @@ plt.rcParams.update({
 2. Always add a title — it makes the chart self-documenting.
 3. `frameon=False` on legends. `spines[['top','right']].set_visible(False)`.
 4. Error bars/bands MUST state what they represent in output text.
-5. Axes extend ~5% beyond data range when data touches the boundary
-   (e.g., ROC at [0,1] -> `set_ylim(0, 1.05)`). Gives breathing room.
+5. Extend BOTH axes equally beyond data range (e.g., [0,1] -> [0,1.05]).
+   Keeps square charts square. Gives breathing room on all sides.
 
 ### Common Patterns
 

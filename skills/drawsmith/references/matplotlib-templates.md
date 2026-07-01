@@ -344,7 +344,7 @@ for name, (color, ls, scores) in models.items():
             label=f"{name} (AUC={a:.3f})")
 ax.plot([0, 1], [0, 1], color="#999", linewidth=0.8, linestyle=":",
         label="Random")
-ax.set_xlim(0, 1); ax.set_ylim(0, 1.05)
+ax.set_xlim(0, 1.05); ax.set_ylim(0, 1.05)
 ax.set_xlabel("False Positive Rate")
 ax.set_ylabel("True Positive Rate")
 ax.set_aspect("equal")
@@ -381,7 +381,7 @@ for name, (color, ls, scores) in models.items():
 prev = y_true.mean()
 ax.axhline(prev, color="#999", linewidth=0.8, linestyle=":",
            label=f"Random (AP={prev:.3f})")
-ax.set_xlim(0, 1); ax.set_ylim(0, 1.05)
+ax.set_xlim(0, 1.05); ax.set_ylim(0, 1.05)
 ax.set_xlabel("Recall"); ax.set_ylabel("Precision")
 ax.set_aspect("equal")
 ax.legend(frameon=False, loc="lower left", fontsize=9)
