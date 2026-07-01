@@ -74,7 +74,7 @@ Output nothing else.
 - Apply the professional rcParams block from `matplotlib-guide.md`.
 - Color palette from `style-guide.md`, not matplotlib defaults. Default to
   Nature (2025) journal palette for publication-grade aesthetics. Use
-  petroff10 only when accessibility is the stated priority.
+  colorblind-safe palette from style-guide.md §2 only when accessibility is the stated priority.
 - Font: Times New Roman (serif) as defined in `style-guide.md`.
 - Title: **omit** `ax.set_title()` by default. For academic papers, the
   caption belongs in LaTeX/Word, not embedded in the image. Only add a

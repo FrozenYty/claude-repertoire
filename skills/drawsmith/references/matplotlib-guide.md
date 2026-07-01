@@ -78,7 +78,7 @@ mpl.rcParams.update({
   ensuring consistent rendering across platforms and viewers. Recommended.
 - `xtick.direction = in` is a clean, journal-grade convention. Switch to
   `out` if you prefer outward ticks. Don't mix styles.
-- Default `figure.figsize = (5.5, 4.1)` is the standard 4:3 ratio. Override
+- Default `figure.figsize = (3.5, 2.6)` fits single-column layouts. Use `(5.5, 4.1)` for full-page figures. Override
   per figure — see `style-guide.md` §5.3 for sizing options.
 - `constrained_layout.use = True` removes the need for manual
   `plt.tight_layout()` and handles legends-outside-axes correctly.
@@ -102,7 +102,7 @@ heatmaps when both dimensions are the same kind of data.
 
 Color palettes are the single source of truth in `style-guide.md` §1.
 That file defines the IEEE semantic palette (default for technical
-diagrams), four journal palettes (Nature, Science, Cell, Nature Physics),
+diagrams), 18+ journal palettes in style-guide.md §1 (Nature, Science, Cell, Nature Physics, Nature Methods, Nature Machine Intelligence, Nature Communications, etc.),
 and selection rules. Refer to it — don't duplicate palette definitions here.
 
 **Key rules:**

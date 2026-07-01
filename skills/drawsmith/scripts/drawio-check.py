@@ -346,18 +346,10 @@ def check(filepath):
     report.append(f"Total: {fail_count} failures")
     report.append(f"Vertices: {len(vertices)}, Edges: {len(edges)}, Canvas: {pw}x{ph}")
 
-    return chr(10).join(report), fail_count == 0
-
-    report.append("")
-    report.append(f"Total: {fail_count} failures, {len(color_conflicts)} warnings")
-    report.append(f"Vertices: {len(vertices)}, Edges: {len(edges)}, Canvas: {pw}x{ph}")
-
-    return "\n".join(report), fail_count == 0
-
-
+    
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print("Usage: python diagram-check.py <file.drawio>")
+        print("Usage: python drawio-check.py <file.drawio>")
         sys.exit(1)
 
     result, ok = check(sys.argv[1])

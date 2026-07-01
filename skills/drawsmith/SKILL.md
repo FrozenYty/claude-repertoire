@@ -71,7 +71,7 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 ## Diagram Workflow (draw.io)
 
-1. **Check templates** — if the request matches a known layout (§1-§18
+1. **Check templates** — if the request matches a known layout (§1-§21
    in `references/drawio-layouts.md`), adapt it. Skip Phase 1 planning
    when a template fits — the layout math is already done.
 2. **Plan** (if no template fits) — follow Phase 1 in `prompts/drawio.md`.
@@ -187,7 +187,7 @@ These are non-negotiable unless marked "recommended."
 
 ## Template Variables
 
-Prompt files under  use  placeholders
-(e.g., , , ).
+Prompt files under `prompts/` use `{{VARIABLE}}` placeholders
+(e.g., `{{DIAGRAM_DESCRIPTION}}`, `{{CHART_TYPE}}`, `{{DATA}}`).
 These are filled at runtime by Claude Code when the skill is invoked —
 the LLM sees the user's actual input substituted in place of each variable.

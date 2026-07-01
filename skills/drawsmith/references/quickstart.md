@@ -1,8 +1,13 @@
 # Drawsmith Quickstart
 
-Read this FIRST for any draw.io diagram. Covers 80% of requests.
+Read this FIRST for any diagram request. Covers 80% of use cases.
 
-## IEEE Color Palette
+## Draw.io Quickstart
+
+### Color Palette (default: IEEE)
+
+IEEE is the default for technical diagrams. See `style-guide.md` for
+Nature/Science/Cell palettes and 18+ journal-specific options.
 
 | Color Key | Fill | Stroke | Use for |
 |-----------|------|--------|---------|
@@ -69,6 +74,11 @@ After generating, run: `python scripts/drawio-check.py <file.drawio>`
 ---
 
 ## Matplotlib Quickstart
+
+### Color Palette
+
+Default is Nature (2025) palette. For IEEE or other palettes, see
+`style-guide.md`. Never use matplotlib defaults or `jet`/`rainbow`.
 
 ### rcParams Block (copy-paste to every script)
 

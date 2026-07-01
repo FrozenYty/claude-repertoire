@@ -8,7 +8,7 @@
 - [Cross-Stack Y-Alignment](#cross-stack-y-alignment) — encoder-decoder horizontal edge alignment
 - [Design Philosophy](#design-philosophy) — Concise, Clear, Consistent (Three Cs)
 - [Shape type conventions](#shape-type-conventions) — built-in shapes, never approximate
-- [Hard Rules](#hard-rules-always-enforced) — 21 hard rules
+- [Hard Rules](#hard-rules-always-enforced) — 22 hard rules
 - [Section Container Layout](#section-container-layout) — labels inside containers, no overlap
 - [XML Escapes](#xml-escapes) — `&amp;`, `&lt;`, `&#xa;`, etc.
 - [Layout Rules](#layout-rules) — spacing, margins, line limits
@@ -130,7 +130,7 @@ Run the checklist and report each item `pass/fail`.
   <diagram name="Figure" id="fig">
     <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1"
                   tooltips="1" connect="1" arrows="1" fold="1" page="1"
-                  pageScale="1" pageWidth="1200" pageHeight="800"
+                  pageScale="1" pageWidth="1200" pageHeight="800" jumpStyle="arc"
                   math="0" shadow="0">
       <root>
         <mxCell id="0"/>
@@ -181,7 +181,7 @@ coordinates prevents overlap structurally.
 | Database cylinder | 120 | 80 | shape=cylinder3 |
 
 Column formula: x = col_index * 180 + 40 (col 0=40, 1=220, 2=400...)
-Row formula: y = row_index * 120 + 60 (row 0=60, 1=180, 2=300...)
+Row formula: y = row_index * 120 + 40 (row 0=40, 1=160, 2=280...)
 
 For layered diagrams, each tier = one row. For pipelines, each stage = one column.
 For swimlanes, nodes within a lane share y and increment x.
@@ -283,7 +283,7 @@ a node center.
 6. Use the rigid grid for placement: column x = col_index * 180 + 40,
    row y = row_index * 120 + 40. All coordinates MUST be multiples of 10.
    Node sizes: rectangles 140x60, diamonds 140x80, circles 60x60, documents
-   120x80, cylinders 100x70. Exact grid placement prevents overlap by construction.
+   120x80, cylinders 120x80. Exact grid placement prevents overlap by construction.
 7. All elements within page bounds (x+w ≤ pageWidth, y+h ≤ pageHeight)
 8. Uncompressed XML only (no `compressed="true"`)
 9. No `--` in XML comments
@@ -298,20 +298,20 @@ a node center.
 13. **Cross-container edges at root** — edges between nodes in different
     containers use `parent="1"` (root level). Otherwise connectors are
     clipped to the source container bounding box.
-13. **Single abstraction level** — a diagram is EITHER high-level overview
+22. **Single abstraction level** — a diagram is EITHER high-level overview
     (7 nodes max) OR detailed drill-down, never both mixed. Use sub-pages
     for detail layers.
-14. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
-15. **I/O direction consistent** — every component uses fixed entry/exit
+22. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
+22. **I/O direction consistent** — every component uses fixed entry/exit
     sides. Pick one convention per diagram: top-in-bottom-out (default for
     layered architectures), left-in-right-out (pipelines). Never mix entry
     directions on the same component.
-16. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
-17. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
-18. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
-19. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
-20. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
-21. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
+22. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
+22. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
+22. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
+22. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
+22. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
+22. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
 
 ## Section Container Layout
 

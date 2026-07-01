@@ -70,6 +70,9 @@ pre-verified coordinates:
 | §16 | Conceptual Coordinate | 2x2 matrix, BCG, maturity curves |
 | §17 | Swimlane | Cross-functional process flows, responsibility matrix |
 | §18 | Wireframe / Mockup | App screens, website layouts, UI prototypes |
+| §19 | Cross-Functional Table | Actor x Phase process grid |
+| §20 | Cloud Architecture | AWS/Azure/GCP 3-tier |
+| §21 | BPMN Process | Business process with lanes |
 
 Adapt template names and counts to the user's spec; keep the layout math
 and edge directions as-is.
@@ -167,7 +170,7 @@ edges in these THREE cases:
 - One `.drawio` file per diagram.
 - Labels inside containers at top-left (+10, +6 offset from container origin).
 - Use the IEEE semantic palette from `style-guide.md` for color assignments.
-  Limit to 2-3 main colors; use lighter/darker shades of the same hue.
+  Limit to 5-6 distinct colors; use lighter/darker shades of the same hue.
 - Labels <=25 chars per line, <=3 lines per node.
 - Tier labels: add a small grey italic label to the left of each tier
   (e.g., "Entry", "Services", "Infra").
