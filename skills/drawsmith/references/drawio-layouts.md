@@ -24,19 +24,17 @@ see `style-guide.md`.
 
 | Type | When to use | Section |
 |---|---|---|
-| Flowchart | Decision trees, process flows, algorithm logic | §6 ⚠️ |
+| Flowchart | Decision trees, process flows, algorithm logic | §6 |
 | Entity-Relationship Diagram (ERD) | Database schemas, data models, table relationships | §7 |
-| UML Class Diagram | OOP design, architecture modeling, inheritance hierarchies | §8 ⚠️ |
-| Sequence Diagram | Protocol interactions, API call flows, message passing | §9 ⚠️ |
-| State Machine Diagram | State transitions, formal methods, protocol specifications | §10 ⚠️ |
+| UML Class Diagram | OOP design, architecture modeling, inheritance hierarchies | §8 |
+| Sequence Diagram | Protocol interactions, API call flows, message passing | §9 |
+| State Machine Diagram | State transitions, formal methods, protocol specifications | §10 |
 | Data Flow Diagram (DFD) | Software engineering, system data flows, process modeling | §11 |
-| Swimlane Diagram | Cross-functional process flows, RACI charts | §17 ⚠️ |
+| Swimlane Diagram | Cross-functional process flows, RACI charts | §17 |
 | Wireframe / Mockup | App screens, website layouts, UI prototypes | §18 |
 | Cross-Functional Table | Actor x Phase process grid, two-axis flowcharts | §19 |
 | Cloud Architecture | AWS/Azure/GCP 3-tier, VPC/subnet, IaaS | §20 |
 | BPMN Process | Cross-functional business process with lanes | §21 |
-
-⚠️ = quality may degrade for hand-written XML; keep diagrams simple or split across pages
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction

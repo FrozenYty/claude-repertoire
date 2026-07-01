@@ -134,6 +134,9 @@ edges in these THREE cases:
    When you DO need waypoints: 1-2 max, through clear space outside all node bboxes.
    Examples of edges that should NOT have waypoints: direct vertical/horizontal
    connections, switch→subnet links (exitX/exitY suffices), DFD flows.
+   The goal is simple, straight connections — add waypoints only when essential.
+   But waypoint count is a design principle, not a hard target. Some diagrams
+   naturally need more routing, and that is fine.
 
 8. **Minimum arrow length.** Adjacent nodes MUST have >= 30px gap between
    bottom of source and top of target. Arrows shorter than this are invisible.
