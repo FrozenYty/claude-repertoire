@@ -10,13 +10,19 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ## [0.5.0] - 2026-07-02
 
-### Changed — Golden XML refined from user ground-truth
+### Changed — Golden XML refined from user ground-truth (Batch 1)
 
 - **Section 6 Flowchart**: branch edges now use waypoints through mid-column
-  corridors (not direct diagonals). User manually debugged: waypoints at
-  midpoint x between spine and branch columns create clean orthogonal routing.
-- **Key Rule 7 refined**: distinguish cross-panel edges (need waypoints) from
-  same-region edges (exitX/exitY only).
+  corridors (not direct diagonals). Pattern: waypoints at midpoint x between
+  spine and branch columns → clean L-shaped orthogonal routing.
+- **Section 13 Org Chart**: off-center parent→child edges use a horizontal
+  routing bus at intermediate y. Center-positioned child uses direct vertical.
+  Pattern: CEO→left VP routes through bus at y=140, CEO→center VP goes straight.
+- **Section 10 State Machine**: self-loop patterns expanded. Left-side arc
+  (2 waypoints) for tight spaces. Right-side box loop (4 waypoints) wraps
+  above and right of the node — completely visible.
+- **Key Rules**: Rule 4 (self-loops) now describes both left and right patterns.
+  Rule 7 (cross-panel) refined with mid-column corridor strategy.
 
 ## [0.4.0] - 2026-07-01
 

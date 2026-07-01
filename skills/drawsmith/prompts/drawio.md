@@ -111,13 +111,10 @@ overlapping lines, and edge-through-shape crossings. You MUST hand-route
 edges in these THREE cases:
 
 4. **Self-loops — pull the arrow OUT.** Never let a self-loop hug the node.
-   Add TWO waypoints to create visible curvature:
-   ```
-   exitX=0; exitY=0.5  →  waypoint 1 (node.x-40, node.y-10)
-                       →  waypoint 2 (node.x-40, node.y+node.h+10)
-                       →  entryX=0; entryY=0.75
-   ```
-   The label sits OUTSIDE the loop arc, not inside the curve.
+   Two patterns work (pick based on available space):
+   - Left-side arc: exit left, arc down → entry left-upper (2 waypoints)
+   - Right-side box: exit right, go up, go left above node, curve back (4 waypoints)
+   Both use `curved=1`. The label sits OUTSIDE the loop arc, not inside.
 
 5. **Bidirectional edges — offset the tracks.** When A->B and B->A both exist,
    they MUST use different exitY values so they run as parallel tracks:

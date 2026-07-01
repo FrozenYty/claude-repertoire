@@ -662,7 +662,10 @@ edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;e
 ```
 
 **Key pattern:** waypoints pull the loop OUT from the node.
-For a node at (nx, ny, nw, nh): wp1=(nx-40, ny-10), wp2=(nx-40, ny+nh+10).
+For a node at (nx, ny, nw, nh), two patterns work:
+- Left-side: exit left, arc down and back (wp1=nx-40,ny-10; wp2=nx-40,ny+nh+10)
+- Right-side box: exit right, go up, go left above node, curve back
+  (wp1=nx+nw-56,ny-60; wp2=nx+nw+24,ny-60; wp3=nx+nw+24,ny-120; wp4=nx-93,ny-120)
 Without waypoints, `curved=1` alone produces an invisible node-hugging arc.
 
 **Edge style (self-loop):**
@@ -793,6 +796,11 @@ jettySize=auto;html=1;endArrow=none;strokeColor=#999999;strokeWidth=1.5
 
 Vertical gap between levels: 120px. Horizontal spread: children spaced
 240px apart center-to-center.
+
+**Routing pattern:** off-center parent→child edges use a HORIZONTAL BUS at
+`y = (parent.bottom + child.top) / 2`. Center-positioned child uses direct
+vertical (no waypoints). This prevents diagonal lines crossing other nodes.
+Example: CEO at x=450, VP Eng at x=140 → bus at y=140, waypoints (450,140)→(140,140).
 
 **To adapt:** change labels, add/remove levels, switch TB to LR by
 swapping x/y logic.
