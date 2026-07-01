@@ -129,7 +129,7 @@ Users may override any default. Honor these requests:
 
 | File | Content | Read when |
 |------|---------|-----------|
-| `references/quickstart-drawio.md` | 1-page cheat sheet: colors, grid, routing, common XML pattern | Every draw.io diagram — read FIRST |
+| `references/quickstart.md` | 1-page cheat sheet: draw.io + matplotlib essentials | Every diagram — read FIRST |
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
 | `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 15-item self-check | Every draw.io XML diagram |
 | `references/drawio-layouts.md` | 21 reusable draw.io layout templates (13 with complete XML) | Matching diagram patterns |

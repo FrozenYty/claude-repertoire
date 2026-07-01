@@ -65,3 +65,49 @@ Read `references/drawio-layouts.md` for the full 21-template library.
 ```
 
 After generating, run: `python scripts/drawio-check.py <file.drawio>`
+
+---
+
+## Matplotlib Quickstart
+
+### rcParams Block (copy-paste to every script)
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+plt.rcParams.update({
+    'font.family': 'serif', 'font.serif': ['Times New Roman'],
+    'font.size': 11, 'axes.titlesize': 12, 'axes.labelsize': 11,
+    'pdf.fonttype': 42, 'ps.fonttype': 42,
+    'figure.dpi': 150, 'savefig.dpi': 600, 'savefig.bbox': 'tight',
+})
+```
+
+### Non-Negotiable Rules
+
+1. IEEE/Nature palette — never matplotlib defaults or `jet`/`rainbow`.
+2. No title (captions go in the document).
+3. `frameon=False` on legends. `spines[['top','right']].set_visible(False)`.
+4. Error bars/bands MUST state what they represent in output text.
+
+### Common Patterns
+
+```python
+fig, ax = plt.subplots(figsize=(3.5, 2.6))
+ax.bar(x, values, color=palette, edgecolor='black', linewidth=0.5)
+ax.spines[['top', 'right']].set_visible(False)
+fig.savefig('output.png', dpi=600)
+fig.savefig('output.pdf')
+```
+
+### Top Templates
+
+- **§I-1** Grouped bar (SOTA comparison)
+- **§II-6** Line + confidence band (training curves)
+- **§III-9** ROC curve
+- **§V-15** Box plot
+
+Read `references/matplotlib-templates.md` for all 19 types.
+
+After generating, run: `python scripts/matplotlib-check.py <script.py>`
