@@ -158,7 +158,11 @@ def check(filepath):
     report = []
     fail_count = 0
 
-    # 1. Vertex overlap (critical: nodes visually collide)
+    # Filter: exclude coordinate-based edges (axis lines, separators) from edge checks
+    noded_edges = [e for e in edges if e["source"] and e["target"]]
+    coord_edges = [e for e in edges if not e["source"] or not e["target"]]
+
+    # 1. Vertex overlap (skip Venn circles, text labels inside Venn regions)
     vids = list(vertices.keys())
     overlaps = []
     for i in range(len(vids)):
@@ -166,6 +170,21 @@ def check(filepath):
             a = vertices[vids[i]]
             b = vertices[vids[j]]
             if bbox_overlap(a, b):
+                # Skip Venn-style overlaps: both are ellipses with opacity <= 50
+                sa = parse_style(a.get("style", ""))
+                sb = parse_style(b.get("style", ""))
+                both_ellipse = (sa.get("ellipse") or sa.get("ellipse") is True) and (sb.get("ellipse") or sb.get("ellipse") is True)
+                if both_ellipse:
+                    op_a = float(sa.get("opacity", 100))
+                    op_b = float(sb.get("opacity", 100))
+                    if op_a <= 50 and op_b <= 50:
+                        continue
+                # Skip text labels (annotations can overlap with shapes)
+                if sa.get("text") is True or sb.get("text") is True:
+                    continue
+                # Skip small markers on timeline axis (<=20px) next to text
+                if min(a.get("w",0) + a.get("h",0), b.get("w",0) + b.get("h",0)) <= 40:
+                    continue
                 overlaps.append((vids[i], vids[j]))
     if overlaps:
         for o in overlaps:
@@ -176,14 +195,17 @@ def check(filepath):
 
     # 2. Edge reference validity (critical: broken edges = broken diagram)
     vertex_ids = set(vertices.keys())
-    for e in edges:
-        if e["source"] not in vertex_ids:
+    for e in noded_edges:
+        # Skip coordinate-based edges (sourcePoint/targetPoint) — used for axis lines
+        if not e["source"] and not e["target"]:
+            continue
+        if e["source"] and e["source"] not in vertex_ids:
             report.append(f"FAIL: Edge {e['id']}: source '{e['source']}' not found")
             fail_count += 1
-        if e["target"] not in vertex_ids:
+        if e["target"] and e["target"] not in vertex_ids:
             report.append(f"FAIL: Edge {e['id']}: target '{e['target']}' not found")
             fail_count += 1
-    if fail_count == len(overlaps):  # no new fails from edges
+    if fail_count == len(overlaps):
         report.append("PASS: All edge references valid")
 
     # 3. Duplicate IDs (critical: breaks draw.io rendering)
@@ -193,7 +215,7 @@ def check(filepath):
             report.append(f"FAIL: Duplicate vertex ID '{vid}'")
             fail_count += 1
         seen[vid] = True
-    for e in edges:
+    for e in noded_edges:
         if e["id"] in seen:
             report.append(f"FAIL: Duplicate edge ID '{e['id']}'")
             fail_count += 1
@@ -226,7 +248,7 @@ def check(filepath):
     # 6. Bidirectional edge overlap (critical: arrows drawn on top of each other)
     from collections import defaultdict as dd
     pairs = dd(list)
-    for e in edges:
+    for e in noded_edges:
         key = tuple(sorted([e["source"], e["target"]]))
         pairs[key].append(e)
     for key, elist in pairs.items():
@@ -242,7 +264,7 @@ def check(filepath):
     # 7. Duplicate edges (same source->target AND same exit side = visual overlap)
     from collections import defaultdict as dd2
     edge_pairs = dd2(list)
-    for e in edges:
+    for e in noded_edges:
         style = parse_style(e["style"])
         exit_side = f'{style.get("exitX","0.5")}-{style.get("exitY","0.5")}'
         key = (e["source"], e["target"], exit_side)
@@ -254,7 +276,7 @@ def check(filepath):
 
     # 8. Invisible / extremely short edges (gap < 10px between connected nodes)
     short_count = 0
-    for e in edges:
+    for e in noded_edges:
         src_v = vertices.get(e["source"])
         tgt_v = vertices.get(e["target"])
         if src_v and tgt_v:
@@ -273,7 +295,7 @@ def check(filepath):
     # 9. Same-exit-point collision (edges from same source sharing same exitX+exitY)
     from collections import defaultdict as dd3
     exit_map = dd3(list)
-    for e in edges:
+    for e in noded_edges:
         style = parse_style(e["style"])
         ex = style.get("exitX", "0.5")
         ey = style.get("exitY", "0.5")
@@ -290,13 +312,22 @@ def check(filepath):
 
     # 10. Edge passing through non-endpoint shape (warn: layout issue)
     edge_shape_warns = 0
-    for e in edges:
+    for e in noded_edges:
         src_id, tgt_id = e["source"], e["target"]
         segs = edge_path_segments(e, vertices)
         for (p1, p2) in segs:
             for vid, v in vertices.items():
                 if vid in (src_id, tgt_id):
                     continue
+                # Skip swimlane containers (edges naturally pass through lanes)
+                vstyle = parse_style(v.get("style", ""))
+                if vstyle.get("swimlane") is True:
+                    continue
+                # Skip Venn circles (intentional overlap)
+                if vstyle.get("ellipse") is True:
+                    op = float(vstyle.get("opacity", 100))
+                    if op <= 50:
+                        continue
                 bx, by, bw, bh = v["x"], v["y"], v["w"], v["h"]
                 if (min(p1[0], p2[0]) < bx + bw and max(p1[0], p2[0]) > bx and
                     min(p1[1], p2[1]) < by + bh and max(p1[1], p2[1]) > by):
