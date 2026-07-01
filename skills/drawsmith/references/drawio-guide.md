@@ -12,7 +12,7 @@
 - [Section Container Layout](#section-container-layout) — labels inside containers, no overlap
 - [XML Escapes](#xml-escapes) — `&amp;`, `&lt;`, `&#xa;`, etc.
 - [Layout Rules](#layout-rules) — spacing, margins, line limits
-- [Arrow Routing](#arrow-routing-critical----most-common-source-of-errors) — waypoints, diagonals, residuals
+- [Arrow Routing](#arrow-routing) — self-loops, bidirectional, cross-panel waypoints
 - [Visual Style Guide](#visual-style-guide) — references `style-guide.md` for colors/fonts/weights
 - [Common Pitfalls](#common-pitfalls-real-failures-from-past-generations) — 14 real failures and their fixes
 - [Self-Check](#self-check-output-passfail-for-each) — 15-item output checklist
@@ -141,35 +141,31 @@ Run the checklist and report each item `pass/fail`.
 </mxfile>
 ```
 
-**Orthogonal edge routing (new default, applies to all edges):**
+**Orthogonal edge routing (base style for ALL edges):**
 
 Use `edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;`
-as the base style for ALL edges. These four keywords enable drawio's
-built-in smart routing: automatic 90° bends that avoid shape overlaps.
-Combined with the No-Overlap rule, this eliminates most waypoint
-hand-coding.
+as the base style. Add `endArrow=classic` for forward edges, `endArrow=none` for
+hierarchy lines. The built-in router produces STRAIGHT or simple right-angle paths
+with NO obstacle avoidance. For visible, clean routing, add waypoints in these cases:
+self-loops, bidirectional pairs, and cross-panel edges (see Arrow Routing section).
 
 ```xml
-<!-- Standard edge with orthogonal routing -->
+<!-- Standard forward edge -->
 <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5" edge="1" parent="1" source="node_a" target="node_b">
   <mxGeometry relative="1" as="geometry"/>
 </mxCell>
 ```
 
-Add explicit `exitX`/`exitY`/`entryX`/`entryY` only when a node has 2+
-connections on the same side — distribute them across the shape
-perimeter. Add `dashed=1` for skip/residual connections. Add `curved=1`
-for feedback loops.
+Simple same-region edges need only `source`/`target`. Use `exitX`/`exitY` when
+2+ connections leave the same node side. Add `dashed=1` for skip/residual edges,
+`curved=1` for self-loops.
 
 ### Edge style variants
 
 | Style | When |
 |-------|------|
-| `edgeStyle=orthogonalEdgeStyle` | Default — 90-degree bends, auto routing |
-| `edgeStyle=elbowEdgeStyle;elbow=horizontal` | Single horizontal jog |
-| `edgeStyle=entityRelationEdgeStyle` | ER diagrams, vertical exit from table |
-| `edgeStyle=segmentEdgeStyle` | Manual segment control |
-| `noEdgeStyle=1` (no edgeStyle key) | Straight line, no routing |
+| `edgeStyle=orthogonalEdgeStyle` | Default for all diagrams |
+| `edgeStyle=entityRelationEdgeStyle` | ER diagrams - perpendicular stubs |
 
 ## Grid Coordinate System
 
