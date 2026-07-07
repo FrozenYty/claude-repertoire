@@ -2039,14 +2039,27 @@ and right side panels.
 - Row spacing for spine nodes: 160px between centers. For h=60 nodes,
   this leaves 100px gaps — plenty for arrows and labels.
 
-**Zone partitioning (1100px canvas):**
+**Zone partitioning (1100px canvas, 70px column gaps):**
 
 ```
-Left:   x=30,  w=300   (Instruction / Config / Input panels)
-Center: x=370, w=360   (Main data flow: User → Core → Tools → Storage)
-Right:  x=770, w=300   (External APIs, Skills, Extensions)
-Gap between columns: 40px
+Left:   x=30,  w=280   (Instruction / Config / Input panels)
+Center: x=380, w=340   (Main data flow: User → Core → Tools → Storage)
+Right:  x=790, w=280   (External APIs, Skills, Extensions)
+Gap between columns: 70px
 ```
+
+**Why 70px gaps:** At 40px, containers and side-panel edges are too close —
+nodes feel cramped and long edge labels collide with adjacent column
+boundaries. 70px gives each column visual independence and leaves room for
+horizontal edge labels. (Adjusted from real-world manual refinement.)
+
+For canvas widths other than 1100px, partition proportionally:
+```
+usable = pageWidth - 2*margin
+col_w = (usable - (n_cols-1)*gap) / n_cols
+col_x[i] = margin + i*(col_w + gap)
+```
+Default: margin=30, gap=70, n_cols=3.
 
 **Row grid (main spine nodes, center column):**
 
@@ -2064,6 +2077,7 @@ Row 3: y=520  (Storage / Output)
 | Main spine node (entry, core) | 280 | 56–60 |
 | Wide description node (tool system) | 280 | 100–120 |
 | Bottom pair (FS, DB, Git) | 130–150 each | 50–56 |
+| Bottom pair fan-out | span 1.3× to 1.5× spine node width | — |
 | Side panel container | 280–300 | varies |
 | Side panel content node | fill − 30 | 40–50 |
 
@@ -2086,7 +2100,13 @@ Row 3: y=520  (Storage / Output)
   exitY (0.3 / 0.7). Gold (#D6B656) to match API color.
 - Side panel → spine (context/extension): dashed, 1.5px, color matches
   panel theme (purple for instruction, orange for extension).
-- Spine → bottom pair: split exitX (0.3 left child, 0.65 right child).
+- Spine → bottom pair: split exitX (0.25 left child, 0.7 right child).
+  **Bottom nodes fan OUT wider than the spine node above them** — the
+  processing layer funnels into multiple destinations; the visual spread
+  reinforces this. Span = 1.3× to 1.5× the spine node width. Example:
+  spine node at x=400 w=300 → left child at x=370, right child at x=570
+  (span = 350 vs spine width 300, ratio 1.17×). For wider fan-out, use
+  x=350 and x=590 (span = 390, ratio 1.3×).
 
 **Golden XML example (CLI tool architecture, 3-column, 11 nodes):**
 

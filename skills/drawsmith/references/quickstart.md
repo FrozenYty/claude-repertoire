@@ -125,10 +125,18 @@ Standard node: 140×60. Decision diamond: 140×80. Ellipse: 60×60.
 
 For multi-column layouts (system architecture), partition the canvas:
 ```
-zone_gap ≥ 40px between columns
+zone_gap = 70px between columns  (40px is too tight — edges collide)
 col_w = (pageWidth - 2*margin - (n_cols-1)*zone_gap) / n_cols
 col_x[i] = margin + i * (col_w + zone_gap)
 ```
+Example for 1100px, 3 cols, margin=30, gap=70:
+```
+Left:   x=30,  w=280  (right edge 310)
+Center: x=380, w=340  (right edge 720)
+Right:  x=790, w=280  (right edge 1070)
+```
+Bottom output nodes fan OUT wider than the processing node above them
+(span 1.3×–1.5× the spine width).
 
 ---
 

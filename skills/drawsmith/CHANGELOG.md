@@ -8,6 +8,22 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.7.1] - 2026-07-08
+
+### Fixed - Spacing refinements from real-world manual editing
+
+- **§22 zone gaps widened to 70px** (was 40px). At 40px, containers feel
+  cramped and edge labels collide with adjacent column boundaries. Gap
+  increased based on manual refinement of a production diagram.
+- **Bottom pair nodes now fan out** wider than the spine node above them
+  (span 1.3×–1.5× spine width). Processing funnels into multiple
+  destinations — the visual spread reinforces this. Added fan-out formula
+  and concrete coordinate examples.
+- **quickstart.md multi-column formula** updated with 70px default gap
+  and a worked 1100px example.
+- All zone partition calculations in §22 re-derived for the wider gaps:
+  Left x=30 w=280, Center x=380 w=340, Right x=790 w=280.
+
 ## [0.7.0] - 2026-07-08
 
 ### Added - System architecture template + self-contained quickstart
