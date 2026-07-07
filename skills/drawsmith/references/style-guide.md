@@ -48,6 +48,40 @@ ieee_pal = {
 
 ---
 
+### 1.1b System Architecture Palette (general system/infra/tool diagrams)
+
+For non-ML diagrams — CLI tools, cloud infrastructure, platform architecture,
+microservice topologies. Use when IEEE semantic palette (Attention/Convolution/
+Pooling) doesn't match the domain.
+
+| Component | Fill | Stroke | Use for |
+|-----------|------|--------|---------|
+| Core Engine / Orchestrator | `#DAE8FC` | `#6C8EBF` | Main engine, coordinator, central service |
+| Instruction / Config Layer | `#E1D5E7` | `#9673A6` | CLAUDE.md, config files, rule systems |
+| Tool / Processing Layer | `#D5E8D4` | `#82B366` | Tool systems, processing pipelines, workers |
+| I/O Boundary | `#F8CECC` | `#B85450` | User terminal, file system, database, network I/O |
+| External API / Service | `#FFF2CC` | `#D6B656` | Third-party APIs, remote backends, SaaS |
+| Extension / Plugin System | `#FFE6CC` | `#D79B00` | Plugins, skills, MCP servers, add-ons |
+| Section Container | `#F5F5F5` | `#BDBDBD` | Dashed box around related components |
+
+```python
+sys_arch_pal = {
+    "core":         "#6C8EBF",
+    "instruction":  "#9673A6",
+    "tool":         "#82B366",
+    "io":           "#B85450",
+    "external":     "#D6B656",
+    "extension":    "#D79B00",
+    "container":    "#BDBDBD",
+}
+```
+
+**Selection rule:** If the diagram is about an ML model architecture (Transformer,
+CNN, RNN, etc.), use IEEE Semantic (§1.1). If it's about a software system,
+CLI tool, cloud infra, or platform, use System Architecture (§1.1b).
+
+---
+
 ### 1.2 Journal Palettes -- Top-Tier (Nature / Science / Cell family)
 
 Highest quality, most-tested palettes. Use for publications and

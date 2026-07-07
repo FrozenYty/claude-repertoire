@@ -1,6 +1,6 @@
 ---
 name: drawsmith
-version: 0.6.1
+version: 0.7.0
 description: >
   Professional diagram and chart generation using draw.io and matplotlib.
   Use whenever the user asks to draw, create, generate, design, plot,
@@ -69,26 +69,57 @@ or "illustration", decide which engine to use BEFORE starting work.
 
 ---
 
+### Layout Selection (evaluate BEFORE planning)
+
+Match the user's request to the closest template. Copy its Golden XML;
+replace labels, keep coordinates.
+
+| Description | Template | Canvas | Color Palette |
+|-------------|----------|--------|---------------|
+| CLI/infra/tool architecture, core + side panels | **§22 System Architecture** | 1100×850 | System Arch (§1.1b) |
+| ML model architecture (Transformer, CNN, etc.) | See Flow Direction rule | varies | IEEE (§1.1) |
+| Vertical layers, protocol stacks | §1 Vertical Stack | 600×750 | IEEE / System Arch |
+| Horizontal stages, CI/CD, data pipeline | §2 Horizontal Pipeline | 1100×300 | IEEE / System Arch |
+| Central hub + satellites, star topology | §3 Center Hub | 750×600 | IEEE / System Arch |
+| Before/after, method A vs B | §4 Side-by-Side | 900×650 | IEEE / System Arch |
+| Process flow, decision tree | §6 Flowchart | 650×800 | IEEE / System Arch |
+| DB schema, table relationships | §7 ERD | 800×600 | IEEE |
+| OOP design, inheritance | §8 UML Class | 800×700 | IEEE |
+| State transitions | §10 State Machine | 800×650 | IEEE |
+
+If no template matches, fall back to the general workflow in
+`prompts/drawio.md` and apply the Flow Direction rule manually.
+
+**Color palette routing:** ML architecture diagrams → IEEE Semantic (§1.1).
+System/infra/tool diagrams → System Architecture (§1.1b). All palettes in
+`references/style-guide.md`.
+
 ## Diagram Workflow (draw.io)
 
-1. **Check templates** — if the request matches a known layout (§1-§21
-   in `references/drawio-layouts.md`), adapt it. Skip Phase 1 planning
-   when a template fits — the layout math is already done.
-2. **Plan** (if no template fits) — follow Phase 1 in `prompts/drawio.md`.
-   Decide flow direction up front (TB or LR), then determine canvas,
-   layout zones, node table, and edge table.
-3. **Read `references/drawio-guide.md`** — XML skeleton, hard rules, arrow
-   routing, container layout, self-check.
-4. **Read `references/style-guide.md`** — colors (IEEE palette for
-   technical diagrams), fonts, line weights, spacing.
-5. **Generate XML** — write the `.drawio` file. Place nodes on exact grid
-   (col*180+40, row*120+40, coords multiples of 10). Hand-route edges
-   where needed (exitY distribution, waypoints — see `drawio-guide.md`
-   Arrow Routing). Follow all hard rules from `drawio-guide.md`:
-   every vertex has geometry, every edge has `<mxGeometry relative="1"
-   as="geometry"/>`, rough grid placement, no overlap.
-6. **Self-check** — run the 15-item checklist from `drawio-guide.md`.
-   Fix failures before delivering.
+1. **Pick layout** — use the Layout Selection table above. Jump directly
+   to the matching § in `references/drawio-layouts.md`. Copy the Golden XML.
+2. **Read `references/quickstart.md`** — self-contained: XML skeleton, escape
+   cheat sheet, color palettes (IEEE + System Arch), grid formula, edge
+   routing patterns, non-negotiable rules, self-check checklist. This single
+   file covers 80% of needs; only reach for `drawio-guide.md` or
+   `style-guide.md` for niche edge cases.
+3. **Adapt the template** — rename labels, adjust row positions by adding
+   the same offset to all y values. Keep the coordinate math intact.
+   All coordinates MUST be multiples of 10. Use the color palette that
+   matches the diagram type (IEEE for ML, System Arch for general).
+4. **Generate XML** — write the `.drawio` file. Follow all hard rules:
+   every vertex has `<mxGeometry x y w h as="geometry"/>`, every edge has
+   `<mxGeometry relative="1" as="geometry"/>`, `verticalAlign=middle` on
+   content nodes, `jumpStyle=arc` on `<mxGraphModel>`.
+5. **Self-check** — run the 10-item checklist from `quickstart.md`.
+   Then run `python scripts/drawio-check.py <file.drawio>`. Fix failures
+   before delivering.
+6. **Refine on feedback** — if the user reports overlapping, cramped layout,
+   or missing elements, do NOT redo from scratch. Instead: (a) for overlap:
+   increase canvas size and widen zone gaps; (b) for cramped: scale pageWidth/
+   pageHeight by 1.3× and multiply all coordinates proportionally; (c) for
+   missing elements: find the nearest empty zone and add a node there,
+   rerouting only affected edges.
 
 ---
 

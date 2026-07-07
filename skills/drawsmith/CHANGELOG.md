@@ -8,7 +8,35 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
-## [0.6.1] - 2026-07-03
+## [0.7.0] - 2026-07-08
+
+### Added - System architecture template + self-contained quickstart
+
+- **New §22 System Architecture Overview** in `drawio-layouts.md`: multi-column
+  layout template with pre-computed zone partitioning, parent-child containers,
+  Golden XML example, and System Architecture color palette. Covers the most
+  common non-ML diagram type: CLI/infra/tool architecture with core + side panels.
+- **New System Architecture palette (§1.1b)** in `style-guide.md`: 7 semantic
+  color roles (Core Engine, Instruction Layer, Tool Layer, I/O Boundary,
+  External API, Extension System, Section Container) for general system diagrams.
+  Paired with selection rule: IEEE for ML, System Arch for everything else.
+- **`quickstart.md` rewritten** as truly self-contained: complete XML skeleton,
+  XML escape cheat sheet (the #1 gotcha), both color palettes inline, 10-item
+  self-check, multi-column zone partitioning formula. A single file now covers
+  80% of all diagram requests without needing `drawio-guide.md` or `style-guide.md`.
+- **Layout Selection table** added to `SKILL.md`: maps user intent → template § +
+  canvas size + color palette. Evaluated BEFORE planning to eliminate layout
+  guesswork. Color palette routing decision included.
+- **Refine-on-feedback step** added to Diagram Workflow: incremental fixes
+  (overlap → widen, cramped → scale canvas, missing → add to nearest zone)
+  instead of redoing from scratch.
+
+### Changed
+
+- SKILL.md version → 0.7.0.
+- Diagram Workflow restructured: quickstart.md is now the primary reference;
+  drawio-guide.md and style-guide.md are fallback for niche cases only.
+- Template index in drawio-layouts.md includes §22.
 
 ### Changed - Final polish
 

@@ -40,6 +40,7 @@ see `style-guide.md`.
 | Cross-Functional Table | Actor x Phase process grid, two-axis flowcharts | §19 |
 | Cloud Architecture | AWS/Azure/GCP 3-tier, VPC/subnet, IaaS | §20 |
 | BPMN Process | Cross-functional business process with lanes | §21 |
+| System Architecture Overview | CLI/infra/tool architecture, core + side panels | §22 |
 
 If the user's request doesn't match any of these, fall back to the
 general workflow in `prompts/drawio.md` and apply the Flow Direction
@@ -2010,3 +2011,284 @@ top-to-bottom between lanes.
 - End events: filled red ellipse with perimeter
 
 **To adapt:** change lane names, task labels, decision logic.
+
+
+
+---
+
+## §22 System Architecture Overview
+
+**When to use:** System architecture diagrams, infrastructure overviews,
+tool/platform architecture, CLI/infrastructure architecture — any
+multi-component system with a core engine, supporting side panels, and
+layered data flow. This is the most commonly needed template for
+general-purpose software architecture diagrams.
+
+**Canvas:** 1100×850. Three-column layout with a main spine plus left
+and right side panels.
+
+**Layout conventions:**
+- Three zones with clear gaps: Left (supporting context), Center (main
+  data flow spine), Right (external systems + extensions).
+- Flow direction: top-to-bottom for the main spine. Side panels connect
+  horizontally via dashed arrows (context loading / extension).
+- All column widths are pre-computed — do NOT adjust ad-hoc. If you need
+  more room, scale the entire canvas proportionally.
+- Use parent-child containment for section containers. Children use
+  coordinates relative to the container's top-left corner.
+- Row spacing for spine nodes: 160px between centers. For h=60 nodes,
+  this leaves 100px gaps — plenty for arrows and labels.
+
+**Zone partitioning (1100px canvas):**
+
+```
+Left:   x=30,  w=300   (Instruction / Config / Input panels)
+Center: x=370, w=360   (Main data flow: User → Core → Tools → Storage)
+Right:  x=770, w=300   (External APIs, Skills, Extensions)
+Gap between columns: 40px
+```
+
+**Row grid (main spine nodes, center column):**
+
+```
+Row 0: y=40   (User / Entry point)
+Row 1: y=200  (Core engine / Orchestrator)
+Row 2: y=360  (Processing / Tool layer)
+Row 3: y=520  (Storage / Output)
+```
+
+**Node sizing:**
+
+| Role | Width | Height |
+|------|-------|--------|
+| Main spine node (entry, core) | 280 | 56–60 |
+| Wide description node (tool system) | 280 | 100–120 |
+| Bottom pair (FS, DB, Git) | 130–150 each | 50–56 |
+| Side panel container | 280–300 | varies |
+| Side panel content node | fill − 30 | 40–50 |
+
+**Color mapping (System Architecture palette):**
+
+| Component | Fill | Stroke |
+|-----------|------|--------|
+| Core Engine / Orchestrator | `#DAE8FC` | `#6C8EBF` |
+| Instruction / Config Layer | `#E1D5E7` | `#9673A6` |
+| Tool / Processing Layer | `#D5E8D4` | `#82B366` |
+| I/O Boundary (User, FS, DB) | `#F8CECC` | `#B85450` |
+| External API / Service | `#FFF2CC` | `#D6B656` |
+| Extension / Plugin System | `#FFE6CC` | `#D79B00` |
+| Section Container (dashed) | `#F5F5F5` | `#BDBDBD` |
+
+**Edge conventions:**
+- Main spine vertical edges: exitX=0.5, exitY=1 → entryX=0.5, entryY=0.
+  Solid black, 1.5px.
+- Core ↔ API bidirectional: forward solid, reverse dashed. Different
+  exitY (0.3 / 0.7). Gold (#D6B656) to match API color.
+- Side panel → spine (context/extension): dashed, 1.5px, color matches
+  panel theme (purple for instruction, orange for extension).
+- Spine → bottom pair: split exitX (0.3 left child, 0.65 right child).
+
+**Golden XML example (CLI tool architecture, 3-column, 11 nodes):**
+
+```xml
+<mxfile host="app.diagrams.net">
+  <diagram name="System Architecture" id="arch">
+    <mxGraphModel dx="1400" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" jumpStyle="arc" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ===== LEFT: Side Panel Container ===== -->
+        <mxCell id="left_panel" value="" style="rounded=1;arcSize=6;container=1;pointerEvents=0;fillColor=#F5F5F5;strokeColor=#BDBDBD;strokeWidth=1.5;html=1;dashed=1;dashPattern=10 4" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="300" height="250" as="geometry"/>
+        </mxCell>
+        <mxCell id="left_lbl" value="Side Panel Title" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666666;align=left;verticalAlign=top" vertex="1" parent="left_panel">
+          <mxGeometry x="10" y="6" width="200" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="left_item1" value="Item A" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="left_panel">
+          <mxGeometry x="15" y="36" width="125" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="left_item2" value="Item B" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="left_panel">
+          <mxGeometry x="155" y="36" width="130" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="left_item3" value="Item C" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=1;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="left_panel">
+          <mxGeometry x="15" y="94" width="270" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="left_note" value="Description of this panel&amp;#39;s role" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontStyle=0;fontColor=#888888;align=left;verticalAlign=middle" vertex="1" parent="left_panel">
+          <mxGeometry x="15" y="150" width="270" height="30" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== CENTER: Main Spine ===== -->
+        <mxCell id="spine_entry" value="&lt;b&gt;Entry Point&lt;/b&gt;&lt;br&gt;User / CLI / API Gateway" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=2;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="410" y="40" width="280" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="spine_core" value="&lt;b&gt;Core Engine&lt;/b&gt;&lt;br&gt;Orchestrator · Coordinator" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=2;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="410" y="200" width="280" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="spine_processing" value="&lt;b&gt;Processing Layer&lt;/b&gt;&lt;br&gt;Tool A · Tool B · Tool C · Tool D&lt;br&gt;&lt;span style=&quot;font-size:9px;color:#666666&quot;&gt;Description of what this layer does&lt;/span&gt;" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=2;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="410" y="360" width="280" height="110" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="spine_output_a" value="&lt;b&gt;Output A&lt;/b&gt;&lt;br&gt;Storage / File" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="410" y="540" width="130" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="spine_output_b" value="&lt;b&gt;Output B&lt;/b&gt;&lt;br&gt;External / History" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="560" y="540" width="130" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== RIGHT: External Systems ===== -->
+        <mxCell id="right_api" value="&lt;b&gt;External API&lt;/b&gt;&lt;br&gt;Remote Service / Backend" style="rounded=1;arcSize=8;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=2;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="770" y="200" width="300" height="56" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="right_ext_panel" value="" style="rounded=1;arcSize=6;container=1;pointerEvents=0;fillColor=#F5F5F5;strokeColor=#BDBDBD;strokeWidth=1.5;html=1;dashed=1;dashPattern=10 4" vertex="1" parent="1">
+          <mxGeometry x="770" y="310" width="300" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="right_ext_lbl" value="Extension System" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666666;align=left;verticalAlign=top" vertex="1" parent="right_ext_panel">
+          <mxGeometry x="10" y="6" width="200" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="right_ext_items" value="Plugin A · Plugin B · Plugin C&lt;br&gt;On-demand loaded modules" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="right_ext_panel">
+          <mxGeometry x="15" y="36" width="270" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="right_ext_note" value="Location / trigger mechanism&lt;br&gt;How extensions are discovered" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontStyle=0;fontColor=#888888;align=left;verticalAlign=middle" vertex="1" parent="right_ext_panel">
+          <mxGeometry x="15" y="96" width="270" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="right_ext2_panel" value="" style="rounded=1;arcSize=6;container=1;pointerEvents=0;fillColor=#F5F5F5;strokeColor=#BDBDBD;strokeWidth=1.5;html=1;dashed=1;dashPattern=10 4" vertex="1" parent="1">
+          <mxGeometry x="770" y="500" width="300" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="right_ext2_lbl" value="External Integration" style="text;html=1;strokeColor=none;fontSize=10;fontFamily=Times New Roman;fontStyle=2;fontColor=#666666;align=left;verticalAlign=top" vertex="1" parent="right_ext2_panel">
+          <mxGeometry x="10" y="6" width="200" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="right_ext2_items" value="Protocol A · Protocol B&lt;br&gt;External Tools &amp;amp; Data Sources" style="rounded=1;arcSize=6;whiteSpace=wrap;html=1;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1.5;fontFamily=Times New Roman;fontStyle=0;fontSize=11;fontColor=#333333;align=center;verticalAlign=middle" vertex="1" parent="right_ext2_panel">
+          <mxGeometry x="15" y="30" width="270" height="50" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== LEGEND ===== -->
+        <mxCell id="legend_box" value="" style="rounded=1;arcSize=6;fillColor=#FFFFFF;strokeColor=#999999;strokeWidth=1;html=1;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="30" y="660" width="520" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend_title" value="&lt;b&gt;Legend&lt;/b&gt;" style="text;html=1;strokeColor=none;fontSize=11;fontFamily=Times New Roman;fontStyle=1;fontColor=#333333;align=left;verticalAlign=top" vertex="1" parent="1">
+          <mxGeometry x="42" y="667" width="60" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg_solid" style="endArrow=classic;strokeColor=#333333;strokeWidth=1.5;html=1;verticalAlign=middle" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="45" y="698" as="sourcePoint"/><mxPoint x="95" y="698" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="leg_solid_t" value="Data / Control Flow" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="105" y="690" width="120" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg_api" style="endArrow=classic;strokeColor=#D6B656;strokeWidth=2;html=1;verticalAlign=middle" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="45" y="722" as="sourcePoint"/><mxPoint x="95" y="722" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="leg_api_t" value="API Call / Response" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="105" y="714" width="130" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg_purple" style="endArrow=classic;strokeColor=#9673A6;strokeWidth=1.5;dashed=1;html=1;verticalAlign=middle" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="255" y="698" as="sourcePoint"/><mxPoint x="305" y="698" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="leg_purple_t" value="Context / Config" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="315" y="690" width="110" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="leg_orange" style="endArrow=classic;strokeColor=#D79B00;strokeWidth=1.5;dashed=1;html=1;verticalAlign=middle" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="255" y="722" as="sourcePoint"/><mxPoint x="305" y="722" as="targetPoint"/></mxGeometry>
+        </mxCell>
+        <mxCell id="leg_orange_t" value="Extension / Plugin" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="315" y="714" width="130" height="16" as="geometry"/>
+        </mxCell>
+
+        <!-- Legend color swatches -->
+        <mxCell id="c_blue" value="" style="rounded=1;arcSize=3;fillColor=#DAE8FC;strokeColor=#6C8EBF;strokeWidth=1;html=1" vertex="1" parent="1">
+          <mxGeometry x="45" y="756" width="16" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_blue_t" value="Core Engine" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="67" y="754" width="80" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_red" value="" style="rounded=1;arcSize=3;fillColor=#F8CECC;strokeColor=#B85450;strokeWidth=1;html=1" vertex="1" parent="1">
+          <mxGeometry x="155" y="756" width="16" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_red_t" value="I/O Boundary" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="177" y="754" width="90" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_green" value="" style="rounded=1;arcSize=3;fillColor=#D5E8D4;strokeColor=#82B366;strokeWidth=1;html=1" vertex="1" parent="1">
+          <mxGeometry x="275" y="756" width="16" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_green_t" value="Tool Layer" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="297" y="754" width="80" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_yellow" value="" style="rounded=1;arcSize=3;fillColor=#FFF2CC;strokeColor=#D6B656;strokeWidth=1;html=1" vertex="1" parent="1">
+          <mxGeometry x="385" y="756" width="16" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_yellow_t" value="External API" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="407" y="754" width="90" height="16" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_orange" value="" style="rounded=1;arcSize=3;fillColor=#FFE6CC;strokeColor=#D79B00;strokeWidth=1;html=1" vertex="1" parent="1">
+          <mxGeometry x="45" y="780" width="16" height="12" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_orange_t" value="Extension System" style="text;html=1;strokeColor=none;fontSize=9;fontFamily=Times New Roman;fontColor=#333333;align=left;verticalAlign=middle" vertex="1" parent="1">
+          <mxGeometry x="67" y="778" width="110" height="16" as="geometry"/>
+        </mxCell>
+
+        <!-- ===== EDGES ===== -->
+        <mxCell id="e_entry_core" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="spine_entry" target="spine_core">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_core_api_out" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#D6B656;strokeWidth=2;exitX=1;exitY=0.3;entryX=0;entryY=0.5" edge="1" parent="1" source="spine_core" target="right_api" value="Request">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_api_core_back" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#D6B656;strokeWidth=2;exitX=0;exitY=0.7;entryX=1;entryY=0.6;dashed=1" edge="1" parent="1" source="right_api" target="spine_core" value="Response">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_core_proc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="spine_core" target="spine_processing">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_proc_outa" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0.25;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="spine_processing" target="spine_output_a">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_proc_outb" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#333333;strokeWidth=1.5;exitX=0.65;exitY=1;entryX=0.5;entryY=0" edge="1" parent="1" source="spine_processing" target="spine_output_b">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_left_core" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#9673A6;strokeWidth=1.5;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25" edge="1" parent="1" source="left_panel" target="spine_core" value="Context">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_ext_core" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#D79B00;strokeWidth=1.5;dashed=1;exitX=0;exitY=0.5;entryX=1;entryY=0.8" edge="1" parent="1" source="right_ext_panel" target="spine_core" value="Extends">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_ext2_proc" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=classic;strokeColor=#D79B00;strokeWidth=1.5;dashed=1;exitX=0;exitY=0.5;entryX=1;entryY=0.7" edge="1" parent="1" source="right_ext2_panel" target="spine_processing" value="Extends">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
+```
+
+**Key patterns to copy:**
+- Three-column zone partitioning with pre-computed widths.
+- Main spine: 4 rows at y=40, 200, 360, 540 (160px row spacing).
+- Left panel connects to Core with dashed purple → "Context".
+- Right API connects to Core with bidirectional gold arrows.
+- Extension panels connect via dashed orange → "Extends".
+- Tool/processing layer is a single wide node (keep high-level; 7 nodes max).
+- Bottom outputs split from processing layer using exitX=0.25/0.65.
+- Legend with both edge types and color swatches.
+- All container children use relative coordinates with `parent="containerId"`.
+
+**To adapt:**
+1. Rename all labels to match your system.
+2. Adjust row positions up/down by adding the same offset to all y values.
+3. Add/remove side panel items — keep within the panel container's bounds.
+4. If you need a 4th row, add `y = (previous_row_y) + 160`.
+5. If you need wider columns, scale canvas and recalculate zone widths:
+   `col_w = (new_pageWidth - 2*30 - 2*40) / 3`.
+6. For systems with no external API, remove the right_api node and its edges.
+7. For systems with more side panels, add containers in the right column
+   stacked vertically with 40px gaps.
