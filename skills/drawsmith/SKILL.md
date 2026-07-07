@@ -114,8 +114,9 @@ System/infra/tool diagrams → System Architecture (§1.1b). Cloud infrastructur
    `<mxGeometry relative="1" as="geometry"/>`, `verticalAlign=middle` on
    content nodes, `jumpStyle=arc` on `<mxGraphModel>`.
 5. **Self-check** — run the 10-item checklist from `quickstart.md` Step 9.
-   Then run `python scripts/drawio-check.py <file.drawio>`. Fix failures
-   before delivering.
+   Then run `python scripts/drawio-check.py <file.drawio>` as a sanity
+   check. Review script warnings — they catch real problems — but the
+   script is a reference indicator, not a gate. Use judgment.
 6. **Refine on feedback** — if the user reports overlapping, cramped layout,
    or missing elements, do NOT redo from scratch. Instead: (a) for overlap:
    increase canvas size and widen zone gaps; (b) for cramped: scale pageWidth/
@@ -141,8 +142,9 @@ System/infra/tool diagrams → System Architecture (§1.1b). Cloud infrastructur
 4. **Generate script** — one self-contained `.py` file. rcParams at top,
    data middle, plot, save. Output `.png` (>=600 dpi) + `.pdf` (vector).
 5. **Self-check** — run the 4 must-checks from quickstart.md. Then run
-   `python scripts/matplotlib-check.py <script.py>`. Fix failures before
-   delivering.
+   `python scripts/matplotlib-check.py <script.py>` as a sanity check.
+   Review script warnings — they catch real problems — but the script
+   is a reference indicator, not a gate. Use judgment.
 
 ---
 
