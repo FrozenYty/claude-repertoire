@@ -19,7 +19,7 @@
 
 ---
 
-## Reasoning Budget (READ FIRST)
+## Reasoning Budget (IMPORTANT)
 
 Your job is to declare the LOGICAL STRUCTURE of the diagram -- what nodes
 exist, what edges connect them, what labels they carry.
@@ -186,7 +186,7 @@ Row formula: y = row_index * 120 + 40 (row 0=40, 1=160, 2=280...)
 For layered diagrams, each tier = one row. For pipelines, each stage = one column.
 For swimlanes, nodes within a lane share y and increment x.
 
-## Flow Direction (READ FIRST — most common failure mode)
+## Flow Direction (IMPORTANT — most common failure mode)
 
 **ML architecture diagrams flow BOTTOM-TO-TOP by convention.** This is the
 single most common thing models get wrong. The Vaswani 2017 Transformer figure,
@@ -298,19 +298,19 @@ a node center.
 13. **Cross-container edges at root** — edges between nodes in different
     containers use `parent="1"` (root level). Otherwise connectors are
     clipped to the source container bounding box.
-22. **Single abstraction level** — a diagram is EITHER high-level overview
+14. **Single abstraction level** — a diagram is EITHER high-level overview
     (7 nodes max) OR detailed drill-down, never both mixed. Use sub-pages
     for detail layers.
-22. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
-22. **I/O direction consistent** — every component uses fixed entry/exit
+15. **No-Overlap** — no two vertex bounding boxes may intersect, with one allowed exception: a *section container* may contain modules whose bbox is FULLY INSIDE the container's bbox (with ≥10px padding on all four sides). Edges (arrows) are exempt from this rule. See § Section Container Layout for the exact pattern.
+16. **I/O direction consistent** — every component uses fixed entry/exit
     sides. Pick one convention per diagram: top-in-bottom-out (default for
     layered architectures), left-in-right-out (pipelines). Never mix entry
     directions on the same component.
-22. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
-22. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
-22. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
-22. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
-22. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
+17. **One color = one link type** — each color encodes exactly one semantic role. Never reuse the same color for unrelated link types. If two things are different concepts, use different colors. Max 6 distinct colors per diagram.
+18. **Allocate space by edge density** — widen the vertical gap where edges are densest. A tier with 10+ crossing edges needs 2× the gap of a tier with 2 edges. Never give blank space to a low-density region while edges pile up in a narrow corridor.
+19. **Grid is a user preference** — default to `grid=1` with `gridSize=10` (visible, helpful for editing). If the user requests grid-off, set `grid=0`. The grid is an alignment tool that many users find useful during review. Do not force it off unless asked.
+20. **Uniform line weight** — all edges in the same diagram use the same `strokeWidth` (default 1.5). Differentiate link types by color and dash pattern, not by thickness. Exception: emphasis arrows (e.g., primary data flow) may use `strokeWidth=2.5`.
+21. **No decorative containers** — every dashed box or container must be defined in the legend. If a box has no semantic meaning, remove it. Containers exist to group related components or mark a boundary — not for visual decoration.
 22. **Jump-over on crossings** — add `jumpStyle=arc` to the `<mxGraphModel>` element to enable automatic arc jumps where edges cross. draw.io renders a small arch so the crossing lines are visually distinct. Without this, every crossing looks like a junction.
 
 ## Section Container Layout

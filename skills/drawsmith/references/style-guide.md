@@ -133,6 +133,8 @@ For ML model architectures, use IEEE Semantic (§1.1).
 
 ---
 
+### 1.2 Journal Palettes -- Top-Tier (Nature / Science / Cell family)
+
 Highest quality, most-tested palettes. Use for publications and
 professional charts where color credibility matters.
 

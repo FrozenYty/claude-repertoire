@@ -40,14 +40,16 @@ This confirmation proves you read the template. Do NOT skip it.
 
 **Before generating, read `references/drawio-guide.md`.** It contains:
 - The **Flow Direction** rule (TB or LR — decide before any coordinate)
-- Hard rules (21 rules: well-formedness, layout, routing, semantics)
+- Hard rules (22 rules: well-formedness, layout, routing, semantics)
 - Arrow routing (source/target only, exitY distribution, waypoints sparingly)
 - Container layout (labels inside, >=10px padding, parent-child nesting)
 - Layers, Tags, Metadata (advanced draw.io features)
 - Self-check checklist (15 items)
 
 **If the request matches a known layout pattern, read
-`references/drawio-layouts.md`.** It contains 22 templates (14 with complete XML)
+`references/drawio-layouts.md`.** Then read
+`references/quickstart.md` for the XML skeleton, escape rules, and color palettes.
+`drawio-layouts.md` contains 22 templates (14 with complete XML)
 pre-verified coordinates:
 
 | Section | Pattern | When to use |
@@ -73,6 +75,7 @@ pre-verified coordinates:
 | §19 | Cross-Functional Table | Actor x Phase process grid |
 | §20 | Cloud Architecture | AWS/Azure/GCP 3-tier |
 | §21 | BPMN Process | Business process with lanes |
+| §22 | System Architecture Overview | CLI/infra/tool architecture, core + side panels |
 
 Adapt template names and counts to the user's spec; keep the layout math
 and edge directions as-is.

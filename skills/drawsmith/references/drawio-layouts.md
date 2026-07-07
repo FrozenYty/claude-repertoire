@@ -1506,9 +1506,6 @@ prototypes — any user-facing interface mockup before development.
 **To adapt:** change screen dimensions, add/remove UI elements, adjust
 layout for mobile vs desktop.
 
----
-
-## §18 Wireframe / Mockup
 
 **Golden XML example:**
 

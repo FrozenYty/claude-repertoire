@@ -113,7 +113,7 @@ System/infra/tool diagrams → System Architecture (§1.1b). Cloud infrastructur
    every vertex has `<mxGeometry x y w h as="geometry"/>`, every edge has
    `<mxGeometry relative="1" as="geometry"/>`, `verticalAlign=middle` on
    content nodes, `jumpStyle=arc` on `<mxGraphModel>`.
-5. **Self-check** — run the 10-item checklist from `quickstart.md`.
+5. **Self-check** — run the 10-item checklist from `quickstart.md` Step 9.
    Then run `python scripts/drawio-check.py <file.drawio>`. Fix failures
    before delivering.
 6. **Refine on feedback** — if the user reports overlapping, cramped layout,
@@ -162,10 +162,10 @@ Users may override any default. Honor these requests:
 
 | File | Content | Read when |
 |------|---------|-----------|
-| `references/quickstart.md` | 1-page cheat sheet: draw.io + matplotlib essentials | Every diagram — read FIRST |
+| `references/quickstart.md` | 1-page cheat sheet: draw.io + matplotlib essentials | Diagram workflow step 2 |
 | `references/style-guide.md` | Colors (18+ journal palettes + 6 curated), fonts, resolution, line weights, spacing | Always — shared design system |
 | `references/drawio-guide.md` | XML skeleton, hard rules, arrow routing, 15-item self-check | Every draw.io XML diagram |
-| `references/drawio-layouts.md` | 21 reusable draw.io layout templates (13 with complete XML) | Matching diagram patterns |
+| `references/drawio-layouts.md` | 22 reusable draw.io layout templates (14 with complete XML) | Matching diagram patterns |
 | `references/matplotlib-guide.md` | rcParams, seaborn integration, statistical conventions, scale treatments | Every matplotlib chart |
 | `references/matplotlib-templates.md` | 19 runnable chart code skeletons | Adapting a known chart type |
 
