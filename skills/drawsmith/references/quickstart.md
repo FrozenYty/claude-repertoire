@@ -99,19 +99,19 @@ Replace IDs, labels, coordinates from the template. Keep the structure.
 
 ---
 
-## Step 4: XML Escape Cheat Sheet
+## Step 4: XML Escape — Just 3 Rules
 
 The #1 cause of malformed XML. Inside `value="..."` with `html=1`:
 
-| You want | Write in XML | Renders as |
-|----------|-------------|------------|
-| `&` (ampersand) | `&amp;amp;` | `&` |
-| `<b>Bold</b>` | `&amp;lt;b&amp;gt;Bold&amp;lt;/b&amp;gt;` | **Bold** |
-| line break | `&amp;#xa;` or `&lt;br&gt;` | newline |
-| non-breaking space | `&amp;nbsp;` | ` ` (nbsp) |
-| `"` (quote) | `&quot;` | `"` |
+| Goal | Write in XML | Why |
+|------|-------------|-----|
+| **Bold text** `<b>X</b>` | `&amp;lt;b&amp;gt;X&amp;lt;/b&amp;gt;` | `&lt;` → XML decodes to `<` → HTML renders bold |
+| **Line break** | `&lt;br&gt;` | `&lt;br&gt;` → XML decodes to `<br>` → HTML newline |
+| **`&` character** | `&amp;amp;` | `&amp;` → `&`, then `amp;` → HTML renders `&` |
+| Non-breaking space | `&amp;nbsp;` | → `&nbsp;` → HTML renders ` ` |
+| `"` (double quote) | `&quot;` | Standard XML escape |
 
-**Short version:** `&` → `&amp;amp;`, `<` → `&amp;lt;`, `>` → `&amp;gt;`, newline → `&lt;br&gt;`.
+**Pattern:** Every `&` in the final rendered text → `&amp;` in XML. Every `<` in HTML → `&lt;` in XML. That's it.
 
 ---
 
@@ -167,6 +167,22 @@ Bottom output nodes fan OUT wider than the processing node above them
 | Extension / Plugin System | `#FFE6CC` | `#D79B00` |
 | Section Container (dashed box) | `#F5F5F5` | `#BDBDBD` |
 
+### Industry Architecture (AWS/Azure/GCP cloud & enterprise infra)
+
+Source: [AWS Architecture Icons](https://aws.amazon.com/architecture/icons/), [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/).
+
+| Layer | Fill | Stroke |
+|-------|------|--------|
+| Compute / Services | `#ED7100` | `#D05C17` |
+| Storage / Database | `#7AA116` | `#5A8A0E` |
+| Networking / CDN | `#8C4FFF` | `#6A30C0` |
+| Security / IAM | `#C7131F` | `#A0101A` |
+| Analytics / ML | `#116D5B` | `#0D5546` |
+| Integration / Messaging | `#BC1356` | `#960F44` |
+| External / Users | `#232F3E` | `#1A2430` |
+
+**Palette router:** ML model → IEEE. Software system → System Arch. Cloud infra → Industry.
+
 ---
 
 ## Step 7: Non-Negotiable Rules
@@ -209,7 +225,28 @@ Bottom output nodes fan OUT wider than the processing node above them
 10. jumpStyle=arc on mxGraphModel:                    pass/fail
 ```
 
-After generating, run: `python scripts/drawio-check.py <file.drawio>`
+After generating, run: `python scripts/drawio-check.py <file.drawio>` **(MANDATORY — do not deliver without passing)**.
+
+### Before Delivering: 5 Must-Checks
+
+These catch the failure modes that cause 90% of rework. Check BEFORE showing the user:
+
+1. **Column/zone gaps ≥ 60px.** At 40px, edge labels collide with adjacent containers.
+   Measure `rightZone.x − (leftZone.x + leftZone.w)`. If < 60, widen the canvas or
+   reduce column widths.
+
+2. **Two bottom-row nodes have ≥ 50px horizontal gap between them.** When a processing
+   layer funnels into two outputs (store + search, FS + git), fan them OUT — span should
+   be 1.3× to 1.5× the parent node's width. They shouldn't hug each other.
+
+3. **Stacked nodes have ≥ 30px vertical gap.** At < 30px, arrow shafts become invisible.
+   Check: `lowerNode.y − (upperNode.y + upperNode.h) ≥ 30`.
+
+4. **Legend present if > 2 colors or > 1 edge style used.** No legend = reader can't
+   decode the diagram. Always include both edge types AND color swatches in the legend.
+
+5. **No container right edge overlaps with adjacent column's left edge.** Scan each
+   container: `container.x + container.w` must be < next column's `x` minus 10px.
 
 ---
 

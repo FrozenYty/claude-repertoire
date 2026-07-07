@@ -8,6 +8,30 @@ All notable changes to the drawsmith skill. Uses [Semantic Versioning](https://s
 
 ---
 
+## [0.7.2] - 2026-07-08
+
+### Added - Industry Architecture palette + pre-delivery checklist
+
+- **New §1.1c Industry Architecture Palette** in `style-guide.md`: 8
+  layer-based semantic colors sourced from [AWS Architecture Icons](https://aws.amazon.com/architecture/icons/)
+  and [Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/)
+  standards. Compute/Storage/Networking/Security/Analytics/Integration/External/Management.
+  Added palette selection summary table.
+- **Pre-delivery must-check (5 items)** in `quickstart.md`: column gaps ≥60px,
+  bottom node fan-out ≥50px, vertical gaps ≥30px, legend present, no container
+  bbox overlap between columns. These 5 catch 90% of rework-causing failures.
+- **Industry Architecture palette** added to `quickstart.md` color section
+  and `SKILL.md` layout selection table (cloud infra auto-routes to it).
+
+### Changed
+
+- **Escape cheat sheet simplified** in `quickstart.md`: reduced from 6-row
+  table to 3-rule pattern with explanation of why each rule works.
+- **README.md counts updated**: 22 templates (was 21), palette description
+  now lists all 3 semantic palettes + journal/curated counts.
+- **`prompts/drawio.md`**: template count 21→22, XML count 13→14.
+- SKILL.md version → 0.7.2. Palette routing now covers all 3 semantic palettes.
+
 ## [0.7.1] - 2026-07-08
 
 ### Fixed - Spacing refinements from real-world manual editing

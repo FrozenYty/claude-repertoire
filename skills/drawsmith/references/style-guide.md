@@ -82,7 +82,56 @@ CLI tool, cloud infra, or platform, use System Architecture (§1.1b).
 
 ---
 
-### 1.2 Journal Palettes -- Top-Tier (Nature / Science / Cell family)
+### 1.1c Industry Architecture Palette (AWS / Azure / GCP standard)
+
+Authoritative layer-based color coding used across major cloud providers and
+enterprise architecture teams. Source: [AWS Architecture Icons](https://aws.amazon.com/architecture/icons/),
+[Azure Architecture Center](https://learn.microsoft.com/en-us/azure/architecture/),
+[C4 Model notation](https://c4model.com/).
+
+Each architectural layer maps to a fixed semantic color — the same convention
+used by AWS, Azure, and GCP in their official architecture diagrams.
+
+| Layer | Fill | Stroke | Use for |
+|-------|------|--------|---------|
+| Compute / Services | `#ED7100` | `#D05C17` | EC2, Lambda, containers, microservices, app servers |
+| Storage / Database | `#7AA116` | `#5A8A0E` | S3, RDS, volumes, object stores, data lakes |
+| Networking / CDN | `#8C4FFF` | `#6A30C0` | VPC, subnets, load balancers, API gateways, CDN |
+| Security / IAM | `#C7131F` | `#A0101A` | IAM, firewall, encryption, WAF, secrets |
+| Analytics / ML | `#116D5B` | `#0D5546` | Data pipelines, ML training, ETL, notebooks |
+| Integration / Messaging | `#BC1356` | `#960F44` | Queues, event buses, pub/sub, webhooks |
+| External / Users | `#232F3E` | `#1A2430` | Users, on-prem systems, third-party APIs |
+| Management / DevOps | `#D05C17` | `#A84A13` | Monitoring, CI/CD, logging, dashboards |
+
+```python
+industry_pal = {
+    "compute":      "#ED7100",
+    "storage":      "#7AA116",
+    "networking":   "#8C4FFF",
+    "security":     "#C7131F",
+    "analytics":    "#116D5B",
+    "integration":  "#BC1356",
+    "external":     "#232F3E",
+    "management":   "#D05C17",
+}
+```
+
+**Selection rule:** Use Industry Architecture for cloud infrastructure diagrams
+(AWS/Azure/GCP), enterprise system topologies, and network architecture. The
+layer-based color coding is immediately recognizable to cloud engineers and
+architects. For non-cloud software systems, use System Architecture (§1.1b).
+For ML model architectures, use IEEE Semantic (§1.1).
+
+### Palette Selection Summary
+
+| Diagram Type | Palette | § |
+|-------------|---------|---|
+| ML model (Transformer, CNN, RNN) | IEEE Semantic | 1.1 |
+| Software system, CLI tool, platform | System Architecture | 1.1b |
+| Cloud infra, AWS/Azure/GCP, enterprise | Industry Architecture | 1.1c |
+| Publication chart | Nature / Science / Cell | 1.2–1.5 |
+
+---
 
 Highest quality, most-tested palettes. Use for publications and
 professional charts where color credibility matters.

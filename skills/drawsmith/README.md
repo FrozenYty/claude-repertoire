@@ -10,11 +10,12 @@ Two engines, auto-routed by request type:
 
 ### Diagrams (draw.io)
 
-21 reusable draw.io layout templates (13 with complete XML):
+22 reusable draw.io layout templates (14 with complete XML):
 vertical stack, horizontal pipeline, center hub, side-by-side comparison,
 grid/table, flowchart, ERD, UML class, sequence, state machine, DFD,
 network topology, org chart/mind map, timeline/Gantt, Venn diagram,
-conceptual coordinate framework, swimlane, wireframe/mockup.
+conceptual coordinate framework, swimlane, wireframe/mockup, BPMN process,
+system architecture overview.
 
 ### Charts (matplotlib)
 
@@ -25,10 +26,11 @@ bar+line combo, faceted grid.
 
 ### Visual Design
 
-24 color palettes sourced from [Academic-Color](https://github.com/Rookie-00001/Academic-Color):
-18 journal-extracted (Nature, Science, Cell, NEJM, Lancet, JAMA, etc.)
-plus 6 curated synthetic palettes. IEEE semantic palette for technical
-diagrams. Colorblind-safe colormaps (viridis, cividis, turbo).
+18 journal-extracted palettes (Nature, Science, Cell, NEJM, Lancet, JAMA, etc.)
+plus 6 curated synthetic palettes from [Academic-Color](https://github.com/Rookie-00001/Academic-Color).
+3 semantic palettes for architecture diagrams: IEEE (ML models),
+System Architecture (software/infra), and Industry Architecture (AWS/Azure/GCP cloud).
+Colorblind-safe colormaps (viridis, cividis, turbo).
 
 ### Quality
 

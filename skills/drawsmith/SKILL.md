@@ -1,6 +1,6 @@
 ---
 name: drawsmith
-version: 0.7.1
+version: 0.7.2
 description: >
   Professional diagram and chart generation using draw.io and matplotlib.
   Use whenever the user asks to draw, create, generate, design, plot,
@@ -76,7 +76,8 @@ replace labels, keep coordinates.
 
 | Description | Template | Canvas | Color Palette |
 |-------------|----------|--------|---------------|
-| CLI/infra/tool architecture, core + side panels | **§22 System Architecture** | 1100×850 | System Arch (§1.1b) |
+| Cloud infra (AWS/Azure/GCP), enterprise topology | **§22 System Architecture** | 1100×850 | Industry (§1.1c) |
+| CLI/tool/platform architecture, core + side panels | **§22 System Architecture** | 1100×850 | System Arch (§1.1b) |
 | ML model architecture (Transformer, CNN, etc.) | See Flow Direction rule | varies | IEEE (§1.1) |
 | Vertical layers, protocol stacks | §1 Vertical Stack | 600×750 | IEEE / System Arch |
 | Horizontal stages, CI/CD, data pipeline | §2 Horizontal Pipeline | 1100×300 | IEEE / System Arch |
@@ -91,7 +92,8 @@ If no template matches, fall back to the general workflow in
 `prompts/drawio.md` and apply the Flow Direction rule manually.
 
 **Color palette routing:** ML architecture diagrams → IEEE Semantic (§1.1).
-System/infra/tool diagrams → System Architecture (§1.1b). All palettes in
+System/infra/tool diagrams → System Architecture (§1.1b). Cloud infrastructure
+(AWS/Azure/GCP) → Industry Architecture (§1.1c). All palettes in
 `references/style-guide.md`.
 
 ## Diagram Workflow (draw.io)
