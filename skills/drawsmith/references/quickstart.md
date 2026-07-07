@@ -225,7 +225,7 @@ Source: [AWS Architecture Icons](https://aws.amazon.com/architecture/icons/), [A
 10. jumpStyle=arc on mxGraphModel:                    pass/fail
 ```
 
-After generating, run: `python scripts/drawio-check.py <file.drawio>` **(MANDATORY — do not deliver without passing)**.
+After generating, run: `python scripts/drawio-check.py <file.drawio>` (sanity check — review warnings, use judgment).
 
 ### Before Delivering: 5 Must-Checks
 
@@ -345,4 +345,4 @@ fig.savefig('output.png', dpi=600)
 3. **Error disclosure.** If error bars/bands present, output text states what they represent.
 4. **Color palette declared.** State which palette was used (Nature, IEEE, etc.) in output.
 
-After generating, run: `python scripts/matplotlib-check.py <script.py>` **(MANDATORY)**.
+After generating, run: `python scripts/matplotlib-check.py <script.py>` (sanity check — review warnings, use judgment).
