@@ -252,7 +252,24 @@ These catch the failure modes that cause 90% of rework. Check BEFORE showing the
 
 ## Matplotlib Quickstart
 
-### rcParams Block (copy-paste to every script)
+### Chart Type Decision Tree
+
+| Data scenario | Chart type | Template § |
+|---------------|-----------|------------|
+| Compare values across categories | Grouped / Horizontal bar | §I-1, §I-2 |
+| Show trend over time or sequence | Line + confidence band | §II-6 |
+| Binary classifier performance | ROC / PR curve | §III-9, §III-10 |
+| Correlation matrix or intensity grid | Heatmap | §IV-11 |
+| Distribution of a single variable | Box / Violin | §V-15, §V-14 |
+| Parts of a whole (few categories) | Donut / Pie | §V-17 |
+| Two different Y-axis scales | Dual Y-axis | §V-18 |
+| Multi-variable comparison across groups | Faceted grid | §VI-19 |
+| Show top-N + cumulative (Pareto) | Pareto front | §I-4 |
+| Multi-dimensional profile | Radar | §I-5 |
+
+Read `references/matplotlib-templates.md` for all 19 types with runnable code.
+
+### rcParams Block (copy-paste to EVERY script)
 
 ```python
 import matplotlib.pyplot as plt
@@ -263,34 +280,69 @@ plt.rcParams.update({
     'font.size': 11, 'axes.titlesize': 12, 'axes.labelsize': 11,
     'pdf.fonttype': 42, 'ps.fonttype': 42,
     'figure.dpi': 150, 'savefig.dpi': 600, 'savefig.bbox': 'tight',
+    'axes.spines.top': False, 'axes.spines.right': False,
 })
 ```
 
+### Color Palette (default: Nature 2025)
+
+| 1 | 2 | 3 | 4 | 5 | 6 |
+|---|---|---|---|---|---|
+| `#433764` | `#E48566` | `#A05179` | `#C66571` | `#C6C687` | `#668441` |
+
+```python
+nature_pal = ["#433764", "#E48566", "#A05179", "#C66571", "#C6C687", "#668441"]
+```
+
+For IEEE, Science, Cell, or other palettes, see `references/style-guide.md` §1.
+**Forbidden regardless of use case:** `jet`, `rainbow`, matplotlib defaults.
+
 ### Non-Negotiable Rules
 
-1. IEEE/Nature palette — never matplotlib defaults or `jet`/`rainbow`.
-2. Always add a title — it makes the chart self-documenting.
-3. `frameon=False` on legends. `spines[['top','right']].set_visible(False)`.
-4. Error bars/bands MUST state what they represent in output text.
-5. Extend BOTH axes a few percent beyond data range.
+1. **rcParams block at top of every script.** Not optional — it sets fonts, DPI, font embedding.
+2. **Nature/IEEE/Science palette** — never matplotlib defaults or `jet`/`rainbow`.
+3. **Always add a title** — `fig.suptitle("...", fontweight="bold")` makes the chart self-documenting.
+4. **Remove top + right spines.** `spines[['top','right']].set_visible(False)` on EVERY chart.
+5. **`frameon=False` on legends.** Frame around legend looks amateurish.
+6. **Error bars/bands MUST state what they represent** in output text (±1 SD, 95% CI, N runs).
+7. **Extend both axes** a few percent beyond data range — breathing room, not empty space.
+8. **Save as BOTH `.png` (≥600 dpi) and `.pdf` (vector).** PNG for quick view, PDF for publication.
 
 ### Common Patterns
 
 ```python
+# Bar chart — the most common request
 fig, ax = plt.subplots(figsize=(3.5, 2.6))
-ax.bar(x, values, color=palette, edgecolor='black', linewidth=0.5)
+ax.bar(x, values, color=nature_pal[:len(values)], edgecolor='black', linewidth=0.5)
 ax.spines[['top', 'right']].set_visible(False)
+ax.set_title("Result Comparison", fontweight="bold")
 fig.savefig('output.png', dpi=600)
 fig.savefig('output.pdf')
 ```
 
-### Top Templates
+```python
+# Line chart with confidence band
+fig, ax = plt.subplots(figsize=(4.5, 2.8))
+ax.plot(x, mean, color=nature_pal[0], linewidth=1.5, label='Ours')
+ax.fill_between(x, mean-std, mean+std, color=nature_pal[0], alpha=0.15)
+ax.spines[['top', 'right']].set_visible(False)
+ax.legend(frameon=False)
+fig.savefig('output.png', dpi=600)
+```
 
-- **§I-1** Grouped bar (SOTA comparison)
-- **§II-6** Line + confidence band (training curves)
-- **§III-9** ROC curve
-- **§V-15** Box plot
+### Common Pitfalls (real failures)
 
-Read `references/matplotlib-templates.md` for all 19 types.
+1. **Type-3 fonts in PDF.** Symptom: ACM/IEEE submission rejected. Fix: `'pdf.fonttype': 42` in rcParams.
+2. **Chinese text as tofu squares.** Symptom: `□□□□` instead of Chinese. Fix: set CJK font chain (see `style-guide.md` §11).
+3. **Legend covers data.** Symptom: legend box on top of data points. Fix: `bbox_to_anchor=(1.02, 1)` or place outside.
+4. **Bars clipped at axis edge.** Symptom: tallest bar hits the top. Fix: `ax.set_ylim(0, max_val * 1.12)`.
+5. **`jet` colormap used.** Symptom: chart looks like a weather radar. Fix: use `viridis`, `cividis`, or journal palette.
 
-After generating, run: `python scripts/matplotlib-check.py <script.py>`
+### Before Delivering: 4 Must-Checks
+
+1. **`pdf.fonttype = 42` in rcParams.** If missing, PDF fails journal submission.
+2. **Spines removed.** `top` and `right` spines hidden. Left + bottom only.
+3. **Error disclosure.** If error bars/bands present, output text states what they represent.
+4. **Color palette declared.** State which palette was used (Nature, IEEE, etc.) in output.
+
+After generating, run: `python scripts/matplotlib-check.py <script.py>` **(MANDATORY)**.

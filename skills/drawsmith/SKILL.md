@@ -127,19 +127,22 @@ System/infra/tool diagrams → System Architecture (§1.1b). Cloud infrastructur
 
 ## Chart Workflow (matplotlib)
 
-1. **Pick chart type** — if the user hasn't chosen, route through
-   `prompts/chart-pick.md` first.
-2. **Read `references/matplotlib-guide.md`** — professional rcParams block,
-   statistical conventions, scale treatments, common pitfalls.
-3. **Read `references/style-guide.md`** — color palettes (Nature/Science/
-   Cell/IEEE), typeface system, resolution standards.
-4. **Read the matching template** in `references/matplotlib-templates.md`
+1. **Pick chart type** — use the Chart Type Decision Tree in
+   `references/quickstart.md` (Matplotlib Quickstart section). If still
+   unsure, route through `prompts/chart-pick.md`.
+2. **Read `references/quickstart.md`** Matplotlib section — self-contained:
+   rcParams block, Nature palette hex codes, non-negotiable rules (8 items),
+   common patterns (bar + line), common pitfalls (5 real failures), and
+   4-item pre-delivery checklist. Covers 80% of chart needs.
+3. **Read the matching template** in `references/matplotlib-templates.md`
    (19 chart types). Copy the template, adapt to the user's data; keep
-   the style invariants.
-5. **Generate script** — one self-contained `.py` file. rcParams at top,
-   data middle, plot, save. Output `.png` (>=600 dpi) + optional `.pdf`.
-6. **Self-check** — run the checklist from `matplotlib-guide.md`. Fix
-   failures before delivering.
+   the style invariants. Only reach for `matplotlib-guide.md` or
+   `style-guide.md` for niche edge cases.
+4. **Generate script** — one self-contained `.py` file. rcParams at top,
+   data middle, plot, save. Output `.png` (>=600 dpi) + `.pdf` (vector).
+5. **Self-check** — run the 4 must-checks from quickstart.md. Then run
+   `python scripts/matplotlib-check.py <script.py>`. Fix failures before
+   delivering.
 
 ---
 
