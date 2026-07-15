@@ -47,6 +47,6 @@ Output nothing else beyond these two parts.
 Paper PDF + target venue: {{TARGET_CONFERENCE}}
 
 ## See also
-- prompts/respond-to-reviewers.md — After identifying issues via simulated review, draft a formal rebuttal response. Feed Part 1 [The Review Report] output as {{REVIEWER_COMMENTS}} input to respond-to-reviewers.
+- prompts/rebuttal.md — After identifying issues via simulated review, draft a formal rebuttal response. Feed Part 1 [The Review Report] output as {{REVIEWER_COMMENTS}} input to rebuttal.
 - prompts/check-logic.md — Logic issues found during simulated review can be cross-validated with a logic check.
-- prompts/verify-references.md — Reference issues found during review can be fixed with the citation verification system.
+- prompts/check-references.md — Reference issues found during review can be fixed with the citation verification system.

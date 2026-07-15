@@ -39,5 +39,5 @@ Translate the provided Chinese draft into a polished English academic passage, f
 {{CHINESE_DRAFT}}
 
 ## See also
-- prompts/translate-zh-to-en-latex.md — Chinese->English for LaTeX: requires special character escaping.
+- prompts/translate-latex-zh2en.md — Chinese->English for LaTeX: requires special character escaping.
 - prompts/polish-en.md — After translation, polish for clarity and rigor. Feed Part 1 [English Draft] output as {{ENGLISH_LATEX}} input to polish-en.

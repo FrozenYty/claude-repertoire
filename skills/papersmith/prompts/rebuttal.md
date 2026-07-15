@@ -96,5 +96,5 @@ from SKILL.md if outputting Chinese.
 {{OPTIONAL_CHANGES_MADE}}
 
 ## See also
-- prompts/simulate-peer-review.md — Simulate peer review before drafting a formal response to anticipate reviewer concerns. Feed simulate-peer-review Part 1 [The Review Report] output as {{REVIEWER_COMMENTS}} input.
-- prompts/draft-cover-letter.md — Pre-submission phase; the cover letter selling points provide material for the rebuttal.
+- prompts/peer-review.md — Simulate peer review before drafting a formal response to anticipate reviewer concerns. Feed peer-review Part 1 [The Review Report] output as {{REVIEWER_COMMENTS}} input.
+- prompts/cover-letter.md — Pre-submission phase; the cover letter selling points provide material for the rebuttal.

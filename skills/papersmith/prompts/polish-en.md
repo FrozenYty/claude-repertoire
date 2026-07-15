@@ -27,7 +27,7 @@ Deeply polish and rewrite the provided English LaTeX snippet. Your goal is not m
 - No itemization: do not rewrite paragraphs as `\item` lists. Maintain complete paragraph structure.
 
 ### Anti-Pattern Awareness
-- Before polishing, read `references/writing-anti-patterns.md` § English section. If the input matches any listed anti-pattern, rewrite accordingly.
+- Before polishing, read `references/writing-pitfalls.md` § English section. If the input matches any listed anti-pattern, rewrite accordingly.
 
 ## Output Format
 - **Part 1 [LaTeX]**: Output only the polished English LaTeX code.

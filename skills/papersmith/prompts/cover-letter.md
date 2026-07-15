@@ -78,6 +78,6 @@ Otherwise default to English.
 
 ## See also
 - prompts/polish-abstract.md — The cover letter core claims come from the abstract; keep them aligned. Feed polish-abstract Part 1 [Polished abstract] output as {{SUMMARY}} input.
-- prompts/respond-to-reviewers.md — Next phase after submission: rebuttal writing.
-- prompts/verify-references.md — Verify reference completeness and format compliance before submission.
-- prompts/write-broader-impact.md — Cover letter and ethics statement are both pre-submission gatekeeping steps.
+- prompts/rebuttal.md — Next phase after submission: rebuttal writing.
+- prompts/check-references.md — Verify reference completeness and format compliance before submission.
+- prompts/broader-impact.md — Cover letter and ethics statement are both pre-submission gatekeeping steps.

@@ -33,4 +33,4 @@ Translate the provided English LaTeX snippet into fluent, readable Chinese plain
 4. Is the output plain Chinese with zero LaTeX artifacts?
 
 ## See also
-- prompts/translate-en-to-zh-word.md — English->Chinese for Word: adds AI-trace removal and formatting adaptation.
+- prompts/translate-word-en2zh.md — English->Chinese for Word: adds AI-trace removal and formatting adaptation.

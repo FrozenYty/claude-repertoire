@@ -38,5 +38,5 @@ Translate the provided Chinese draft into a polished English academic LaTeX pass
 {{CHINESE_DRAFT}}
 
 ## See also
-- prompts/translate-zh-to-en-word.md — Chinese->English for Word: no LaTeX escaping needed.
+- prompts/translate-word-zh2en.md — Chinese->English for Word: no LaTeX escaping needed.
 - prompts/polish-en.md — After translation, polish for clarity and rigor. Feed Part 1 [LaTeX] output as {{ENGLISH_LATEX}} input to polish-en.

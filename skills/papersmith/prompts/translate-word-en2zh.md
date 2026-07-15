@@ -51,4 +51,4 @@ Translate the provided English text (which may contain LaTeX formatting) into fl
 5. Does the back-translation confirm that no meaning was added, dropped, or distorted?
 
 ## See also
-- prompts/translate-en-to-zh-latex.md — English->Chinese for LaTeX: lighter-weight, no AI-trace removal involved.
+- prompts/translate-latex-en2zh.md — English->Chinese for LaTeX: lighter-weight, no AI-trace removal involved.

@@ -31,7 +31,7 @@ Audit the reference list of a LaTeX manuscript. Check three dimensions:
 
 ### Dimension 2 — Format (run when venue is specified)
 
-1. Read `references/venue-citation-guide.md` for the target venue's
+1. Read `references/citation-guide.md` for the target venue's
    expected citation style.
 2. Check bib entries against the venue's field requirements. Example
    rules:
@@ -80,7 +80,7 @@ Two files:
 - `{{LATEX_SNIPPET_OR_PATH}}` — the `.tex` file (or a snippet) containing
   `\cite{}` commands and the `\bibliography{}` path
 - `{{TARGET_VENUE}}` (optional) — the conference or journal name, used to
-  look up citation format requirements in `references/venue-citation-guide.md`
+  look up citation format requirements in `references/citation-guide.md`
 
 If the `.bib` file is separate, the user should provide its path or paste
 its contents.
@@ -132,9 +132,9 @@ For each citation not marked VERIFIED:
 
 ## See also
 
-- prompts/check-logic.md — Same pre-submission verification stage; run verify-references first (fix bib issues), then check-logic (logic audit).
-- prompts/draft-cover-letter.md — References should be verified before the cover letter is written; incomplete citations are a common desk reject reason.
-- references/venue-citation-guide.md — Target venue citation format specification; read this before running the Format dimension.
+- prompts/check-logic.md — Same pre-submission verification stage; run check-references first (fix bib issues), then check-logic (logic audit).
+- prompts/cover-letter.md — References should be verified before the cover letter is written; incomplete citations are a common desk reject reason.
+- references/citation-guide.md — Target venue citation format specification; read this before running the Format dimension.
 
 ## Self-Audit (before delivering)
 
@@ -144,6 +144,6 @@ For each citation not marked VERIFIED:
    that it "probably doesn't exist"?
 3. Did I distinguish INCOMPLETE (fixable) from MISSING (needs a new
    entry)?
-4. Did I read `references/venue-citation-guide.md` for the target venue
+4. Did I read `references/citation-guide.md` for the target venue
    before reporting format issues?
 5. Did I include an actionable list in Part 5?

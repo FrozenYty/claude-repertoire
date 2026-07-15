@@ -31,7 +31,7 @@ The following words appear disproportionately in AI-generated text. Consider rep
 > Accentuate, Adorn, Amass, Ameliorate, Amplify, Alleviate, Ascertain, Advocate, Articulate, Bear, Bolster, Bustling, Cherish, Conceptualize, Conjecture, Consolidate, Convey, Culminate, Decipher, Demonstrate, Depict, Devise, Delineate, Delve, Delve Into, Diverge, Disseminate, Elucidate, Endeavor, Engage, Enumerate, Envision, Enduring, Exacerbate, Expedite, Foster, Galvanize, Harmonize, Hone, Innovate, Inscription, Integrate, Interpolate, Intricate, Lasting, Leverage, Manifest, Mediate, Nurture, Nuance, Nuanced, Obscure, Opt, Originates, Perceive, Perpetuate, Permeate, Pivotal, Ponder, Prescribe, Prevailing, Profound, Recapitulate, Reconcile, Rectify, Rekindle, Reimagine, Scrutinize, Substantiate, Tailor, Testament, Transcend, Traverse, Underscore, Unveil, Vibrant
 
 ### Anti-Pattern Awareness
-- Before humanizing, read `references/writing-anti-patterns.md` § English section. If the input matches any listed anti-pattern, rewrite accordingly.
+- Before humanizing, read `references/writing-pitfalls.md` § English section. If the input matches any listed anti-pattern, rewrite accordingly.
 
 ## Output Format
 - **Part 1 [LaTeX]**: Output the rewritten code (or the original, if it was already good enough).
@@ -54,4 +54,4 @@ The following words appear disproportionately in AI-generated text. Consider rep
 ## See also
 - prompts/polish-en.md — Polish before removing AI traces. Feed polish-en Part 1 [LaTeX] output as {{ENGLISH_LATEX}} input.
 - prompts/check-logic.md — After humanizing, check logical consistency. Feed Part 1 [LaTeX] output as {{ENGLISH_LATEX}} input to check-logic.
-- prompts/rewrite-to-avoid-plagiarism.md — For reducing similarity scores (plagiarism check), use for structural paraphrase. Complementary: humanize handles tone, this handles similarity.
+- prompts/rewrite-plagiarism.md — For reducing similarity scores (plagiarism check), use for structural paraphrase. Complementary: humanize handles tone, this handles similarity.

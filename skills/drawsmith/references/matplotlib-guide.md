@@ -544,6 +544,5 @@ Key rules:
 ---
 
 ## See also
-- `style-guide.md` — color palettes, typefaces, resolution standards shared with draw.io
+- `style-guide.md` — color palettes, typefaces, resolution standards shared with draw.io; §11 covers CJK font configuration for Chinese text
 - `matplotlib-templates.md` — 19 runnable chart templates
-- `cjk-fonts-guide.md` — CJK font configuration for Chinese text

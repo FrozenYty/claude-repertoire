@@ -95,5 +95,5 @@ punctuation per SKILL.md. Other parts may stay in Chinese or English.
 
 ## See also
 - prompts/polish-title.md — The title is a condensed abstract; keep rhetoric and keywords aligned. Feed Part 1 [Polished abstract] output as {{ABSTRACT_OR_SUMMARY}} input to polish-title.
-- prompts/draft-cover-letter.md — The cover letter core selling points come directly from the abstract. Feed Part 1 [Polished abstract] output as {{SUMMARY}} input to draft-cover-letter.
+- prompts/cover-letter.md — The cover letter core selling points come directly from the abstract. Feed Part 1 [Polished abstract] output as {{SUMMARY}} input to cover-letter.
 - references/writing-templates.md — 5-part abstract structure template and section writing conventions.

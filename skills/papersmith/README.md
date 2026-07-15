@@ -73,14 +73,14 @@ trims to budget, and returns the rewrite + a sentence-to-part map.
 **Drafting a rebuttal:**
 > Reviewers said: [comments]. Help me draft a response.
 
-Claude routes to `prompts/respond-to-reviewers.md`, produces a
+Claude routes to `prompts/rebuttal.md`, produces a
 point-by-point reply with the three response types (concession /
 clarification / disagreement) clearly signaled.
 
 **Generating a LaTeX table:**
 > Turn this CSV into a publication-ready LaTeX table with booktabs.
 
-Claude routes to `prompts/generate-latex-table.md`, produces a complete
+Claude routes to `prompts/latex-table.md`, produces a complete
 `\begin{table}...\end{table}` block with proper alignment, best-result
 bolding, and special-character escaping.
 
@@ -97,9 +97,9 @@ papersmith/
 ├── CHANGELOG.md         # version history
 ├── prompts/             # 24 task-specific prompts
 └── references/          # 3 long-form references
-    ├── writing-anti-patterns.md     # 24 anti-patterns (12 zh + 12 en)
-    ├── writing-templates.md         # 7 section structure templates
-    └── venue-citation-guide.md      # 10+ venue citation formats
+    ├── writing-pitfalls.md     # 24 anti-patterns (12 zh + 12 en)
+    ├── writing-templates.md         # 14 section structure templates
+    └── citation-guide.md      # 10+ venue citation formats
 ```
 
 ## What's covered

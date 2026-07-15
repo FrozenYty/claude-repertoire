@@ -33,10 +33,10 @@ Do not deviate from the prompt template unless the user explicitly asks.
 
 | User Intent | Expected Input | Prompt File |
 |---|---|---|
-| Translate Chinese draft to English LaTeX | Chinese text + LaTeX needed | `prompts/translate-zh-to-en-latex.md` |
-| Translate English LaTeX to plain Chinese | English LaTeX snippet | `prompts/translate-en-to-zh-latex.md` |
-| Translate English to Chinese for Word | English text (for Word) | `prompts/translate-en-to-zh-word.md` |
-| Translate Chinese draft to English for Word | Chinese text (for Word) | `prompts/translate-zh-to-en-word.md` |
+| Translate Chinese draft to English LaTeX | Chinese text + LaTeX needed | `prompts/translate-latex-zh2en.md` |
+| Translate English LaTeX to plain Chinese | English LaTeX snippet | `prompts/translate-latex-en2zh.md` |
+| Translate English to Chinese for Word | English text (for Word) | `prompts/translate-word-en2zh.md` |
+| Translate Chinese draft to English for Word | Chinese text (for Word) | `prompts/translate-word-zh2en.md` |
 
 ### Rewriting & Polishing
 
@@ -47,7 +47,7 @@ Do not deviate from the prompt template unless the user explicitly asks.
 | Polish Chinese text with minimal intervention | Chinese paragraph (near-final) | `prompts/polish-zh.md` |
 | Polish abstract into the 5-part structure | Current abstract + optional venue limit | `prompts/polish-abstract.md` |
 | Generate 5-10 candidate titles + scoring | Abstract or summary | `prompts/polish-title.md` |
-| Writing templates (7 sections: Introduction, Related Work, Methodology, Experiments, Conclusion, Abstract, General Principles) | — (loaded on demand) | `references/writing-templates.md` |
+| Writing templates (14 sections: Introduction, Related Work, Methodology, Experiments, Conclusion, Abstract, General Principles, Literature Review, Research Proposal, Investigation Report, Grant Proposal, Progress Report, Thesis Defense Outline, Slide Deck Narrative) | — (loaded on demand) | `references/writing-templates.md` |
 
 ### Length Adjustment
 
@@ -63,28 +63,28 @@ Do not deviate from the prompt template unless the user explicitly asks.
 | Final consistency and logic check before submission | English LaTeX (near-final) | `prompts/check-logic.md` |
 | Remove AI-generated writing patterns from English LaTeX | English LaTeX snippet | `prompts/humanize-en.md` |
 | Remove machine-translation tone from Chinese text | Chinese paragraph | `prompts/humanize-zh.md` |
-| Chinese and English academic writing anti-patterns (24 patterns, Bad→Rewritten) | — (loaded on demand) | `references/writing-anti-patterns.md` |
-| Rewrite text to avoid plagiarism similarity while preserving meaning | Original text with similarity concerns | `prompts/rewrite-to-avoid-plagiarism.md` |
+| Chinese and English academic writing anti-patterns (24 patterns, Bad→Rewritten) | — (loaded on demand) | `references/writing-pitfalls.md` |
+| Rewrite text to avoid plagiarism similarity while preserving meaning | Original text with similarity concerns | `prompts/rewrite-plagiarism.md` |
 
 ### Captions & Tables
 
 | User Intent | Expected Input | Prompt File |
 |---|---|---|
-| Write a figure caption in English | Chinese description of the figure | `prompts/write-figure-caption.md` |
-| Write a table caption in English | Chinese description of the table | `prompts/write-table-caption.md` |
-| Generate a publication-ready LaTeX table from data | CSV/table data + caption description | `prompts/generate-latex-table.md` |
+| Write a figure caption in English | Chinese description of the figure | `prompts/figure-caption.md` |
+| Write a table caption in English | Chinese description of the table | `prompts/table-caption.md` |
+| Generate a publication-ready LaTeX table from data | CSV/table data + caption description | `prompts/latex-table.md` |
 
 ### Analysis & Review
 
 | User Intent | Expected Input | Prompt File |
 |---|---|---|
 | Analyze experiment results and write LaTeX analysis | Experiment data table + key findings | `prompts/analyze-experiments.md` |
-| Simulate a peer review for a paper draft | Paper PDF + target conference name | `prompts/simulate-peer-review.md` |
-| Draft a point-by-point response to reviewers | Reviewer comments + optional list of changes | `prompts/respond-to-reviewers.md` |
-| Draft a 250-400 word cover letter for submission | Title + venue + manuscript summary | `prompts/draft-cover-letter.md` |
-| Write broader impact / ethical considerations statement | Title + abstract + method description + optional venue | `prompts/write-broader-impact.md` |
-| Verify reference list completeness, format, and existence | LaTeX snippet + optional target venue | `prompts/verify-references.md` |
-| Citation format guide (10+ venues, required fields, style files) | — (loaded on demand) | `references/venue-citation-guide.md` |
+| Simulate a peer review for a paper draft | Paper PDF + target conference name | `prompts/peer-review.md` |
+| Draft a point-by-point response to reviewers | Reviewer comments + optional list of changes | `prompts/rebuttal.md` |
+| Draft a 250-400 word cover letter for submission | Title + venue + manuscript summary | `prompts/cover-letter.md` |
+| Write broader impact / ethical considerations statement | Title + abstract + method description + optional venue | `prompts/broader-impact.md` |
+| Verify reference list completeness, format, and existence | LaTeX snippet + optional target venue | `prompts/check-references.md` |
+| Citation format guide (10+ venues, required fields, style files) | — (loaded on demand) | `references/citation-guide.md` |
 
 ## Chinese Typography Rules (CRITICAL)
 

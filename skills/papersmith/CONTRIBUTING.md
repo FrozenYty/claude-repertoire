@@ -11,9 +11,9 @@ papersmith/
 ├── SKILL.md             # routing index — register new prompts here
 ├── prompts/             # one .md per task (Role/Task/Constraints/Output/Self-Audit)
 ├── references/          # loaded on demand: long-form rules + templates
-│   ├── writing-anti-patterns.md     (24 patterns: 12 zh + 12 en)
-│   ├── writing-templates.md         (7 section structure templates)
-│   └── venue-citation-guide.md      (10+ venue citation formats)
+│   ├── writing-pitfalls.md     (24 patterns: 12 zh + 12 en)
+│   ├── writing-templates.md         (14 section structure templates)
+│   └── citation-guide.md      (10+ venue citation formats)
 ├── CHANGELOG.md
 ├── CONTRIBUTING.md      # you are here
 └── README.md
@@ -23,8 +23,8 @@ papersmith/
 
 | What | Pattern | Example |
 |------|---------|---------|
-| Prompt file | `<verb>-<target>-<optional-modifier>.md` | `translate-zh-to-en-latex.md` |
-| Reference file | `<topic>-reference.md`, `<topic>-templates.md`, `<topic>-anti-patterns.md`, or `<topic>-guide.md` | `writing-anti-patterns.md`, `venue-citation-guide.md` |
+| Prompt file | `<verb>-<target>-<optional-modifier>.md` | `translate-latex-zh2en.md` |
+| Reference file | `<topic>-templates.md`, `<topic>-pitfalls.md`, or `<topic>-guide.md` | `writing-templates.md`, `writing-pitfalls.md`, `citation-guide.md` |
 
 ## Commit Rules
 
@@ -74,8 +74,8 @@ into one commit per logical change.
 
 ```bash
 # Good: one topic per commit
-git add references/writing-anti-patterns.md
-git commit -m "docs: add new anti-pattern to writing-anti-patterns"
+git add references/writing-pitfalls.md
+git commit -m "docs: add new anti-pattern to writing-pitfalls"
 
 # Bad: unrelated changes squashed together
 git add references/ prompts/ README.md
@@ -96,7 +96,7 @@ The toolkit's prompts share a four-section structure. Match it.
 
 **File:** `prompts/<kebab-case-name>.md`. The name should describe the
 *action*, not the input. Examples that work: `polish-abstract`,
-`respond-to-reviewers`. Examples that don't: `for-conferences`,
+`rebuttal`. Examples that don't: `for-conferences`,
 `chinese-output`.
 
 **Required sections:**

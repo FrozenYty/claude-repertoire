@@ -64,5 +64,5 @@ Your statement must address the following four dimensions. Do not skip any.
 3. **Specificity check**: Does each risk have a concrete mitigation strategy attached to it? Are the mitigations actionable, or merely aspirational ("we hope that...")?
 
 ## See also
-- prompts/draft-cover-letter.md — Cover letter and ethics statement are both pre-submission gatekeeping steps.
-- prompts/simulate-peer-review.md — During simulated review, reviewers may scrutinize broader impact credibility especially closely.
+- prompts/cover-letter.md — Cover letter and ethics statement are both pre-submission gatekeeping steps.
+- prompts/peer-review.md — During simulated review, reviewers may scrutinize broader impact credibility especially closely.

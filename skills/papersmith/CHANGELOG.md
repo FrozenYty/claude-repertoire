@@ -4,6 +4,37 @@ All notable changes to the Papersmith are recorded here. The
 format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] — 2026-07-15
+
+### Changed
+
+- **Prompts and references renamed** to follow drawsmith naming conventions:
+  short, no redundant verbs, consistent `{topic}-{type}` suffixes.
+  - Translation: `translate-zh-to-en-latex` → `translate-latex-zh2en`,
+    `translate-en-to-zh-latex` → `translate-latex-en2zh`,
+    `translate-en-to-zh-word` → `translate-word-en2zh`,
+    `translate-zh-to-en-word` → `translate-word-zh2en`.
+  - Polishing: `rewrite-to-avoid-plagiarism` → `rewrite-plagiarism`.
+  - Review: `simulate-peer-review` → `peer-review`,
+    `respond-to-reviewers` → `rebuttal`.
+  - Documents: `draft-cover-letter` → `cover-letter`,
+    `write-broader-impact` → `broader-impact`.
+  - Captions: `write-figure-caption` → `figure-caption`,
+    `write-table-caption` → `table-caption`.
+  - Tables: `generate-latex-table` → `latex-table`.
+  - References: `verify-references` → `check-references`.
+  - Reference docs: `writing-anti-patterns` → `writing-pitfalls`,
+    `venue-citation-guide` → `citation-guide`.
+  - All See also links, SKILL.md Prompt Index, README, and CONTRIBUTING
+    updated to match.
+
+### Added
+
+- **7 new writing templates** in `references/writing-templates.md`:
+  §8 Literature Review, §9 Research Proposal, §10 Investigation Report,
+  §11 Grant Proposal (NSFC-style), §12 Progress Report, §13 Thesis
+  Defense Outline, §14 Slide Deck Narrative. Total templates: 7 → 14.
+
 ## [0.4.0] — 2026-07-15
 
 ### Removed
@@ -27,8 +58,8 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **SKILL.md**: description and when_to_use no longer mention drawing,
   diagramming, or plotting. Prompt Index reorganized — former "Figures
   & Charts" category replaced with focused "Captions & Tables" category
-  (`write-figure-caption.md`, `write-table-caption.md`,
-  `generate-latex-table.md`). Iron Rules renumbered to 1–3.
+  (`figure-caption.md`, `table-caption.md`,
+  `latex-table.md`). Iron Rules renumbered to 1–3.
 - **README.md**: updated feature list, repository structure, quick-start
   examples, and design rules to reflect writing-only scope.
 - **CONTRIBUTING.md**: removed drawio architecture template and Python
@@ -36,7 +67,7 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   instructions.
 - **analyze-experiments.md**: removed See also links to `plot-figure.md`
   and `recommend-chart.md`.
-- **generate-latex-table.md**: removed See also links to `plot-figure.md`
+- **latex-table.md**: removed See also links to `plot-figure.md`
   and `recommend-chart.md`.
 
 ## [0.3.7] — 2026-06-17
@@ -105,11 +136,11 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   other prompts, making them undiscoverable in workflow chains. Added 10
   inbound See also links:
   - `analyze-experiments.md` ← `recommend-chart.md`
-  - `verify-references.md` ← `draft-cover-letter.md`, `simulate-peer-review.md`
-  - `write-broader-impact.md` ← `draft-cover-letter.md`
+  - `check-references.md` ← `cover-letter.md`, `peer-review.md`
+  - `broader-impact.md` ← `cover-letter.md`
   - `writing-templates.md` ← `polish-abstract.md`, `rewrite-zh-draft.md`
-  - `generate-latex-table.md` ← `analyze-experiments.md`, `write-table-caption.md`
-  - `rewrite-to-avoid-plagiarism.md` ← `humanize-en.md`, `humanize-zh.md`
+  - `latex-table.md` ← `analyze-experiments.md`, `table-caption.md`
+  - `rewrite-plagiarism.md` ← `humanize-en.md`, `humanize-zh.md`
   - `cjk-fonts-guide.md` ← `plotting-reference.md`
   All 35 prompt + reference files now have at least one inbound See also link.
 
@@ -117,11 +148,11 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- **LaTeX table generation prompt**: `prompts/generate-latex-table.md` —
+- **LaTeX table generation prompt**: `prompts/latex-table.md` —
   converts CSV/tabular data into publication-ready `\begin{table}` blocks
   with booktabs, auto-alignment, best-result bolding, and special-character
   escaping. Total prompts: 27.
-- **Plagiarism-safe rewriting prompt**: `prompts/rewrite-to-avoid-plagiarism.md` —
+- **Plagiarism-safe rewriting prompt**: `prompts/rewrite-plagiarism.md` —
   structural paraphrase that avoids synonym-only swaps and thesaurus
   overload, with an explicit ethical-use boundary.
 - **CJK font configuration guide**: `references/cjk-fonts-guide.md` —
@@ -150,8 +181,8 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   diagram, sequence diagram, state machine diagram, data flow diagram
   (DFD). Total drawio templates: 15 (4 specific architectures + 11
   general patterns and classic types).
-- **2 new prompts**: `translate-en-to-zh-word.md` (English → Chinese Word
-  translation, Word-ready plain-text output), `write-broader-impact.md`
+- **2 new prompts**: `translate-word-en2zh.md` (English → Chinese Word
+  translation, Word-ready plain-text output), `broader-impact.md`
   (broader impact / ethical considerations statement, 4-dimension
   coverage, venue-specific word budgets). Total prompts: 24.
 - **DPI upgrade**: plotting templates now output PNG at 600 dpi minimum,
@@ -163,10 +194,10 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   (no fabricated content, pdf.fonttype=42, flow direction before drawing,
   error bars disclosed, no Markdown in Word, full-width Chinese
   punctuation, prompt before template).
-- **Writing anti-patterns reference**: `references/writing-anti-patterns.md`
+- **Writing anti-patterns reference**: `references/writing-pitfalls.md`
   — 12 common Chinese academic writing mistakes with Bad → Why → Rewritten
   examples and self-audit checklist.
-- **English writing anti-patterns**: expanded `references/writing-anti-patterns.md`
+- **English writing anti-patterns**: expanded `references/writing-pitfalls.md`
   with 12 English academic writing anti-patterns covering AI-generated
   vocabulary, hollow intensifiers, copula avoidance, forced parallelism,
   padding openers, possessive overuse, passive voice overuse, overclaiming,
@@ -181,11 +212,11 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Work (taxonomy), Methodology (top-down), Experiments (three-part),
   Conclusion (three-part), and Abstract (five-part), with concrete
   examples and a general principles section.
-- **Citation verification system**: `prompts/verify-references.md` —
+- **Citation verification system**: `prompts/check-references.md` —
   5-part audit covering completeness (cite→bib mapping + required field
   check), venue-specific format validation, and optional WebSearch-driven
   existence verification (VERIFIED / MISMATCH / NOT_FOUND). Companion
-  `references/venue-citation-guide.md` documents citation formats for
+  `references/citation-guide.md` documents citation formats for
   10+ top venues (NeurIPS, ICML, CVPR, ACL, IEEE, ACM, Nature, Science,
   Chinese journals). Total prompts: 25.
 - **SKILL.md frontmatter**: added `author: Tianyu Yao`.
@@ -203,7 +234,7 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Changed
 
 - File renames: `draw-architecture-diagram.md` → `draw-diagram.md`,
-  `cover-letter.md` → `draft-cover-letter.md`,
+  `cover-letter.md` → `cover-letter.md`,
   `plot-academic.md` → `plot-figure.md`.
 - `drawio-reference.md` now has a Table of Contents for fast navigation.
 - Prompt index references updated for renamed files.
@@ -230,9 +261,9 @@ which the prompt templates are adapted from.
 - Length adjustment: shorten-en, expand-en
 - Quality & style: check-logic, humanize-en, humanize-zh
 - Figures & charts: draw-diagram, recommend-chart,
-  plot-figure, write-figure-caption, write-table-caption
-- Analysis & review: analyze-experiments, simulate-peer-review,
-  respond-to-reviewers (concession / clarification / disagreement
+  plot-figure, figure-caption, table-caption
+- Analysis & review: analyze-experiments, peer-review,
+  rebuttal (concession / clarification / disagreement
   pattern), cover-letter (250-400 word template)
 
 **References (4 total):**

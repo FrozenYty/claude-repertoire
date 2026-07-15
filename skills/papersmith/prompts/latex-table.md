@@ -46,4 +46,4 @@ Generate a complete `\begin{table}...\end{table}` block from the provided data.
 5. Are all special characters correctly escaped?
 
 ## See also
-- prompts/write-table-caption.md — Polish the table caption text after generation.
+- prompts/table-caption.md — Polish the table caption text after generation.
