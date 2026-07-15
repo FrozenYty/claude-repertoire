@@ -48,5 +48,5 @@ ln -s $(pwd)/claude-repertoire/skills/drawsmith ~/.claude/skills/drawsmith
 
 ## See Also
 
-- [papersmith](../papersmith/) — academic paper writing with integrated diagram support
+- [papersmith](../papersmith/) — academic paper writing, polishing, and translation
 - [style-guide.md](references/style-guide.md) — shared design system for colors, fonts, and spacing

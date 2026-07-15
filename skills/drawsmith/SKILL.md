@@ -22,9 +22,8 @@ Two engines:
 - **draw.io** — conceptual diagrams (structural, discrete components + arrows)
 - **matplotlib** — data charts (numerical, X/Y axes)
 
-Quality bar: papersmith-grade visual polish. General-purpose workflows —
-no paper-specific ceremony (no caption generation, no venue sizing tables,
-no abstract integration).
+General-purpose workflows — no paper-specific ceremony (no caption
+generation, no venue sizing tables, no abstract integration).
 
 ---
 

@@ -41,6 +41,4 @@ Carefully read the provided experimental data. Extract key patterns, trends, and
 4. Does the output include both Part 1 (English LaTeX) and Part 2 (Chinese back-translation)?
 
 ## See also
-- prompts/plot-figure.md — Next step: turn analysis conclusions into visual charts.
-- prompts/recommend-chart.md — Determine the best chart type before generating figures.
-- prompts/generate-latex-table.md — Generate LaTeX tables from experiment data (alternative or supplement to charts).
+- prompts/generate-latex-table.md — Generate LaTeX tables from experiment data (alternative or supplement to prose analysis).

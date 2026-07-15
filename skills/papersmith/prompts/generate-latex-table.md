@@ -46,6 +46,4 @@ Generate a complete `\begin{table}...\end{table}` block from the provided data.
 5. Are all special characters correctly escaped?
 
 ## See also
-- prompts/plot-figure.md — Use if the data is better shown as a chart than a table.
-- prompts/recommend-chart.md — Decide table vs. chart before generating either.
 - prompts/write-table-caption.md — Polish the table caption text after generation.

@@ -4,6 +4,41 @@ All notable changes to the Papersmith are recorded here. The
 format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-07-15
+
+### Removed
+
+- **Drawing and plotting functionality extracted to drawsmith**: removed
+  all diagram generation (draw.io) and chart plotting (matplotlib)
+  capabilities. Papersmith is now a pure academic writing skill.
+  - Removed prompts: `draw-diagram.md`, `plot-figure.md`,
+    `recommend-chart.md`.
+  - Removed references: `drawio-reference.md`, `drawio-templates.md`,
+    `plotting-reference.md`, `plotting-templates.md`,
+    `cjk-fonts-guide.md`.
+  - Removed Iron Rules: pdf.fonttype=42, Flow direction before drawing,
+    Error bars disclosed, Prompt before template.
+  - Removed Figure Routing, Diagram Workflow, and Plotting Workflow
+    sections from SKILL.md.
+  - Total prompts: 27 → 24. Total references: 8 → 3.
+
+### Changed
+
+- **SKILL.md**: description and when_to_use no longer mention drawing,
+  diagramming, or plotting. Prompt Index reorganized — former "Figures
+  & Charts" category replaced with focused "Captions & Tables" category
+  (`write-figure-caption.md`, `write-table-caption.md`,
+  `generate-latex-table.md`). Iron Rules renumbered to 1–3.
+- **README.md**: updated feature list, repository structure, quick-start
+  examples, and design rules to reflect writing-only scope.
+- **CONTRIBUTING.md**: removed drawio architecture template and Python
+  plotting template contribution sections. Simplified testing
+  instructions.
+- **analyze-experiments.md**: removed See also links to `plot-figure.md`
+  and `recommend-chart.md`.
+- **generate-latex-table.md**: removed See also links to `plot-figure.md`
+  and `recommend-chart.md`.
+
 ## [0.3.7] — 2026-06-17
 
 ### Added
