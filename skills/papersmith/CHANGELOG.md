@@ -30,6 +30,11 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
+- **DOCX Chinese quote repair strategy** added to Chinese Typography Rules
+  (SKILL.md rule #4): paragraph-level state machine for fixing ASCII `"`
+  → `""` in generated `.docx` files using python-docx. Never modify Python
+  source — fix quotes directly in the output document.
+
 - **7 new writing templates** in `references/writing-templates.md`:
   §8 Literature Review, §9 Research Proposal, §10 Investigation Report,
   §11 Grant Proposal (NSFC-style), §12 Progress Report, §13 Thesis
