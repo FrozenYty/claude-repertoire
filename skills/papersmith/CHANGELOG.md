@@ -30,10 +30,11 @@ versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Added
 
-- **DOCX Chinese quote repair strategy** added to Chinese Typography Rules
-  (SKILL.md rule #4): paragraph-level state machine for fixing ASCII `"`
-  → `""` in generated `.docx` files using python-docx. Never modify Python
-  source — fix quotes directly in the output document.
+- **DOCX Chinese quote repair** — strategy (SKILL.md rule #4) + runnable
+  reference (`references/docx-quote-fix.md`): paragraph-level state machine
+  with `has_cjk()`, `fix_quotes_in_docx()`, and `verify_quotes()`. Covers
+  CJK punctuation detection, cross-run quote pairing, and the cardinal rule:
+  never modify Python source, always fix the output document.
 
 - **7 new writing templates** in `references/writing-templates.md`:
   §8 Literature Review, §9 Research Proposal, §10 Investigation Report,

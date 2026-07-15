@@ -105,12 +105,9 @@ descriptions, translations, or inline examples — follow these rules:
    and the source code uses ASCII `"` inside Chinese strings, do NOT modify
    the Python source — it risks breaking string delimiters. Instead, fix
    quotes directly in the generated DOCX using python-docx with a
-   paragraph-level state machine:
-   - Concatenate all runs in each paragraph with a sentinel separator
-   - Treat ALL `"` in Chinese-containing paragraphs as content quotes
-   - Pair by alternating position: odd-index `"` → `"` (U+201C), even → `"` (U+201D)
-   - Split back into runs by the sentinel
-   - This handles quotes that span multiple runs correctly
+   paragraph-level state machine (sentinel-separator concatenation, odd/even
+   pairing to `""`, split back to runs). For the complete runnable script
+   including `has_cjk()` and `verify_quotes()`, read `references/docx-quote-fix.md`.
 
 This rule applies to ALL prompt templates in this toolkit and to any ad-hoc
 Chinese text you generate while assisting the user.
